@@ -12,31 +12,42 @@ rdfDedge::~rdfDedge(){
 
 rdfDedge::rdfDedge(string _str_e) : dEdge(-1, -1)
 {
-		stringstream _ss(_str_e);
-		char buf[200];
-		/* stype: subject type */
-		memset(buf, 0, sizeof(buf));
-		_ss >> buf;
-		this->stype = string(buf);
-		/* s: subject id */
-		_ss >> this->s;
-		/* pred: predicate */
-		memset(buf, 0, sizeof(buf));
-		_ss >> buf;
-		this->pre = string(buf);
-		/* otype: object type */
-		memset(buf, 0, sizeof(buf));
-		_ss >> buf;
-		this->otype = string(buf);
-		/* o(t): object id */
-		_ss >> this->t;
-		/* literal (this should be the "signature") */ 
-		memset(buf, 0, sizeof(buf));
-		_ss >> buf;
-		this->literal = string(buf);
-		/* time */
-		_ss >> this->t_sec;
+	stringstream _ss(_str_e);
+	std::string token;
 
+	int cnt = 0;
+	int start_time, end_time;
+	while(std::getline(_ss, token, ',')) {
+		switch (cnt)
+		{
+		case 0:
+			// start_time = int64_t(stod(token) * 1000);
+			this->t_sec = int64_t(stod(token) * 1000);
+			break;
+		case 1:
+			// not used currently
+			end_time = int64_t(stod(token) * 1000);
+			break;
+		case 2:
+			this->signatre = token;
+			break;
+		case 3:
+			this->id = stoi(token);
+			break;
+		case 4: 
+			this->s = stoi(token);
+			break;
+		case 5:
+			this->t = stoi(token);
+			break;
+		default:
+			break;
+		}
+
+		#ifdef MY_DEBUG
+			std::cout << "Now parsing: " << token << '\n';
+		#endif
+	}
 }
 
 bool rdfDedge::is_same(dEdge* _d)
@@ -47,11 +58,14 @@ bool rdfDedge::is_same(dEdge* _d)
 	
 	if(this->s != _nd->s) return false;
 	if(this->t != _nd->t) return false;
-	if(this->pre != _nd->pre) return false;
+	// if(this->pre != _nd->pre) return false;
 	if(this->t_sec != _nd->t_sec) return false;
-	if(this->stype != _nd->stype ) return false;
-	if(this->otype != _nd->otype ) return false;
-	if(this->literal != _nd->literal) return false;
+	// if(this->stype != _nd->stype ) return false;
+	// if(this->otype != _nd->otype ) return false;
+	// if(this->literal != _nd->literal) return false;
+
+	if (this->signatre != _nd->signatre) return false;
+	if (this->id != _nd->id) return false;
 	
 	return true;
 }

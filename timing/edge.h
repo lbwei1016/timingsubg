@@ -8,6 +8,7 @@ public:
 	Edge(int _s, int _t);
 	int s;
 	int t;
+	int id; // edge id
 
 	bool ss(Edge* _e);
 	bool tt(Edge* _e);

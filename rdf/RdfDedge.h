@@ -21,8 +21,11 @@ public:
 	string stype;
 	string otype;
 	string pre;
-	int t_sec;
+	// int t_sec;
 	string literal;
+
+	int64_t t_sec;
+	string signatre;
 };
 
 #endif
