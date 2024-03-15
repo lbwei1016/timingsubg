@@ -14,23 +14,23 @@ rdfDedge::rdfDedge(string _str_e) : dEdge(-1, -1)
 {
 		stringstream _ss(_str_e);
 		char buf[200];
-		/* stype */
+		/* stype: subject type */
 		memset(buf, 0, sizeof(buf));
 		_ss >> buf;
 		this->stype = string(buf);
-		/* s */
+		/* s: subject id */
 		_ss >> this->s;
-		/* pred */
+		/* pred: predicate */
 		memset(buf, 0, sizeof(buf));
 		_ss >> buf;
 		this->pre = string(buf);
-		/* otype */
+		/* otype: object type */
 		memset(buf, 0, sizeof(buf));
 		_ss >> buf;
 		this->otype = string(buf);
-		/* o(t) */
+		/* o(t): object id */
 		_ss >> this->t;
-		/* literal */
+		/* literal (this should be the "signature") */ 
 		memset(buf, 0, sizeof(buf));
 		_ss >> buf;
 		this->literal = string(buf);

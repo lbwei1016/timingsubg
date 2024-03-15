@@ -27,7 +27,7 @@ MPICC = mpicxx
 CFLAGS = -c -Wall -g #-pg #-O2
 
 CFLAGS += -DNO_THREAD
-#CFLAGS += -DDEBUG_TRACK
+CFLAGS += -DDEBUG_TRACK
 #CFLAGS += -DMAIN_LOG
 CFLAGS += -DSTD_TRACK
 #CFLAGS += -DSTD_MAIN
@@ -39,7 +39,10 @@ CFLAGS += -DSPAN
 #CFLAGS += -DUNCOMP
 #CFLAGS += -DCOLORING
 #CFLAGS += -DREDCC
-#CFLAGS += -DGLOBAL_COMMENT
+
+# For debugging
+CFLAGS += -DGLOBAL_COMMENT
+
 #CFLAGS += -DNUM_MATCH
 #CFLAGS += -DSELECTIVE
 
@@ -49,7 +52,7 @@ LDFLAG = -pthread
 
 # paths
 
-homedir =  timingsubg/
+homedir =  /home/bwling/timingsubg/
 
 rdfdir = $(homedir)rdf/
 timingdir = $(homedir)timing/

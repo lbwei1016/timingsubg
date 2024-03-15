@@ -11,7 +11,8 @@
  * argv2 : query
  * argv3 : winsz
  * argv4 : Max_Thread_Num
- * 
+ * argv5 : frtime? 
+ *
  * */
 int main(int argc, char* argv[])
 {
@@ -59,6 +60,9 @@ int main(int argc, char* argv[])
 	cout << "query Q: \n" << _Q.to_str() << endl;
 	cout << "pre Q: \n" << _Q.timingorder_str() << endl;
 #endif
+
+	// util::init_track("./track");
+	// cout << "I am init_track!!!!!\n";
 
 	timingsubg tsubg(0, _frtime);
 	tsubg.exename = string(argv[0]);

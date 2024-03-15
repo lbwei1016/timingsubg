@@ -47,12 +47,17 @@ CFLAGS += -DSPAN
 #CFLAGS += -DCYCLE_TRACK
 #CFLAGS += -DSELECTIVE
 
+# Enable 'CFLAGS += -DNO_THREAD' to compile for running in single-thread
+CFLAGS += -DNO_THREAD
 
+# Enable 'CFLAGS += -DALL_I' to compile for running in Incremental-Only mode (only conduct Insertion)
+# CFLAGS += -DALL_I
 
 EXEFLAG = -g -O2 #-pg #-O2
 LDFLAG = -pthread
 
 # paths
+
 
 homedir =  timingsubg/
 

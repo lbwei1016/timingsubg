@@ -1,0 +1,15 @@
+Makefile.network
+a.out
+network/.objs/
+network/bin/
+rdf/.objs/
+rdf/1
+rdf/10
+rdf/100
+rdf/1000
+rdf/1000000
+rdf/SocialGraph/
+rdf/bin/
+rdf/sibStream0617.tar
+rdf/track
+test.cpp

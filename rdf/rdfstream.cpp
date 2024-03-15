@@ -32,10 +32,11 @@ bool rdfstream::load_edges(int _avg_win_tuple_num){
 	char _buf[5000];
 
 	rdfDedge* _rd = NULL;
-	while(! fin.eof())
+	while(!fin.eof())
 	{
 		fin.getline(_buf, 4999, '\n');
-		if(strlen(_buf) < 2) continue;
+		if (strlen(_buf) == 0) break;
+		else if(strlen(_buf) < 2) continue;
 		_rd = new rdfDedge(_buf);
 		this->alledges.push_back((dEdge*)_rd);
 	}
@@ -56,6 +57,10 @@ bool rdfstream::load_edges(int _avg_win_tuple_num){
 	cout << "avg_tuple=" << _avg_win_tuple_num << ", avg_span=" << _avg_span << endl;
 
 	cout << "OUT load_edges: " << this->alledges.size() << endl;
+
+	for (int i = 0; i < this->alledges.size(); ++i) {
+		cout << "(" << this->alledges[i]->s << ", " << this->alledges[i]->s  << ")\n";
+	}
 #endif
 	return true;
 }
