@@ -3,6 +3,8 @@
 
 #include "../timing/edge.h"
 
+
+/// @todo: Regex? Something else?
 class rdfQedge : public qEdge{
 public:
 	rdfQedge(int _s, int _t);

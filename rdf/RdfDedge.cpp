@@ -29,7 +29,7 @@ rdfDedge::rdfDedge(string _str_e) : dEdge(-1, -1)
 			end_time = int64_t(stod(token) * 1000);
 			break;
 		case 2:
-			this->signatre = token;
+			this->signature = token;
 			break;
 		case 3:
 			this->id = stoi(token);
@@ -64,7 +64,7 @@ bool rdfDedge::is_same(dEdge* _d)
 	// if(this->otype != _nd->otype ) return false;
 	// if(this->literal != _nd->literal) return false;
 
-	if (this->signatre != _nd->signatre) return false;
+	if (this->signature != _nd->signature) return false;
 	if (this->id != _nd->id) return false;
 	
 	return true;
@@ -86,9 +86,14 @@ bool rdfDedge::is_after(dEdge* _d)
 bool rdfDedge::is_match(qEdge* _q)
 {
 	rdfQedge* _rq = (rdfQedge*)_q;
-	if(this->pre != _rq->pre) return false;
-	if(this->stype != _rq->stype) return false;
-	if(this->otype != _rq->otype) return false;
+
+	if (this->id != _rq->id) return false;
+	// no Regex is considered yet
+	if (this->signature != _rq->signature) return false;
+
+	// if(this->pre != _rq->pre) return false;
+	// if(this->stype != _rq->stype) return false;
+	// if(this->otype != _rq->otype) return false;
 #ifdef ENABLE_LITERAL
 	if(this->is_literal() && _rq->literal != "NULL")
 	{

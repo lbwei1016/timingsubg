@@ -1,5 +1,8 @@
 #include "rdfquery.h"
 #include "RdfQedge.h"
+#include "json/json.hpp"
+
+using json = nlohmann::json;
 
 
 rdfquery::rdfquery(string _query_path) : query(_query_path)
@@ -28,10 +31,20 @@ bool rdfquery::parseQuery()
 	cout << "IN parseQuery@rdfquery: " << this->query_path << endl;
 #endif
 	ifstream fin(this->query_path.c_str(), ios::in);
-	if(! fin){
+	if(!fin){
 		cout << "err open " << this->query_path << endl;
 		exit(-1);
 	}
+
+	json pattern = json::parse(fin);
+	string version = pattern["Version"];
+	bool useRegex = pattern["UseRegex"];
+	auto events = pattern["Events"];
+
+	for (auto &[key, val]: events.items()) {
+		// cout << key << " : " << val << "\n";
+	}
+
 
 	char _buf[1000];
 	map<int, qEdge*> id2qedges;
@@ -42,7 +55,7 @@ bool rdfquery::parseQuery()
 	char _buf_otype[1000];
 	char _buf_pre[1000];
 	char _c_flag;
-	while(! fin.eof())
+	while(!fin.eof())
 	{
 		memset(_buf, 0, sizeof(_buf));
 		fin.getline(_buf, 999, '\n');
@@ -84,6 +97,7 @@ bool rdfquery::parseQuery()
 			continue;
 		}
 		else
+		// temporal relation
 		if(_buf[0] == 'b')
 		{
 			stringstream _ss(_buf);

@@ -35,8 +35,8 @@ bool rdfstream::load_edges(int _avg_win_tuple_num){
 	while(!fin.eof())
 	{
 		fin.getline(_buf, 4999, '\n');
-		if (strlen(_buf) == 0) break;
-		else if(strlen(_buf) < 2) continue;
+		// if (strlen(_buf) == 0) break;
+		// else if(strlen(_buf) < 2) continue;
 		_rd = new rdfDedge(_buf);
 		this->alledges.push_back((dEdge*)_rd);
 	}

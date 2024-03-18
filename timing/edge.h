@@ -10,6 +10,8 @@ public:
 	int t;
 	int id; // edge id
 
+	string signature;
+
 	bool ss(Edge* _e);
 	bool tt(Edge* _e);
 	bool st(Edge* _e);
@@ -47,6 +49,7 @@ public:
     virtual string label() = 0;
 
 	/*qedges before*/
+	/* parents? */
 	set<qEdge*> preEdges;
 	int id;
 };

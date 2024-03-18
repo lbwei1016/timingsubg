@@ -25,7 +25,6 @@ public:
 	string literal;
 
 	int64_t t_sec;
-	string signatre;
 };
 
 #endif
