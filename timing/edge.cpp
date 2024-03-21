@@ -5,6 +5,8 @@ Edge::Edge(int _s, int _t):	s(_s),t(_t)
 		
 }
 
+Edge::Edge(int _s, int _t, int _id): s(_s), t(_t), id(_id) {}
+
 
 bool Edge::ss(Edge* _e){
 	if(this->s == _e->s) return true;

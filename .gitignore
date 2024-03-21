@@ -13,3 +13,4 @@ rdf/bin/
 rdf/sibStream0617.tar
 rdf/track
 test.cpp
+*.exe

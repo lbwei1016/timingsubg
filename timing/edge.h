@@ -6,6 +6,7 @@
 class Edge{
 public:
 	Edge(int _s, int _t);
+  Edge(int _s, int _t, int _id);
 	int s;
 	int t;
 	int id; // edge id
@@ -37,6 +38,7 @@ public:
 class qEdge: public Edge{
 public:
 	qEdge(int _s, int _t);
+  qEdge(int _s, int _t, int _id);
 	virtual ~qEdge() = 0;
 
 	bool add_preedge(qEdge* _qe);

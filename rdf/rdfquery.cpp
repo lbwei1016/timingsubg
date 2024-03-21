@@ -41,10 +41,17 @@ bool rdfquery::parseQuery()
 	bool useRegex = pattern["UseRegex"];
 	auto events = pattern["Events"];
 
-	for (auto &[key, val]: events.items()) {
-		// cout << key << " : " << val << "\n";
+	map<int, qEdge*> id2qedges;
+  id2qedges.clear();
+
+  for (auto &[_key, val]: events.items()) {
+    string key(_key);
+    // implicitly convert 'val["Parents"]' to 'vector<int>'
+    qEdge *edge = new qEdge(val["SubjectID"], val["ObjectID"], val["ID"], val["Signature"], val["Parents"]);
+    id2qedges[val["ID"]] = edge;
 	}
 
+  /// @todo Parse subpatterns
 
 	char _buf[1000];
 	map<int, qEdge*> id2qedges;
