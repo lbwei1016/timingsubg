@@ -5,7 +5,7 @@ Edge::Edge(int _s, int _t):	s(_s),t(_t)
 		
 }
 
-Edge::Edge(int _s, int _t, int _id): s(_s), t(_t), id(_id) {}
+Edge::Edge(int _s, int _t, int _id, string _sig): s(_s), t(_t), id(_id), signature(_sig) {}
 
 
 bool Edge::ss(Edge* _e){
@@ -53,6 +53,13 @@ bool dEdge::is_after(dEdge* _e){return false;}
 bool dEdge::is_match(qEdge* _q){return false;}
 
 qEdge::qEdge(int _s, int _t): Edge( _s,  _t)
+{
+	this->preEdges.clear();
+}
+
+// Constructor for Universal Pattern
+qEdge::qEdge(int _s, int _t, int _id, string _signature, vector<int> _parents)
+  : Edge(_s, _t, _id, _signature), parents(_parents)
 {
 	this->preEdges.clear();
 }

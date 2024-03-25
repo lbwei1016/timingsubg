@@ -28,6 +28,7 @@ public:
 	int size();
 
 	string query_path;
+	string subpattern_path;
 	int NumTC;
 	int qNO;
 	double p;

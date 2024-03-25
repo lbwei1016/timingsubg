@@ -10,7 +10,7 @@ public:
 	rdfQedge(int _s, int _t);
 	rdfQedge(string _str_e);
 	rdfQedge(int _s, int _t, string _stype, string _otype, string _pre, string _literal);
-  rdfQedge(int _s, int _t, int _id, string _signature, vector<int> _parents);
+  	rdfQedge(int _s, int _t, int _id, string _signature, vector<int> _parents);
 	~rdfQedge();
 
 	bool is_before(qEdge* _q);
@@ -24,9 +24,6 @@ public:
 	string otype;
 	string pre;
 	string literal;
-
-// For IPMES
-  vector<int> parents;
 };
 
 

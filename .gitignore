@@ -12,5 +12,6 @@ rdf/SocialGraph/
 rdf/bin/
 rdf/sibStream0617.tar
 rdf/track
+rdf/IPMES
 test.cpp
 *.exe

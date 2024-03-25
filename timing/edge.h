@@ -6,7 +6,7 @@
 class Edge{
 public:
 	Edge(int _s, int _t);
-  Edge(int _s, int _t, int _id);
+  	Edge(int _s, int _t, int _id, string signature);
 	int s;
 	int t;
 	int id; // edge id
@@ -38,7 +38,7 @@ public:
 class qEdge: public Edge{
 public:
 	qEdge(int _s, int _t);
-  qEdge(int _s, int _t, int _id);
+	qEdge(int _s, int _t, int _id, string _signature, vector<int> _parents);
 	virtual ~qEdge() = 0;
 
 	bool add_preedge(qEdge* _qe);
@@ -49,6 +49,9 @@ public:
 	virtual bool is_match(dEdge* _d) = 0;
 	virtual string to_str() = 0;
     virtual string label() = 0;
+
+	// For IPMES
+  	vector<int> parents;
 
 	/*qedges before*/
 	/* parents? */

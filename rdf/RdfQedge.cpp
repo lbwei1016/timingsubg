@@ -26,7 +26,7 @@ rdfQedge::rdfQedge(int _s, int _t, string _stype, string _otype, string _pre, st
 
 // Constructor for Universal Pattern
 rdfQedge::rdfQedge(int _s, int _t, int _id, string _signature, vector<int> _parents)
-  : qEdge(_s, _t, _id), signature(_signature), parents(_parents)
+  : qEdge(_s, _t, _id, _signature, _parents)
 {
 
 }
