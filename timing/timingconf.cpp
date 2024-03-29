@@ -16,7 +16,7 @@ timingconf::timingconf(string _conf_path)
 }
 
 /* load other conf from _dat */
-timingconf::timingconf(int _win, int _max_thread, string _dat, string _q)
+timingconf::timingconf(int64_t _win, int _max_thread, string _dat, string _q)
 {
 	this->window_size = _win;
 	this->Max_Thread_Num = _max_thread;
@@ -90,7 +90,7 @@ int timingconf::getmaxquerysize(){
 	return this->Max_Query_Size;
 }
 
-int timingconf::getwinsz(){
+int64_t timingconf::getwinsz(){
 	if(this->window_size == -1){
 		stringstream _ss(this->key2val["win_size"]);
 		_ss >> this->window_size;

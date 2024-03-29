@@ -11,7 +11,8 @@
  * argv2 : query
  * argv3 : winsz
  * argv4 : Max_Thread_Num
- * argv5 : frtime? 
+ * argv5 : File for recording the runtime analysis
+ * argv6 : subpattern (for IPEMS)
  *
  * */
 int main(int argc, char* argv[])
@@ -22,7 +23,7 @@ int main(int argc, char* argv[])
 #ifdef THREAD_LOG
 #endif
 	
-	if(argc < 6){
+	if(argc < 7){
 		cout << "err argc" << endl;
 		for(int i = 0; i < argc; i ++)
 		{
@@ -35,12 +36,14 @@ int main(int argc, char* argv[])
 	cout << "num of argc: " << argc << endl;
 #endif
 
-	string _dataset, _query, _frtime;
+	string _dataset, _query, _frtime, _subpattern;
 	_dataset = string(argv[1]);
 	_query = string(argv[2]);
 	_frtime = string(argv[5]);
-	
-	int _window, max_thread_num;
+	_subpattern = string(argv[6]);
+
+	double _window;
+	int max_thread_num;
 	{
 		stringstream _ss;
 		for(int i = 3; i < argc; i ++) 
@@ -51,18 +54,21 @@ int main(int argc, char* argv[])
 #ifdef GLOBAL_COMMENT
 	cout << "runtime=" << _frtime << endl;
 #endif
+	// All events are recorded in microsecond
+	_window = (int64_t)(1000 * _window);
 
 	timingconf _tconf(_window, max_thread_num, _dataset, _query);
 	rdfstream _NS(_dataset);
-	rdfquery _Q(_query);
+	rdfquery _Q(_query, _subpattern);
+
 	_Q.parseQuery();
 #ifdef RUN_COMMENT
 	cout << "query Q: \n" << _Q.to_str() << endl;
 	cout << "pre Q: \n" << _Q.timingorder_str() << endl;
 #endif
 
-	// util::init_track("./track");
-	// cout << "I am init_track!!!!!\n";
+	util::init_track("./track");
+	cout << "I am init_track!!!!!\n";
 
 	timingsubg tsubg(0, _frtime);
 	tsubg.exename = string(argv[0]);

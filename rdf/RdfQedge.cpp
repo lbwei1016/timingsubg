@@ -50,8 +50,13 @@ bool rdfQedge::is_match(dEdge* _d)
 string rdfQedge::to_str()
 {
 	stringstream _ss;
-	_ss << this->stype << this->s << " " << this->otype << this->t << " ";
-	_ss << this->pre << " " << this->literal;
+	// _ss << this->stype << this->s << " " << this->otype << this->t << " ";
+	_ss << "s: " << this->s << ", t: " << this->t;
+
+	/// Only print ids
+	// _ss << this->id;
+	
+	// _ss << this->pre << " " << this->literal;
 	//_ss << s_port << " " << t_port;
 	//_ss << " " << size;
 	return _ss.str();

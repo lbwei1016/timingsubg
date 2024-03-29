@@ -14,7 +14,7 @@ class gtransaction;
 
 class timingsubg{
 public:
-	timingsubg(int _winsz, string _config="defaultconfg");
+	timingsubg(int64_t _winsz, string _config="defaultconfg");
 	timingsubg();
 	~timingsubg();
 	void initial();
@@ -48,7 +48,7 @@ private:
 
 	gtransaction* next_tran();
 
-	int win_size;
+	int64_t win_size;
 	queue<pair<dEdge*, bool> > cur_edges;
 	queue<gtransaction*> tran_pool;
 	timingconf* tconf;

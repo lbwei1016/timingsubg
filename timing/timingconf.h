@@ -8,7 +8,7 @@ class timingconf
 public:
 	timingconf(string _conf_path);
 	/* load other conf from _dat */
-	timingconf(int _win, int _max_thread, string _dat, string _q);
+	timingconf(int64_t _win, int _max_thread, string _dat, string _q);
 	string dataset();
 	string vertex2id();
 	string vlabel2id();
@@ -17,7 +17,7 @@ public:
 	int geteNum();
 	int getmaxthreadNum();
 	int getmaxquerysize();
-	int getwinsz();
+	int64_t getwinsz();
 
 	string to_str();
 
@@ -34,7 +34,7 @@ private:
 	int eNum;
 	int Max_Thread_Num;
 	int Max_Query_Size;
-	int window_size;
+	int64_t window_size;
 
 	map<string, string> key2val;
 };

@@ -56,7 +56,7 @@ public:
 	/*qedges before*/
 	/* parents? */
 	set<qEdge*> preEdges;
-	int id;
+	// int id;
 };
 
 #endif

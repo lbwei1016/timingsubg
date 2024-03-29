@@ -17,6 +17,7 @@ public:
 
 	string to_str();
 
+	rdfDedge* split();
 
 	string stype;
 	string otype;
@@ -24,7 +25,8 @@ public:
 	// int t_sec;
 	string literal;
 
-	int64_t t_sec;
+	int64_t t_sec; // start time, before splitting
+	int64_t end_time;
 };
 
 #endif

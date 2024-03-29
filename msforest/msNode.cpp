@@ -77,6 +77,7 @@ long long int msNode::whole_mat_size()
 	
 
 /* join owned match with _matches into jrList */
+// jr: Join Result?
 bool msNode::joinwith(List<match>* _matches, List<JoinResult>* jrList, query* _q)
 {
 	match* _mat = this->get_whole_match();

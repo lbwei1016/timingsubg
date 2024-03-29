@@ -29,18 +29,38 @@ bool rdfstream::load_edges(int _avg_win_tuple_num){
 		exit(-1);
 	}
 	/* load edges */
+	
+#ifdef MY_DEBUG
+	cout << "Loading data graph...\n";
+#endif
+
 	char _buf[5000];
 
 	rdfDedge* _rd = NULL;
 	while(!fin.eof())
 	{
 		fin.getline(_buf, 4999, '\n');
-		// if (strlen(_buf) == 0) break;
-		// else if(strlen(_buf) < 2) continue;
+		// a strange last line
+		if (strlen(_buf) < 5) break;
 		_rd = new rdfDedge(_buf);
 		this->alledges.push_back((dEdge*)_rd);
+
+		rdfDedge *_end_rd = _rd->split();
+		if (_end_rd) {
+			this->alledges.push_back((dEdge*)_end_rd);
+		}
+		else cout << "NOT splitted!\n";
 	}
 	fin.close();
+
+#ifdef MY_DEBUG
+	cout << "Now outputing data edges...\n";
+	for (auto &_edge: alledges) {
+		auto edge = (rdfDedge*)_edge;
+		printf("(time, s, t, eid) = (%lld, %d, %d, %d)\n", edge->t_sec, edge->s, edge->t, edge->id);
+	}
+	cout << "Loading data graph finished.\n";
+#endif
 
 	/* calculate avg time span */
 	int all_enum = this->alledges.size();
@@ -59,7 +79,7 @@ bool rdfstream::load_edges(int _avg_win_tuple_num){
 	cout << "OUT load_edges: " << this->alledges.size() << endl;
 
 	for (int i = 0; i < this->alledges.size(); ++i) {
-		cout << "(" << this->alledges[i]->s << ", " << this->alledges[i]->s  << ")\n";
+		cout << "(" << this->alledges[i]->s << ", " << this->alledges[i]->t  << ")\n";
 	}
 #endif
 	return true;
@@ -68,6 +88,7 @@ bool rdfstream::load_edges(int _avg_win_tuple_num){
 bool rdfstream::is_expire(dEdge* _e_old, dEdge* _e_new){
 	rdfDedge* _re1 = (rdfDedge*)_e_old;
 	rdfDedge* _re2 = (rdfDedge*)_e_new;
+	printf("_re2->t_sec: %ld, _re1->t_sec: %ld, diff = %ld\n", _re2->t_sec, _re1->t_sec, _re2->t_sec - _re1->t_sec);
 	if(_re2->t_sec - _re1->t_sec < this->avg_span_t) return false;
 	
 	return true;

@@ -566,8 +566,11 @@ bool msforest::insert(teNode* _node, lockReq* _lr, List<JoinResult>* _msN2matche
 	{
 		if(! _branches->empty())
 		{
+			cout << this->answers_str() << '\n';
+			cout << this << '\n';
+			cout << "ERRRRRRR\n";
 #ifdef GLOBAL_COMMENT
-			cout << this->new_match_str(_branches) << endl;		
+			cout << this->new_match_str(_branches) << endl;	
 #endif
 #ifdef CYBER
             cout << this->new_match_str(_branches) << endl;
@@ -1074,21 +1077,39 @@ match* msforest::gather_match(match* _m)
 string msforest::tetree_str(){
 	stringstream _ss;
 	teNode* _cur_te = this->teroot;
+
+	// queue<pair<int, teNode*>> _q_te;
+	// _q_te.push({0, _cur_te});
 	queue<teNode*> _q_te;
 	_q_te.push(_cur_te);
+
+	_ss << "----- Level order traversal of tetree -----\n";
 	if(_cur_te == NULL) return "teroot=NULL";
 
+	int pre_level = 0;
 	while(! _q_te.empty())
-	{
+	{	
 		teNode* _n = _q_te.front();
+		// auto l_node = _q_te.front();
+		_q_te.pop();
+
+		// int level = l_node.first;
+		// teNode *_n = l_node.second;
+
+		// if (level != pre_level) _ss << "-----------------\n";
+
+		// pre_level = level;
+		// cout << "level: " << level << '\n';
+
 		_ss << _n->to_str() << endl;
 		if(_n->get_left() != NULL){
+			// _q_te.push({level + 1, _n->get_left()});
 			_q_te.push(_n->get_left());
 		}
 		if(_n->get_right() != NULL){
+			// _q_te.push({level + 1, _n->get_right()});
 			_q_te.push(_n->get_right());
 		}
-		_q_te.pop();
 	}
 
 	return _ss.str();

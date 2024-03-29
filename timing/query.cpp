@@ -1,6 +1,10 @@
 #include "query.h"
 #include "match.h"
 
+// for query::compatible()
+// workaround
+// #include "../rdf/RdfDedge.h"
+
 query::query(string _query_path){
 	this->query_path = _query_path;
 	string _file = this->name_str();
@@ -101,124 +105,135 @@ bool query::compatible(qEdge* _qe1, dEdge* _e1, qEdge* _qe2, dEdge* _e2)
 		util::track(_ss);	
 	}
 #endif
+	// TODO: check signature
+	bool not_both_matched = _e1->is_match(_qe1) ^ _e2->is_match(_qe2);
+	stringstream _ss;
+	_ss << "in compatible()...\n";
+	_ss << _e1->signature << ' ' << _qe1->signature << '\n';
+	_ss << _e1->is_match(_qe1) << ' ' << _e2->is_match(_qe2) << ' ' << not_both_matched << '\n';
+	util::track(_ss);
 
-	/* source to source */
-	if(_qe1->ss(_qe2))
-	{
-		if(! _e1->ss(_e2))
-		{
-#ifdef UNCOMP
-			{
-				stringstream _ss;
-				_ss << "!ss" << endl;
-				util::track(_ss);
-			}
-#endif
+	if (not_both_matched) {
+		return false;
+	}
 
-			return false;
-		}
-	}
-	else
-	{
-		if(_e1->ss(_e2))
-		{
-#ifdef UNCOMP
-			{
-				stringstream _ss;
-				_ss << "ss" << endl;
-				util::track(_ss);
-			}
-#endif
-			return false;
-		}
-	}
-	/* target to target */
-	if(_qe1->tt(_qe2))
-	{
-		if(! _e1->tt(_e2))
-		{
-#ifdef UNCOMP
-			{
-				stringstream _ss;
-				_ss << "!tt" << endl;
-				util::track(_ss);
-			}
-#endif
-			return false;
-		}
-	}
-	else
-	{
-		if(_e1->tt(_e2)) 
-		{
-#ifdef UNCOMP
-			{
-				stringstream _ss;
-				_ss << "tt" << endl;
-				util::track(_ss);
-			}
-#endif
-			return false;
-		}
-	}
-	/* source to target */
-	if(_qe1->st(_qe2))
-	{
-		if(! _e1->st(_e2))
-		{
-#ifdef UNCOMP
-			{
-				stringstream _ss;
-				_ss << "!st" << endl;
-				util::track(_ss);
-			}
-#endif
-			return false;
-		}
-	}
-	else
-	{
-		if(_e1->st(_e2))
-		{
-#ifdef UNCOMP
-			{
-				stringstream _ss;
-				_ss << "st" << endl;
-				util::track(_ss);
-			}
-#endif
-			return false;
-		}
-	}
-	/* target to source */
-	if(_qe1->ts(_qe2))
-	{
-		if(! _e1->ts(_e2))
-		{
-#ifdef UNCOMP
-			{
-				stringstream _ss;
-				_ss << "!ts" << endl;
-				util::track(_ss);
-			}
-#endif
-			return false;
-		}
-	}
-	else
-	{
-		if(_e1->ts(_e2))
-		{
-#ifdef UNCOMP
-			{
-				stringstream _ss;
-				_ss << "ts" << endl;
-				util::track(_ss);
-			}
-#endif
-			return false;
-		}
-	}
+// 	/* source to source */
+// 	if(_qe1->ss(_qe2))
+// 	{
+// 		if(! _e1->ss(_e2))
+// 		{
+// #ifdef UNCOMP
+// 			{
+// 				stringstream _ss;
+// 				_ss << "!ss" << endl;
+// 				util::track(_ss);
+// 			}
+// #endif
+
+// 			return false;
+// 		}
+// 	}
+// 	else
+// 	{
+// 		if(_e1->ss(_e2))
+// 		{
+// #ifdef UNCOMP
+// 			{
+// 				stringstream _ss;
+// 				_ss << "ss" << endl;
+// 				util::track(_ss);
+// 			}
+// #endif
+// 			return false;
+// 		}
+// 	}
+// 	/* target to target */
+// 	if(_qe1->tt(_qe2))
+// 	{
+// 		if(! _e1->tt(_e2))
+// 		{
+// #ifdef UNCOMP
+// 			{
+// 				stringstream _ss;
+// 				_ss << "!tt" << endl;
+// 				util::track(_ss);
+// 			}
+// #endif
+// 			return false;
+// 		}
+// 	}
+// 	else
+// 	{
+// 		if(_e1->tt(_e2)) 
+// 		{
+// #ifdef UNCOMP
+// 			{
+// 				stringstream _ss;
+// 				_ss << "tt" << endl;
+// 				util::track(_ss);
+// 			}
+// #endif
+// 			return false;
+// 		}
+// 	}
+// 	/* source to target */
+// 	if(_qe1->st(_qe2))
+// 	{
+// 		if(! _e1->st(_e2))
+// 		{
+// #ifdef UNCOMP
+// 			{
+// 				stringstream _ss;
+// 				_ss << "!st" << endl;
+// 				util::track(_ss);
+// 			}
+// #endif
+// 			return false;
+// 		}
+// 	}
+// 	else
+// 	{
+// 		if(_e1->st(_e2))
+// 		{
+// #ifdef UNCOMP
+// 			{
+// 				stringstream _ss;
+// 				_ss << "st" << endl;
+// 				util::track(_ss);
+// 			}
+// #endif
+// 			return false;
+// 		}
+// 	}
+// 	/* target to source */
+// 	if(_qe1->ts(_qe2))
+// 	{
+// 		if(! _e1->ts(_e2))
+// 		{
+// #ifdef UNCOMP
+// 			{
+// 				stringstream _ss;
+// 				_ss << "!ts" << endl;
+// 				util::track(_ss);
+// 			}
+// #endif
+// 			return false;
+// 		}
+// 	}
+// 	else
+// 	{
+// 		if(_e1->ts(_e2))
+// 		{
+// #ifdef UNCOMP
+// 			{
+// 				stringstream _ss;
+// 				_ss << "ts" << endl;
+// 				util::track(_ss);
+// 			}
+// #endif
+// 			return false;
+// 		}
+// 	}
 
 	/* after */
 	if(_qe1->is_after(_qe2))

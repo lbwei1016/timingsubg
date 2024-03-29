@@ -10,7 +10,7 @@ rdfquery::rdfquery(string _query_path) : query(_query_path)
 
 rdfquery::rdfquery(string _pattern_path, string _subpattern_path) : query(_pattern_path)
 {
-	this->subpattern_path = subpattern_path;
+	this->subpattern_path = _subpattern_path;
 }
 
 
@@ -39,7 +39,7 @@ bool rdfquery::parseQuery()
 	ifstream pattern_file(this->query_path.c_str(), ios::in);
 	if (!pattern_file)
 	{
-		cout << "err open " << this->query_path << endl;
+		cout << "err open pattern" << this->query_path << endl;
 		exit(-1);
 	}
 
@@ -67,12 +67,24 @@ bool rdfquery::parseQuery()
 		}
 	}
 
+#ifdef MY_DEBUG
+	printf("Now printing pattern edges:\n");
+	for (auto &[id, event]: id2qedges) {
+		printf("(id, s, t) = (%d, %d, %d)\n", event->id, event->s, event->t);
+		printf("preEdges:\n");
+		for (auto &pre: event->preEdges) {
+			printf("\t(id, s, t) = (%d, %d, %d)\n", pre->id, pre->s, pre->t);
+		}
+		puts("");
+	}
+#endif
+
 
 	// Parse the decomposed subpatterns
 	ifstream subpattern_file(this->subpattern_path.c_str(), ios::in);
 	if (!subpattern_file)
 	{
-		cout << "err open " << this->subpattern_path << endl;
+		cout << "err open subpattern" << this->subpattern_path << endl;
 		exit(-1);
 	}
 

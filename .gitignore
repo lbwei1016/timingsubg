@@ -13,5 +13,8 @@ rdf/bin/
 rdf/sibStream0617.tar
 rdf/track
 rdf/IPMES
+rdf/cyber.result
 test.cpp
 *.exe
+t
+.vscode

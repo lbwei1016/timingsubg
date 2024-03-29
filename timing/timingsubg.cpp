@@ -9,7 +9,7 @@
 #include "../msforest/teNode.h"
 
 
-timingsubg::timingsubg(int _winsz, string _runtime)
+timingsubg::timingsubg(int64_t _winsz, string _runtime)
 {
 	this->fruntime = _runtime;
 	this->AVGnoMS = 0;
@@ -214,6 +214,7 @@ void timingsubg::run(int _mode, gstream* _G, query* _Q, timingconf* _tconf){
 #ifdef CYBER
     sleep(10);
     string _ans = this->M->answers_str();
+	cout << this->M << '\n';
     cout << _ans << endl;
     ofstream _fout("cyber.result", ios::out);
     _fout << _ans << endl;
@@ -300,7 +301,7 @@ bool timingsubg::new_edge(dEdge* _e)
 			this->unmat_eNum ++;
 			return false;;
 		}
-#ifdef DEBUG_TRACK
+// #ifdef DEBUG_TRACK
 		{
 			stringstream _ss;
 			_ss << "At count=" << this->seen_eNum;
@@ -321,7 +322,7 @@ bool timingsubg::new_edge(dEdge* _e)
 			cout << _ss.str() << endl;
 #endif
 		}
-#endif
+// #endif
 		for(int i = 0; i < (int)this->cacheOPlists.size(); i ++)
 		{
 
@@ -425,10 +426,13 @@ bool timingsubg::expire_edge(dEdge* _e)
 		pthread_create(&(_tran->id), NULL, timingsubg::thread_remove, (void*)_tran);
 #endif
 
-#ifdef INVALID_READ
-		cout << "after exp[" << i << "]:" << endl;
-		cout << "Finish expire test: " << _e->to_str() << endl;
-		cout << this->M->no_ms_size() << endl;
+// #ifdef INVALID_READ
+#ifdef DEBUG_TRACK
+		stringstream _ss;
+		_ss << "after exp[" << i << "]:" << endl;
+		_ss << "Finish expire test: " << _e->to_str() << endl;
+		_ss << this->M->no_ms_size() << endl;
+		util::track(_ss);
 #endif
 	}
 
@@ -629,19 +633,19 @@ string timingsubg::stat_str()
 {
 	stringstream _ss;
 	_ss << this->exename;
-	_ss << "\t" << fixed << this->win_size;
-	_ss << "\t" << fixed << this->AVGtime;
-	_ss << "\t" << fixed << this->Throughput;
-	_ss << "\t" << fixed << this->AVGspace;
-	_ss << "\t" << fixed << this->AVGnoMS;
-	_ss << "\t" << fixed << this->SUMtime;
-	_ss << "\t" << fixed << this->tconf->getmaxthreadNum();
-	_ss << "\t" << fixed << this->Q->param_str();
-	_ss << "\t" << fixed << this->seen_eNum;
+	_ss << "\t\t\t" << fixed << this->win_size;
+	_ss << "\t\t\t\t" << fixed << this->AVGtime;
+	_ss << "\t\t\t" << fixed << this->Throughput;
+	_ss << "\t\t\t" << fixed << this->AVGspace;
+	_ss << "\t\t\t" << fixed << this->AVGnoMS;
+	_ss << "\t\t" << fixed << this->SUMtime;
+	_ss << "\t\t\t" << fixed << this->tconf->getmaxthreadNum();
+	_ss << "\t\t\t" << fixed << this->Q->param_str();
+	_ss << "\t\t\t" << fixed << this->seen_eNum;
 	
-	_ss << "\t\t\t" << this->TALspace;
-	_ss << "\t" << this->TALnoMS;
-	_ss << "\t" << this->TALspace-this->TALnoMS;
+	_ss << "\t\t\t\t\t" << this->TALspace;
+	_ss << "\t\t\t" << this->TALnoMS;
+	_ss << "\t\t\t" << this->TALspace-this->TALnoMS;
 
 	return _ss.str();
 }
@@ -656,7 +660,7 @@ bool timingsubg::write_stat()
 	
 	if((int)frun.tellg() < 10)
 	{
-		frun << "exe\t\t\tWinSize\tAVGtime\tThroughput\tAVGspace\tAVGnoms\tSUMtime\tThread\tQsize\tQno\ttimingratio\teNum" << endl;
+		frun << "exe\t\t\t\t\tWinSize\t\t\tAVGtime\t\t\tThroughput\t\t\tAVGspace\t\t\tAVGnoms\t\t\tSUMtime\t\t\tThread\t\t\tQsize\tQno\ttimingratio\t\t\teNum" << endl;
 	}
 
 	frun << this->stat_str() << endl;

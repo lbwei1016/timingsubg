@@ -1,0 +1,2 @@
+exe					WinSize			AVGtime			Throughput			AVGspace			AVGnoms			SUMtime			Thread			Qsize	Qno	timingratio			eNum
+./bin/tirdf			3600000				-0.000000			-9223372036854775808			-0.000029			-0.000000		0.000000			1			10	22966	4.58493e-321			22					104896			0			104896
