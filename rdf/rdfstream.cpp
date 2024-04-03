@@ -57,7 +57,7 @@ bool rdfstream::load_edges(int _avg_win_tuple_num){
 	cout << "Now outputing data edges...\n";
 	for (auto &_edge: alledges) {
 		auto edge = (rdfDedge*)_edge;
-		printf("(time, s, t, eid) = (%lld, %d, %d, %d)\n", edge->t_sec, edge->s, edge->t, edge->id);
+		printf("(time, s, t, eid) = (%ld, %d, %d, %d)\n", edge->t_sec, edge->s, edge->t, edge->id);
 	}
 	cout << "Loading data graph finished.\n";
 #endif
@@ -88,7 +88,7 @@ bool rdfstream::load_edges(int _avg_win_tuple_num){
 bool rdfstream::is_expire(dEdge* _e_old, dEdge* _e_new){
 	rdfDedge* _re1 = (rdfDedge*)_e_old;
 	rdfDedge* _re2 = (rdfDedge*)_e_new;
-	printf("_re2->t_sec: %ld, _re1->t_sec: %ld, diff = %ld\n", _re2->t_sec, _re1->t_sec, _re2->t_sec - _re1->t_sec);
+	// printf("_re2->t_sec: %ld, _re1->t_sec: %ld, diff = %ld\n", _re2->t_sec, _re1->t_sec, _re2->t_sec - _re1->t_sec);
 	if(_re2->t_sec - _re1->t_sec < this->avg_span_t) return false;
 	
 	return true;

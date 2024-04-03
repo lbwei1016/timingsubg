@@ -1,0 +1,1400 @@
+num of argc: 7
+runtime=./SP8_regex.run.log
+IN parseQuery@rdfquery: IPMES/data/universal_patterns/SP8_regex.json
+Now printing pattern edges:
+(id, s, t) = (0, 0, 6)
+preEdges:
+
+(id, s, t) = (1, 3, 1)
+preEdges:
+	(id, s, t) = (0, 0, 6)
+
+(id, s, t) = (2, 6, 1)
+preEdges:
+	(id, s, t) = (1, 3, 1)
+
+(id, s, t) = (3, 2, 1)
+preEdges:
+	(id, s, t) = (2, 6, 1)
+
+(id, s, t) = (4, 1, 8)
+preEdges:
+	(id, s, t) = (3, 2, 1)
+
+(id, s, t) = (5, 3, 4)
+preEdges:
+	(id, s, t) = (4, 1, 8)
+
+(id, s, t) = (6, 7, 4)
+preEdges:
+	(id, s, t) = (4, 1, 8)
+
+(id, s, t) = (7, 0, 7)
+preEdges:
+	(id, s, t) = (4, 1, 8)
+
+(id, s, t) = (8, 5, 4)
+preEdges:
+	(id, s, t) = (5, 3, 4)
+	(id, s, t) = (6, 7, 4)
+	(id, s, t) = (7, 0, 7)
+
+(id, s, t) = (9, 4, 9)
+preEdges:
+	(id, s, t) = (8, 5, 4)
+
+before parse: {0[0((query) id: 1, s: 3, t: 1), 1((query) id: 2, s: 6, t: 1), 2((query) id: 3, s: 2, t: 1), 3((query) id: 4, s: 1, t: 8), 4((query) id: 5, s: 3, t: 4), 5((query) id: 8, s: 5, t: 4), 6((query) id: 9, s: 4, t: 9)]; 1[0((query) id: 0, s: 0, t: 6)]; 2[0((query) id: 6, s: 7, t: 4)]; 3[0((query) id: 7, s: 0, t: 7)]; }
+At 0,0 left2right_leaf push: (query) id: 1, s: 3, t: 1
+At 0,1 left2right_leaf push: (query) id: 2, s: 6, t: 1
+At 0,2 left2right_leaf push: (query) id: 3, s: 2, t: 1
+At 0,3 left2right_leaf push: (query) id: 4, s: 1, t: 8
+At 0,4 left2right_leaf push: (query) id: 5, s: 3, t: 4
+At 0,5 left2right_leaf push: (query) id: 8, s: 5, t: 4
+At 0,6 left2right_leaf push: (query) id: 9, s: 4, t: 9
+At 1,0 left2right_leaf push: (query) id: 0, s: 0, t: 6
+At 2,0 left2right_leaf push: (query) id: 6, s: 7, t: 4
+At 3,0 left2right_leaf push: (query) id: 7, s: 0, t: 7
+sizeof id2qedges: 10
+sizeof left2right_leaf 10
+left2right leaves: 
+	(query) id: 1, s: 3, t: 1
+	(query) id: 2, s: 6, t: 1
+	(query) id: 3, s: 2, t: 1
+	(query) id: 4, s: 1, t: 8
+	(query) id: 5, s: 3, t: 4
+	(query) id: 8, s: 5, t: 4
+	(query) id: 9, s: 4, t: 9
+	(query) id: 0, s: 0, t: 6
+	(query) id: 6, s: 7, t: 4
+	(query) id: 7, s: 0, t: 7
+after parse: {0[0((query) id: 1, s: 3, t: 1), 1((query) id: 2, s: 6, t: 1), 2((query) id: 3, s: 2, t: 1), 3((query) id: 4, s: 1, t: 8), 4((query) id: 5, s: 3, t: 4), 5((query) id: 8, s: 5, t: 4), 6((query) id: 9, s: 4, t: 9)]; 1[0((query) id: 0, s: 0, t: 6)]; 2[0((query) id: 6, s: 7, t: 4)]; 3[0((query) id: 7, s: 0, t: 7)]; }
+ori: {0[0((query) id: 1, s: 3, t: 1), 1((query) id: 2, s: 6, t: 1), 2((query) id: 3, s: 2, t: 1), 3((query) id: 4, s: 1, t: 8), 4((query) id: 5, s: 3, t: 4), 5((query) id: 8, s: 5, t: 4), 6((query) id: 9, s: 4, t: 9)]; 1[0((query) id: 0, s: 0, t: 6)]; 2[0((query) id: 6, s: 7, t: 4)]; 3[0((query) id: 7, s: 0, t: 7)]; }
+query Q: 
+{0[0((query) id: 1, s: 3, t: 1), 1((query) id: 2, s: 6, t: 1), 2((query) id: 3, s: 2, t: 1), 3((query) id: 4, s: 1, t: 8), 4((query) id: 5, s: 3, t: 4), 5((query) id: 8, s: 5, t: 4), 6((query) id: 9, s: 4, t: 9)]; 1[0((query) id: 0, s: 0, t: 6)]; 2[0((query) id: 6, s: 7, t: 4)]; 3[0((query) id: 7, s: 0, t: 7)]; }
+pre Q: 
+(query) id: 1, s: 3, t: 1
+		(query) id: 0, s: 0, t: 6
+(query) id: 2, s: 6, t: 1
+		(query) id: 0, s: 0, t: 6
+		(query) id: 1, s: 3, t: 1
+(query) id: 3, s: 2, t: 1
+		(query) id: 0, s: 0, t: 6
+		(query) id: 1, s: 3, t: 1
+		(query) id: 2, s: 6, t: 1
+(query) id: 4, s: 1, t: 8
+		(query) id: 0, s: 0, t: 6
+		(query) id: 1, s: 3, t: 1
+		(query) id: 2, s: 6, t: 1
+		(query) id: 3, s: 2, t: 1
+(query) id: 5, s: 3, t: 4
+		(query) id: 0, s: 0, t: 6
+		(query) id: 1, s: 3, t: 1
+		(query) id: 2, s: 6, t: 1
+		(query) id: 3, s: 2, t: 1
+		(query) id: 4, s: 1, t: 8
+(query) id: 8, s: 5, t: 4
+		(query) id: 0, s: 0, t: 6
+		(query) id: 1, s: 3, t: 1
+		(query) id: 2, s: 6, t: 1
+		(query) id: 3, s: 2, t: 1
+		(query) id: 4, s: 1, t: 8
+		(query) id: 5, s: 3, t: 4
+		(query) id: 6, s: 7, t: 4
+		(query) id: 7, s: 0, t: 7
+(query) id: 9, s: 4, t: 9
+		(query) id: 0, s: 0, t: 6
+		(query) id: 1, s: 3, t: 1
+		(query) id: 2, s: 6, t: 1
+		(query) id: 3, s: 2, t: 1
+		(query) id: 4, s: 1, t: 8
+		(query) id: 5, s: 3, t: 4
+		(query) id: 6, s: 7, t: 4
+		(query) id: 7, s: 0, t: 7
+		(query) id: 8, s: 5, t: 4
+(query) id: 0, s: 0, t: 6
+(query) id: 6, s: 7, t: 4
+		(query) id: 0, s: 0, t: 6
+		(query) id: 1, s: 3, t: 1
+		(query) id: 2, s: 6, t: 1
+		(query) id: 3, s: 2, t: 1
+		(query) id: 4, s: 1, t: 8
+(query) id: 7, s: 0, t: 7
+		(query) id: 0, s: 0, t: 6
+		(query) id: 1, s: 3, t: 1
+		(query) id: 2, s: 6, t: 1
+		(query) id: 3, s: 2, t: 1
+		(query) id: 4, s: 1, t: 8
+
+I am init_track!!!!!
+In run@timingsubg, mode=0
+win_size = 3600000
+IN load_edges from [IPMES/data/temp/expect_SP8_regex_1.csv]
+Loading data graph...
+NO need to split!
+NOT splitted!
+NO need to split!
+NOT splitted!
+NO need to split!
+NOT splitted!
+NO need to split!
+NOT splitted!
+NO need to split!
+NOT splitted!
+NO need to split!
+NOT splitted!
+NO need to split!
+NOT splitted!
+NO need to split!
+NOT splitted!
+NO need to split!
+NOT splitted!
+NO need to split!
+NOT splitted!
+Now outputing data edges...
+(time, s, t, eid) = (1000, 1, 2, 1)
+(time, s, t, eid) = (2000, 5, 3, 4)
+(time, s, t, eid) = (2000, 2, 3, 2)
+(time, s, t, eid) = (2000, 4, 3, 3)
+(time, s, t, eid) = (3000, 3, 6, 5)
+(time, s, t, eid) = (4000, 1, 7, 6)
+(time, s, t, eid) = (4000, 7, 8, 7)
+(time, s, t, eid) = (4000, 5, 8, 8)
+(time, s, t, eid) = (5000, 10, 8, 10)
+(time, s, t, eid) = (5000, 8, 9, 9)
+Loading data graph finished.
+tspan[4000],all[10], avg_tuple=3600000, avg_span=4001
+OUT load_edges: 10
+(1, 2)
+(5, 3)
+(2, 3)
+(4, 3)
+(3, 6)
+(1, 7)
+(7, 8)
+(5, 8)
+(10, 8)
+(8, 9)
+q2testr:
+(query) id: 0, s: 0, t: 6	[((query) id: 0, s: 0, t: 6)]
+(query) id: 1, s: 3, t: 1	[((query) id: 1, s: 3, t: 1)]
+(query) id: 2, s: 6, t: 1	[((query) id: 2, s: 6, t: 1)]
+(query) id: 3, s: 2, t: 1	[((query) id: 3, s: 2, t: 1)]
+(query) id: 4, s: 1, t: 8	[((query) id: 4, s: 1, t: 8)]
+(query) id: 5, s: 3, t: 4	[((query) id: 5, s: 3, t: 4)]
+(query) id: 6, s: 7, t: 4	[((query) id: 6, s: 7, t: 4)]
+(query) id: 7, s: 0, t: 7	[((query) id: 7, s: 0, t: 7)]
+(query) id: 8, s: 5, t: 4	[((query) id: 8, s: 5, t: 4)]
+(query) id: 9, s: 4, t: 9	[((query) id: 9, s: 4, t: 9)]
+
+----- Level order traversal of tetree -----
+[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)]
+[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4)]
+[((query) id: 7, s: 0, t: 7)]
+[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6)]
+[((query) id: 6, s: 7, t: 4)]
+[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9)]
+[((query) id: 0, s: 0, t: 6)]
+[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4)]
+[((query) id: 9, s: 4, t: 9)]
+[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4)]
+[((query) id: 8, s: 5, t: 4)]
+[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8)]
+[((query) id: 5, s: 3, t: 4)]
+[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1)]
+[((query) id: 4, s: 1, t: 8)]
+[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1)]
+[((query) id: 3, s: 2, t: 1)]
+[((query) id: 1, s: 3, t: 1)]
+[((query) id: 2, s: 6, t: 1)]
+
+edge2oplist:
+	(query) id: 0, s: 0, t: 6 has following op:
+  		[op:i]--[((query) id: 0, s: 0, t: 6)]
+		[op:j]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9)]
+		[op:i]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6)]
+		[op:j]--[((query) id: 6, s: 7, t: 4)]
+		[op:i]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4)]
+		[op:j]--[((query) id: 7, s: 0, t: 7)]
+		[op:i]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)]
+	(query) id: 1, s: 3, t: 1 has following op:
+  		[op:i]--[((query) id: 1, s: 3, t: 1)]
+	(query) id: 2, s: 6, t: 1 has following op:
+  		[op:j]--[((query) id: 1, s: 3, t: 1)]
+		[op:i]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1)]
+	(query) id: 3, s: 2, t: 1 has following op:
+  		[op:j]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1)]
+		[op:i]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1)]
+	(query) id: 4, s: 1, t: 8 has following op:
+  		[op:j]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1)]
+		[op:i]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8)]
+	(query) id: 5, s: 3, t: 4 has following op:
+  		[op:j]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8)]
+		[op:i]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4)]
+	(query) id: 6, s: 7, t: 4 has following op:
+  		[op:i]--[((query) id: 6, s: 7, t: 4)]
+		[op:j]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6)]
+		[op:i]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4)]
+		[op:j]--[((query) id: 7, s: 0, t: 7)]
+		[op:i]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)]
+	(query) id: 7, s: 0, t: 7 has following op:
+  		[op:i]--[((query) id: 7, s: 0, t: 7)]
+		[op:j]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4)]
+		[op:i]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)]
+	(query) id: 8, s: 5, t: 4 has following op:
+  		[op:j]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4)]
+		[op:i]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4)]
+	(query) id: 9, s: 4, t: 9 has following op:
+  		[op:j]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4)]
+		[op:i]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9)]
+		[op:j]--[((query) id: 0, s: 0, t: 6)]
+		[op:i]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6)]
+		[op:j]--[((query) id: 6, s: 7, t: 4)]
+		[op:i]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4)]
+		[op:j]--[((query) id: 7, s: 0, t: 7)]
+		[op:i]--[((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)]
+
+stream runs...
+1****************incoming: (data) id: 1
+to_size=4896
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4)] as following:
+
+
+
+	There are 1 matches of [((query) id: 7, s: 0, t: 7)] as following:
+		[q(0,7,7), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6)] as following:
+
+
+
+	There are 0 matches of [((query) id: 6, s: 7, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 1 matches of [((query) id: 0, s: 0, t: 6)] as following:
+		[q(0,6,0), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8)] as following:
+
+
+
+	There are 0 matches of [((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1)] as following:
+
+
+
+	There are 0 matches of [((query) id: 4, s: 1, t: 8)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1)] as following:
+
+
+
+	There are 0 matches of [((query) id: 3, s: 2, t: 1)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1)] as following:
+
+
+
+	There are 0 matches of [((query) id: 2, s: 6, t: 1)] as following:
+
+
+
+
+==================================
+2****************incoming: (data) id: 4
+to_size=4960
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4)] as following:
+
+
+
+	There are 1 matches of [((query) id: 7, s: 0, t: 7)] as following:
+		[q(0,7,7), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6)] as following:
+
+
+
+	There are 0 matches of [((query) id: 6, s: 7, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 1 matches of [((query) id: 0, s: 0, t: 6)] as following:
+		[q(0,6,0), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8)] as following:
+
+
+
+	There are 0 matches of [((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1)] as following:
+
+
+
+	There are 0 matches of [((query) id: 4, s: 1, t: 8)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1)] as following:
+
+
+
+	There are 0 matches of [((query) id: 3, s: 2, t: 1)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; 
+
+
+
+	There are 0 matches of [((query) id: 2, s: 6, t: 1)] as following:
+
+
+
+
+==================================
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(1, 4)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(2, 2)
+----------------------
+3****************incoming: (data) id: 2
+to_size=5088
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4)] as following:
+
+
+
+	There are 1 matches of [((query) id: 7, s: 0, t: 7)] as following:
+		[q(0,7,7), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6)] as following:
+
+
+
+	There are 1 matches of [((query) id: 6, s: 7, t: 4)] as following:
+		[q(7,4,6), ((data) id: 2)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 1 matches of [((query) id: 0, s: 0, t: 6)] as following:
+		[q(0,6,0), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8)] as following:
+
+
+
+	There are 0 matches of [((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1)] as following:
+
+
+
+	There are 0 matches of [((query) id: 4, s: 1, t: 8)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; 
+
+
+
+	There are 0 matches of [((query) id: 3, s: 2, t: 1)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; 
+
+
+
+	There are 0 matches of [((query) id: 2, s: 6, t: 1)] as following:
+
+
+
+
+==================================
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(1, 4)
+(2, 2)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(3, 3)
+----------------------
+4****************incoming: (data) id: 3
+to_size=5152
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4)] as following:
+
+
+
+	There are 1 matches of [((query) id: 7, s: 0, t: 7)] as following:
+		[q(0,7,7), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6)] as following:
+
+
+
+	There are 1 matches of [((query) id: 6, s: 7, t: 4)] as following:
+		[q(7,4,6), ((data) id: 2)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 1 matches of [((query) id: 0, s: 0, t: 6)] as following:
+		[q(0,6,0), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8)] as following:
+
+
+
+	There are 0 matches of [((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; 
+
+
+
+	There are 0 matches of [((query) id: 4, s: 1, t: 8)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; 
+
+
+
+	There are 0 matches of [((query) id: 3, s: 2, t: 1)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; 
+
+
+
+	There are 0 matches of [((query) id: 2, s: 6, t: 1)] as following:
+
+
+
+
+==================================
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(1, 4)
+(2, 2)
+(3, 3)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(4, 5)
+----------------------
+5****************incoming: (data) id: 5
+to_size=5216
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4)] as following:
+
+
+
+	There are 1 matches of [((query) id: 7, s: 0, t: 7)] as following:
+		[q(0,7,7), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6)] as following:
+
+
+
+	There are 1 matches of [((query) id: 6, s: 7, t: 4)] as following:
+		[q(7,4,6), ((data) id: 2)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 1 matches of [((query) id: 0, s: 0, t: 6)] as following:
+		[q(0,6,0), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; 
+
+
+
+	There are 0 matches of [((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; 
+
+
+
+	There are 0 matches of [((query) id: 4, s: 1, t: 8)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; 
+
+
+
+	There are 0 matches of [((query) id: 3, s: 2, t: 1)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; 
+
+
+
+	There are 0 matches of [((query) id: 2, s: 6, t: 1)] as following:
+
+
+
+
+==================================
+6****************incoming: (data) id: 6
+to_size=5344
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4)] as following:
+
+
+
+	There are 2 matches of [((query) id: 7, s: 0, t: 7)] as following:
+		[q(0,7,7), ((data) id: 6)]; 
+		[q(0,7,7), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6)] as following:
+
+
+
+	There are 1 matches of [((query) id: 6, s: 7, t: 4)] as following:
+		[q(7,4,6), ((data) id: 2)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 2 matches of [((query) id: 0, s: 0, t: 6)] as following:
+		[q(0,6,0), ((data) id: 6)]; 
+		[q(0,6,0), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; 
+
+
+
+	There are 0 matches of [((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; 
+
+
+
+	There are 0 matches of [((query) id: 4, s: 1, t: 8)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; 
+
+
+
+	There are 0 matches of [((query) id: 3, s: 2, t: 1)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; 
+
+
+
+	There are 0 matches of [((query) id: 2, s: 6, t: 1)] as following:
+
+
+
+
+==================================
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(1, 4)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(2, 7)
+----------------------
+7****************incoming: (data) id: 7
+to_size=5472
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4)] as following:
+
+
+
+	There are 2 matches of [((query) id: 7, s: 0, t: 7)] as following:
+		[q(0,7,7), ((data) id: 6)]; 
+		[q(0,7,7), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6)] as following:
+
+
+
+	There are 2 matches of [((query) id: 6, s: 7, t: 4)] as following:
+		[q(7,4,6), ((data) id: 7)]; 
+		[q(7,4,6), ((data) id: 2)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 2 matches of [((query) id: 0, s: 0, t: 6)] as following:
+		[q(0,6,0), ((data) id: 6)]; 
+		[q(0,6,0), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; 
+
+
+
+	There are 0 matches of [((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; 
+
+
+
+	There are 0 matches of [((query) id: 4, s: 1, t: 8)] as following:
+
+
+
+	There are 2 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 7)]; 
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; 
+
+
+
+	There are 0 matches of [((query) id: 3, s: 2, t: 1)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; 
+
+
+
+	There are 0 matches of [((query) id: 2, s: 6, t: 1)] as following:
+
+
+
+
+==================================
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(1, 4)
+(2, 2)
+(3, 3)
+(4, 5)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(5, 8)
+----------------------
+8****************incoming: (data) id: 8
+to_size=5600
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4)] as following:
+
+
+
+	There are 2 matches of [((query) id: 7, s: 0, t: 7)] as following:
+		[q(0,7,7), ((data) id: 6)]; 
+		[q(0,7,7), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6)] as following:
+
+
+
+	There are 2 matches of [((query) id: 6, s: 7, t: 4)] as following:
+		[q(7,4,6), ((data) id: 7)]; 
+		[q(7,4,6), ((data) id: 2)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 2 matches of [((query) id: 0, s: 0, t: 6)] as following:
+		[q(0,6,0), ((data) id: 6)]; 
+		[q(0,6,0), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 0 matches of [((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; [q(3,4,5), ((data) id: 8)]; 
+
+
+
+	There are 0 matches of [((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; 
+
+
+
+	There are 0 matches of [((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; 
+
+
+
+	There are 0 matches of [((query) id: 4, s: 1, t: 8)] as following:
+
+
+
+	There are 2 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 7)]; 
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; 
+
+
+
+	There are 0 matches of [((query) id: 3, s: 2, t: 1)] as following:
+
+
+
+	There are 2 matches of [((query) id: 1, s: 3, t: 1)] as following:
+		[q(3,1,1), ((data) id: 8)]; 
+		[q(3,1,1), ((data) id: 4)]; 
+
+
+
+	There are 0 matches of [((query) id: 2, s: 6, t: 1)] as following:
+
+
+
+
+==================================
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(1, 4)
+(2, 2)
+(3, 3)
+(4, 5)
+(5, 8)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(8, 10)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(1, 4)
+(2, 7)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(3, 10)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(1, 4)
+(2, 2)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(3, 10)
+----------------------
+9****************incoming: (data) id: 10
+to_size=5792
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)] as following:
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4)] as following:
+
+
+
+	There are 2 matches of [((query) id: 7, s: 0, t: 7)] as following:
+		[q(0,7,7), ((data) id: 6)]; 
+		[q(0,7,7), ((data) id: 1)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6)] as following:
+
+
+
+	There are 2 matches of [((query) id: 6, s: 7, t: 4)] as following:
+		[q(7,4,6), ((data) id: 7)]; 
+		[q(7,4,6), ((data) id: 2)]; 
+
+
+
+	There are 0 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 2 matches of [((query) id: 0, s: 0, t: 6)] as following:
+		[q(0,6,0), ((data) id: 6)]; 
+		[q(0,6,0), ((data) id: 1)]; 
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; [q(3,4,5), ((data) id: 8)]; [q(5,4,8), ((data) id: 10)]; 
+
+
+
+	There are 0 matches of [((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; [q(3,4,5), ((data) id: 8)]; 
+
+
+
+	There are 0 matches of [((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; 
+
+
+
+	There are 0 matches of [((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 3 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 7)]; [q(2,1,3), ((data) id: 10)]; 
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 10)]; 
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; 
+
+
+
+	There are 0 matches of [((query) id: 4, s: 1, t: 8)] as following:
+
+
+
+	There are 2 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 7)]; 
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; 
+
+
+
+	There are 0 matches of [((query) id: 3, s: 2, t: 1)] as following:
+
+
+
+	There are 2 matches of [((query) id: 1, s: 3, t: 1)] as following:
+		[q(3,1,1), ((data) id: 8)]; 
+		[q(3,1,1), ((data) id: 4)]; 
+
+
+
+	There are 0 matches of [((query) id: 2, s: 6, t: 1)] as following:
+
+
+
+
+==================================
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(1, 4)
+(2, 2)
+(3, 3)
+(4, 5)
+(5, 8)
+(8, 10)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(9, 9)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(1, 4)
+(2, 2)
+(3, 3)
+(4, 5)
+(5, 8)
+(8, 10)
+(9, 9)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(0, 6)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(1, 4)
+(2, 2)
+(3, 3)
+(4, 5)
+(5, 8)
+(8, 10)
+(9, 9)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(0, 1)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(0, 1)
+(1, 4)
+(2, 2)
+(3, 3)
+(4, 5)
+(5, 8)
+(8, 10)
+(9, 9)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(6, 7)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(0, 1)
+(1, 4)
+(2, 2)
+(3, 3)
+(4, 5)
+(5, 8)
+(8, 10)
+(9, 9)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(6, 2)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(0, 1)
+(1, 4)
+(2, 2)
+(3, 3)
+(4, 5)
+(5, 8)
+(6, 7)
+(8, 10)
+(9, 9)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(7, 6)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(0, 1)
+(1, 4)
+(2, 2)
+(3, 3)
+(4, 5)
+(5, 8)
+(6, 7)
+(8, 10)
+(9, 9)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(7, 1)
+----------------------
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)] as following:
+		(0,6)	 | 	(3,1)	 | 	(6,1)	 | 	(2,1)	 | 	(1,8)	 | 	(3,4)	 | 	(7,4)	 | 	(0,7)	 | 	(5,4)	 | 	(4,9)	 | 	
+		((data) id: 1) | ((data) id: 4) | ((data) id: 2) | ((data) id: 3) | ((data) id: 5) | ((data) id: 8) | ((data) id: 7) | ((data) id: 6) | ((data) id: 10) | ((data) id: 9) | 
+
+0x63522430d1b0
+ERRRRRRR
+
+**************There are 1 new matches
+	[q(0,6,0), ((data) id: 1)]; [q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; [q(3,4,5), ((data) id: 8)]; [q(7,4,6), ((data) id: 7)]; [q(0,7,7), ((data) id: 6)]; [q(5,4,8), ((data) id: 10)]; [q(4,9,9), ((data) id: 9)]; 
+
+
+**************There are 1 new matches
+	[q(0,6,0), ((data) id: 1)]; [q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; [q(3,4,5), ((data) id: 8)]; [q(7,4,6), ((data) id: 7)]; [q(0,7,7), ((data) id: 6)]; [q(5,4,8), ((data) id: 10)]; [q(4,9,9), ((data) id: 9)]; 
+
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(1, 4)
+(2, 7)
+(3, 10)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(4, 9)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(1, 4)
+(2, 2)
+(3, 10)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(4, 9)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(1, 4)
+(2, 2)
+(3, 3)
+----------------------
+printing qdMap [Format: (query edge id, data edge id)]
+----------------------
+(4, 9)
+----------------------
+10****************incoming: (data) id: 9
+to_size=6240
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)] as following:
+		[q(0,6,0), ((data) id: 1)]; [q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; [q(3,4,5), ((data) id: 8)]; [q(7,4,6), ((data) id: 7)]; [q(0,7,7), ((data) id: 6)]; [q(5,4,8), ((data) id: 10)]; [q(4,9,9), ((data) id: 9)]; 
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4)] as following:
+		[q(0,6,0), ((data) id: 1)]; [q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; [q(3,4,5), ((data) id: 8)]; [q(7,4,6), ((data) id: 7)]; [q(5,4,8), ((data) id: 10)]; [q(4,9,9), ((data) id: 9)]; 
+
+
+
+	There are 2 matches of [((query) id: 7, s: 0, t: 7)] as following:
+		[q(0,7,7), ((data) id: 6)]; 
+		[q(0,7,7), ((data) id: 1)]; 
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6)] as following:
+		[q(0,6,0), ((data) id: 1)]; [q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; [q(3,4,5), ((data) id: 8)]; [q(5,4,8), ((data) id: 10)]; [q(4,9,9), ((data) id: 9)]; 
+
+
+
+	There are 2 matches of [((query) id: 6, s: 7, t: 4)] as following:
+		[q(7,4,6), ((data) id: 7)]; 
+		[q(7,4,6), ((data) id: 2)]; 
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; [q(3,4,5), ((data) id: 8)]; [q(5,4,8), ((data) id: 10)]; [q(4,9,9), ((data) id: 9)]; 
+
+
+
+	There are 2 matches of [((query) id: 0, s: 0, t: 6)] as following:
+		[q(0,6,0), ((data) id: 6)]; 
+		[q(0,6,0), ((data) id: 1)]; 
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; [q(3,4,5), ((data) id: 8)]; [q(5,4,8), ((data) id: 10)]; 
+
+
+
+	There are 0 matches of [((query) id: 9, s: 4, t: 9)] as following:
+
+
+
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; [q(3,4,5), ((data) id: 8)]; 
+
+
+
+	There are 0 matches of [((query) id: 8, s: 5, t: 4)] as following:
+
+
+
+	There are 4 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 10)]; [q(1,8,4), ((data) id: 9)]; 
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 7)]; [q(2,1,3), ((data) id: 10)]; [q(1,8,4), ((data) id: 9)]; 
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 9)]; 
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; 
+
+
+
+	There are 0 matches of [((query) id: 5, s: 3, t: 4)] as following:
+
+
+
+	There are 3 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 7)]; [q(2,1,3), ((data) id: 10)]; 
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 10)]; 
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; 
+
+
+
+	There are 0 matches of [((query) id: 4, s: 1, t: 8)] as following:
+
+
+
+	There are 2 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1)] as following:
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 7)]; 
+		[q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; 
+
+
+
+	There are 0 matches of [((query) id: 3, s: 2, t: 1)] as following:
+
+
+
+	There are 2 matches of [((query) id: 1, s: 3, t: 1)] as following:
+		[q(3,1,1), ((data) id: 8)]; 
+		[q(3,1,1), ((data) id: 4)]; 
+
+
+
+	There are 0 matches of [((query) id: 2, s: 6, t: 1)] as following:
+
+
+
+
+==================================
+0x63522430d1b0
+	There are 1 matches of [((query) id: 1, s: 3, t: 1), ((query) id: 2, s: 6, t: 1), ((query) id: 3, s: 2, t: 1), ((query) id: 4, s: 1, t: 8), ((query) id: 5, s: 3, t: 4), ((query) id: 8, s: 5, t: 4), ((query) id: 9, s: 4, t: 9), ((query) id: 0, s: 0, t: 6), ((query) id: 6, s: 7, t: 4), ((query) id: 7, s: 0, t: 7)] as following:
+		(0,6)	 | 	(3,1)	 | 	(6,1)	 | 	(2,1)	 | 	(1,8)	 | 	(3,4)	 | 	(7,4)	 | 	(0,7)	 | 	(5,4)	 | 	(4,9)	 | 	
+		((data) id: 1) | ((data) id: 4) | ((data) id: 2) | ((data) id: 3) | ((data) id: 5) | ((data) id: 8) | ((data) id: 7) | ((data) id: 6) | ((data) id: 10) | ((data) id: 9) | 
+
+del eNum: 0
+start remove edges...
+
+
+expired answers: 
+[q(0,6,0), ((data) id: 1)]; [q(3,1,1), ((data) id: 4)]; [q(6,1,2), ((data) id: 2)]; [q(2,1,3), ((data) id: 3)]; [q(1,8,4), ((data) id: 5)]; [q(3,4,5), ((data) id: 8)]; [q(7,4,6), ((data) id: 7)]; [q(0,7,7), ((data) id: 6)]; [q(5,4,8), ((data) id: 10)]; [q(4,9,9), ((data) id: 9)]; 
+all removed
+noms reduce -53760
+
+start join thread...
+finish join thread...
+
+OUT stream runs...
+
+finish timingsubg run
+IN finalize
+OUT finalize
+IN destruct rdfquery
+OUT destruct rdfquery
+rdfstream destruction...
+OUT gstream destruction...

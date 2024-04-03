@@ -134,6 +134,10 @@ bool rdfDedge::is_match(qEdge* _q)
 	}
 #endif
 
+	char _tmp[100];
+	sprintf(_tmp, "*** Data edge %d matches pattern edge %d ***\n", this->id, _q->id);
+	util::track(string(_tmp));
+
 	return true;
 }
 	
@@ -150,7 +154,7 @@ string rdfDedge::to_str()
 	// _ss << " " << t_sec;
 
 	/// Only print ids
-	_ss << this->id;
+	_ss << "(data) id: " << this->id;
 
 	//_ss << " " << size;
 	return _ss.str();

@@ -51,7 +51,7 @@ string rdfQedge::to_str()
 {
 	stringstream _ss;
 	// _ss << this->stype << this->s << " " << this->otype << this->t << " ";
-	_ss << "s: " << this->s << ", t: " << this->t;
+	_ss << "(query) id: " << this->id <<  ", s: " << this->s << ", t: " << this->t;
 
 	/// Only print ids
 	// _ss << this->id;

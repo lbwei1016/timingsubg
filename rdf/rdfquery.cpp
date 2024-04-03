@@ -242,7 +242,7 @@ bool rdfquery::parseQuery()
 		_ss << i << "[" << 0 << "(" << this->TCdecomp[i][0]->to_str() << ")";
 		for (int j = 1; j < (int)this->TCdecomp[i].size(); j++)
 		{
-			_ss << ", " << j << "(" << this->TCdecomp[i][j] << ")";
+			_ss << ", " << j << "(" << this->TCdecomp[i][j]->to_str() << ")";
 		}
 		_ss << "]; ";
 	}
