@@ -51,6 +51,14 @@ dEdge* gstream::next(){
 	return NULL;
 }
 
+dEdge* gstream::peek(){
+	if(this->cur_itr != this->alledges.end())
+	{
+		return *(this->cur_itr);
+	}
+	return NULL;
+}
+
 //private:
 
 

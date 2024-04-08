@@ -4,6 +4,7 @@
 #include "edge.h"
 #include "../util/util.h"
 
+// [IPMES] looks like "query data Map"
 typedef map<qEdge*, dEdge*> qdMap;
 
 class match{

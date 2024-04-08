@@ -19,6 +19,7 @@ public:
 	bool hasnext();
 	dEdge * next();
 	int size();
+	dEdge *peek();
 
 protected:
 	vector<dEdge*>::iterator cur_itr;

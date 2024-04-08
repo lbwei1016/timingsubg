@@ -78,33 +78,40 @@ bool match::is_edge(dEdge * _e)
 	return (this->pairs.begin())->second == _e;
 }
 	
-bool match::contain(dEdge * _e)
-{
-	if(this->pairs.size() == 0){
-		cout << "err size 0" << endl;
-		int i;
-		cin >> i;
-	}
+// bool match::contain(dEdge * _e)
+// {
+// #ifdef MY_DEBUG
+// 	cout << "In match::contain(dEdge *)";
+// #endif
 
-	qdMap::iterator itr = this->pairs.begin();
-	while(itr != this->pairs.end())
-	{
-		if(itr->second == _e) return true;
-		itr ++;
-	}
+// 	if(this->pairs.size() == 0){
+// 		cout << "err size 0" << endl;
+// 		int i;
+// 		cin >> i;
+// 	}
 
-	return false;
-}
+// 	qdMap::iterator itr = this->pairs.begin();
+// 	while(itr != this->pairs.end())
+// 	{
+// #ifdef MY_DEBUG
+// 		cout << "itr->first:" << itr->first << ", " << "itr->second: " << itr->second << '\n';
+// #endif
+// 		if(itr->second == _e) return true;
+// 		itr ++;
+// 	}
+
+// 	return false;
+// }
 	
-bool match::contain(qEdge* _qe, dEdge * _e)
-{
-	if(this->pairs.find(_qe) != this->pairs.end())
-	{
-		return this->pairs[_qe] == _e;
-	}
+// bool match::contain(qEdge* _qe, dEdge * _e)
+// {
+// 	if(this->pairs.find(_qe) != this->pairs.end())
+// 	{
+// 		return this->pairs[_qe] == _e;
+// 	}
 
-	return false;
-}
+// 	return false;
+// }
 
 int match::size()
 {

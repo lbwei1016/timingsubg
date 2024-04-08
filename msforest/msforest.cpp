@@ -435,7 +435,7 @@ bool msforest::insert(dEdge* _e, qEdge* _qe, List<lockReq>* _lrlist)
 	}
 	else
 	{
-		
+
 #ifdef DEBUG_TRACK 
 		util::track("first is not leftmost or not insert op");
 #endif
@@ -566,9 +566,11 @@ bool msforest::insert(teNode* _node, lockReq* _lr, List<JoinResult>* _msN2matche
 	{
 		if(! _branches->empty())
 		{
+#ifdef MY_DEBUG
 			cout << this->answers_str() << '\n';
 			cout << this << '\n';
 			cout << "ERRRRRRR\n";
+#endif
 #ifdef GLOBAL_COMMENT
 			cout << this->new_match_str(_branches) << endl;	
 #endif
@@ -1129,6 +1131,7 @@ string msforest::whole_str(){
 	{
 		teNode* _n = _q_te.front();
 		_ss << _n->to_matches_str() << endl << endl << endl;
+		// _ss << _n->to_matches_str(true) << endl << endl << endl;
 		if(_n->get_left() != NULL){
 			_q_te.push(_n->get_left());
 		}

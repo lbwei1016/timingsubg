@@ -49,7 +49,7 @@ bool rdfstream::load_edges(int _avg_win_tuple_num){
 		if (_end_rd) {
 			this->alledges.push_back((dEdge*)_end_rd);
 		}
-		else cout << "NOT splitted!\n";
+		// else cout << "NOT splitted!\n";
 	}
 	fin.close();
 
@@ -93,3 +93,8 @@ bool rdfstream::is_expire(dEdge* _e_old, dEdge* _e_new){
 	
 	return true;
 }
+
+// int64_t get_timestamp(dEdge *e) {
+// 	rdfDedge *re = (rdfDedge*)e;
+// 	return re->t_sec;
+// }

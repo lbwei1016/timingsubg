@@ -14,6 +14,8 @@ public:
 	bool is_after(dEdge* _d);
 	bool is_match(qEdge* _q);
 	bool is_literal();
+	int64_t get_timestamp();
+
 
 	string to_str();
 

@@ -10,6 +10,7 @@
 
 typedef timeval Rtime;
 
+// just some statistics
 class runtime{
 public:
 	runtime();

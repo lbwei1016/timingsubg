@@ -60,11 +60,11 @@ rdfDedge::rdfDedge(string _str_e) : dEdge(-1, -1)
 rdfDedge* rdfDedge::split() {
 	if (this->t_sec == this->end_time) 
 	{
-		cout << "NO need to split!\n";
+		// cout << "NO need to split!\n";
 		return NULL;
 	}
 
-	cout << this->t_sec << ' ' << this->end_time << '\n';
+	// cout << this->t_sec << ' ' << this->end_time << '\n';
 
 	rdfDedge *_end_d = new rdfDedge(this->s, this->t);
 	_end_d->id = this->id;
@@ -159,3 +159,8 @@ string rdfDedge::to_str()
 	//_ss << " " << size;
 	return _ss.str();
 }
+
+int64_t rdfDedge::get_timestamp() {
+	return this->t_sec;
+};
+

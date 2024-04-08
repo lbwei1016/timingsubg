@@ -30,6 +30,7 @@ public:
 	virtual bool is_before(dEdge* _e) = 0;
 	virtual bool is_after(dEdge* _e) = 0;
 	virtual bool is_match(qEdge* _d) = 0;
+	virtual int64_t get_timestamp() = 0;
 
 	virtual string to_str() = 0;
 };
