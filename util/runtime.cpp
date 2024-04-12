@@ -22,9 +22,12 @@ void runtime::end(){
 	this->sum += this->cur;
 	this->dup_num ++;
 
-	if(this->dup_num % 2 != 0){
-		cout << "num err != 0 " << this->dup_num << endl;
-	}
+#ifdef DEBUG_TRACK
+	// if(this->dup_num % 2 != 0){
+	// 	cout << "num err != 0 " << this->dup_num << endl;
+	// }
+#endif
+
 }
 double runtime::getsum(){
 	if(this->dup_num % 2 != 0){

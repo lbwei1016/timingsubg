@@ -686,10 +686,12 @@ string teNode::to_answer_str()
 #endif
     if(_mlist.empty())
     {
-        return "\tThere is no answers";
+        return "There is no answers\n";
     }
 
 	stringstream _ss;
+
+#ifdef CYBER
 	_ss << "\tThere are " << _mlist.size() << " matches of " << this->to_str() << " as following:" << endl;
 
 
@@ -701,6 +703,9 @@ string teNode::to_answer_str()
 	{
 		_ss << "\t\t" << _mlist.next()->mat_data_str() << endl;
 	}
+#elif defined(MY_GET_NUM_MATCH)
+	_ss << "There are " << _mlist.size() << " matches in total" << endl;
+#endif
     return _ss.str();
 }
 

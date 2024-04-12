@@ -82,6 +82,7 @@ bool query::compatible(match *_m1, match *_m2)
 
 	map<qEdge *, dEdge *>::iterator _it1 = _qd1->begin();
 	bool _tmp_bool;
+	/// iterate over all pairs
 	while (_it1 != _qd1->end())
 	{
 		map<qEdge *, dEdge *>::iterator _it2 = _qd2->begin();
@@ -138,123 +139,123 @@ bool query::compatible(qEdge *_qe1, dEdge *_e1, qEdge *_qe2, dEdge *_e2)
 	// 	return false;
 	// }
 
-	// 	/* source to source */
-	// 	if(_qe1->ss(_qe2))
-	// 	{
-	// 		if(! _e1->ss(_e2))
-	// 		{
-	// #ifdef UNCOMP
-	// 			{
-	// 				stringstream _ss;
-	// 				_ss << "!ss" << endl;
-	// 				util::track(_ss);
-	// 			}
-	// #endif
+		/* source to source */
+		if(_qe1->ss(_qe2))
+		{
+			if(! _e1->ss(_e2))
+			{
+	#ifdef UNCOMP
+				{
+					stringstream _ss;
+					_ss << "!ss" << endl;
+					util::track(_ss);
+				}
+	#endif
 
-	// 			return false;
-	// 		}
-	// 	}
-	// 	else
-	// 	{
-	// 		if(_e1->ss(_e2))
-	// 		{
-	// #ifdef UNCOMP
-	// 			{
-	// 				stringstream _ss;
-	// 				_ss << "ss" << endl;
-	// 				util::track(_ss);
-	// 			}
-	// #endif
-	// 			return false;
-	// 		}
-	// 	}
-	// 	/* target to target */
-	// 	if(_qe1->tt(_qe2))
-	// 	{
-	// 		if(! _e1->tt(_e2))
-	// 		{
-	// #ifdef UNCOMP
-	// 			{
-	// 				stringstream _ss;
-	// 				_ss << "!tt" << endl;
-	// 				util::track(_ss);
-	// 			}
-	// #endif
-	// 			return false;
-	// 		}
-	// 	}
-	// 	else
-	// 	{
-	// 		if(_e1->tt(_e2))
-	// 		{
-	// #ifdef UNCOMP
-	// 			{
-	// 				stringstream _ss;
-	// 				_ss << "tt" << endl;
-	// 				util::track(_ss);
-	// 			}
-	// #endif
-	// 			return false;
-	// 		}
-	// 	}
-	// 	/* source to target */
-	// 	if(_qe1->st(_qe2))
-	// 	{
-	// 		if(! _e1->st(_e2))
-	// 		{
-	// #ifdef UNCOMP
-	// 			{
-	// 				stringstream _ss;
-	// 				_ss << "!st" << endl;
-	// 				util::track(_ss);
-	// 			}
-	// #endif
-	// 			return false;
-	// 		}
-	// 	}
-	// 	else
-	// 	{
-	// 		if(_e1->st(_e2))
-	// 		{
-	// #ifdef UNCOMP
-	// 			{
-	// 				stringstream _ss;
-	// 				_ss << "st" << endl;
-	// 				util::track(_ss);
-	// 			}
-	// #endif
-	// 			return false;
-	// 		}
-	// 	}
-	// 	/* target to source */
-	// 	if(_qe1->ts(_qe2))
-	// 	{
-	// 		if(! _e1->ts(_e2))
-	// 		{
-	// #ifdef UNCOMP
-	// 			{
-	// 				stringstream _ss;
-	// 				_ss << "!ts" << endl;
-	// 				util::track(_ss);
-	// 			}
-	// #endif
-	// 			return false;
-	// 		}
-	// 	}
-	// 	else
-	// 	{
-	// 		if(_e1->ts(_e2))
-	// 		{
-	// #ifdef UNCOMP
-	// 			{
-	// 				stringstream _ss;
-	// 				_ss << "ts" << endl;
-	// 				util::track(_ss);
-	// 			}
-	// #endif
-	// 			return false;
-	// 		}
-	// 	}
+				return false;
+			}
+		}
+		else
+		{
+			if(_e1->ss(_e2))
+			{
+	#ifdef UNCOMP
+				{
+					stringstream _ss;
+					_ss << "ss" << endl;
+					util::track(_ss);
+				}
+	#endif
+				return false;
+			}
+		}
+		/* target to target */
+		if(_qe1->tt(_qe2))
+		{
+			if(! _e1->tt(_e2))
+			{
+	#ifdef UNCOMP
+				{
+					stringstream _ss;
+					_ss << "!tt" << endl;
+					util::track(_ss);
+				}
+	#endif
+				return false;
+			}
+		}
+		else
+		{
+			if(_e1->tt(_e2))
+			{
+	#ifdef UNCOMP
+				{
+					stringstream _ss;
+					_ss << "tt" << endl;
+					util::track(_ss);
+				}
+	#endif
+				return false;
+			}
+		}
+		/* source to target */
+		if(_qe1->st(_qe2))
+		{
+			if(! _e1->st(_e2))
+			{
+	#ifdef UNCOMP
+				{
+					stringstream _ss;
+					_ss << "!st" << endl;
+					util::track(_ss);
+				}
+	#endif
+				return false;
+			}
+		}
+		else
+		{
+			if(_e1->st(_e2))
+			{
+	#ifdef UNCOMP
+				{
+					stringstream _ss;
+					_ss << "st" << endl;
+					util::track(_ss);
+				}
+	#endif
+				return false;
+			}
+		}
+		/* target to source */
+		if(_qe1->ts(_qe2))
+		{
+			if(! _e1->ts(_e2))
+			{
+	#ifdef UNCOMP
+				{
+					stringstream _ss;
+					_ss << "!ts" << endl;
+					util::track(_ss);
+				}
+	#endif
+				return false;
+			}
+		}
+		else
+		{
+			if(_e1->ts(_e2))
+			{
+	#ifdef UNCOMP
+				{
+					stringstream _ss;
+					_ss << "ts" << endl;
+					util::track(_ss);
+				}
+	#endif
+				return false;
+			}
+		}
 
 	/* after */
 	if (_qe1->is_after(_qe2))
@@ -296,19 +297,18 @@ bool query::compatible(qEdge *_qe1, dEdge *_e1, qEdge *_qe2, dEdge *_e2)
 		util::track(_ss);
 	}
 #endif
-	/*
-		if(_e1->is_same(_e2))
-		{
-	#ifdef UNCOMP
-				{
-					stringstream _ss;
-					_ss << "is_same" << endl;
-					util::track(_ss);
-				}
-	#endif
-			return false;
-		}
-	*/
+	/// event uniqueness
+	if(_e1->is_same(_e2))
+	{
+#ifdef UNCOMP
+			{
+				stringstream _ss;
+				_ss << "is_same" << endl;
+				util::track(_ss);
+			}
+#endif
+		return false;
+	}
 	return true;
 }
 

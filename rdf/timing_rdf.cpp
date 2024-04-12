@@ -5,7 +5,9 @@
 #include "../timing/timingconf.h"
 #include "../timing/timingsubg.h"
 
-/* 
+#include <sys/resource.h>
+
+/*
  * argv0 : exe
  * argv1 : dataset
  * argv2 : query
@@ -15,17 +17,21 @@
  * argv6 : subpattern (for IPEMS)
  *
  * */
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 #ifdef DEBUG_TRACK
 #endif
 
 #ifdef THREAD_LOG
 #endif
-	
-	if(argc < 7){
+	struct rusage ru;
+	struct timeval utime;
+	struct timeval stime;
+
+	if (argc < 7)
+	{
 		cout << "err argc" << endl;
-		for(int i = 0; i < argc; i ++)
+		for (int i = 0; i < argc; i++)
 		{
 			cout << argv[i] << "\t\t";
 		}
@@ -46,7 +52,7 @@ int main(int argc, char* argv[])
 	int max_thread_num;
 	{
 		stringstream _ss;
-		for(int i = 3; i < argc; i ++) 
+		for (int i = 3; i < argc; i++)
 			_ss << argv[i] << " ";
 		_ss >> _window >> max_thread_num;
 	}
@@ -63,12 +69,19 @@ int main(int argc, char* argv[])
 
 	_Q.parseQuery();
 #ifdef RUN_COMMENT
-	cout << "query Q: \n" << _Q.to_str() << endl;
-	cout << "pre Q: \n" << _Q.timingorder_str() << endl;
+	cout << "query Q: \n"
+		 << _Q.to_str() << endl;
+	cout << "pre Q: \n"
+		 << _Q.timingorder_str() << endl;
 #endif
 
+#if defined(DEBUG_TRACK) || defined(CYBER)
 	util::init_track("./track");
 	cout << "I am init_track!!!!!\n";
+#elif defined(MY_GET_NUM_MATCH)
+	util::init_track("./answers");
+	cout << "init_track!!!!!\n";
+#endif
 
 	timingsubg tsubg(0, _frtime);
 	tsubg.exename = string(argv[0]);
@@ -76,9 +89,21 @@ int main(int argc, char* argv[])
 #ifdef GLOBAL_COMMENT
 	cout << "finish timingsubg run" << endl;
 #endif
-	
+
 	tsubg.write_stat();
 
+#if defined(DEBUG_TRACK) || defined(CYBER) || defined(MY_GET_NUM_MATCH)
 	util::finalize();
-}
+#endif
+	
+	getrusage(RUSAGE_SELF, &ru);
 
+	utime = ru.ru_utime;
+	stime = ru.ru_stime;
+	double utime_used = utime.tv_sec + (double)utime.tv_usec / 1000000.0;
+	double stime_used = stime.tv_sec + (double)stime.tv_usec / 1000000.0;
+	// printf("User Time = %f\n", utime_used);
+	// printf("System Time = %f\n", stime_used);
+	cout << "CPU time elapsed: " << utime_used + stime_used << " secs\n";
+	cout << "Peak memory usage: " << ru.ru_maxrss << " kB\n";
+}

@@ -4,13 +4,15 @@
 #include "../timing/query.h"
 #include "../timing/timingconf.h"
 
-msforest::msforest(timingconf* _tconf, query* _q)
+msforest::msforest(timingconf *_tconf, query *_q)
 {
 	this->q = _q;
 	this->tconf = _tconf;
 	this->edge2node.clear();
 	this->edge2opList.clear();
 	this->initial();
+
+	this->num_answer = 0;
 
 	pthread_mutex_init(&(this->matpool_mutex), NULL);
 #ifdef PESSIMISTIC_LOCK
@@ -35,31 +37,34 @@ msforest::~msforest()
 	util::track("IN destruct msforest");
 #endif
 	/* free edge2oplist & edge2node */
-	{/* OPlist */
-		map<qEdge*, OPlist*>::iterator itr = this->edge2opList.begin();
-		while(itr != this->edge2opList.end())
+	{ /* OPlist */
+		map<qEdge *, OPlist *>::iterator itr = this->edge2opList.begin();
+		while (itr != this->edge2opList.end())
 		{
 			delete itr->second;
-			itr ++;
+			itr++;
 		}
 	}
 
-	{/* teNode  */
-		teNode* _cur_te = this->teroot;
-		queue<teNode*> _q_te;
+	{ /* teNode  */
+		teNode *_cur_te = this->teroot;
+		queue<teNode *> _q_te;
 		_q_te.push(_cur_te);
-		if(_cur_te == NULL){
+		if (_cur_te == NULL)
+		{
 			cout << "err: root NULL" << endl;
 			exit(-1);
 		}
 
-		while(! _q_te.empty())
+		while (!_q_te.empty())
 		{
-			teNode* _n = _q_te.front();
-			if(_n->get_left() != NULL){
+			teNode *_n = _q_te.front();
+			if (_n->get_left() != NULL)
+			{
 				_q_te.push(_n->get_left());
 			}
-			if(_n->get_right() != NULL){
+			if (_n->get_right() != NULL)
+			{
 				_q_te.push(_n->get_right());
 			}
 			_q_te.pop();
@@ -67,13 +72,13 @@ msforest::~msforest()
 		}
 	}
 
-	{/* matches  */
-		for(int i = 0; i < (int)this->mat_pool.size(); i ++)
+	{ /* matches  */
+		for (int i = 0; i < (int)this->mat_pool.size(); i++)
 		{
 			delete this->mat_pool[i];
 		}
 	}
-	
+
 #ifdef DESTRUCT_LOG
 	cout << "OUT destruct msforest..." << endl;
 #endif
@@ -81,7 +86,6 @@ msforest::~msforest()
 #ifdef DEBUG_TRACK
 	util::track("OUT destruct msforest");
 #endif
-
 }
 
 void msforest::initial()
@@ -92,50 +96,53 @@ void msforest::initial()
 #endif
 
 #ifdef DEBUG_TRACK
-	util::track("tetree:\n"+ this->tetree_str());
+	util::track("tetree:\n" + this->tetree_str());
 #endif
 	this->build_e2oplist();
 #ifdef PESSIMISTIC_LOCK
 	this->init_te2lock();
 #endif
 }
-	
+
 long long int msforest::to_size()
 {
 #ifndef NO_THREAD
 	return 0;
 #endif
 	long long int _sz = 0;
-	
+
 	_sz += sizeof(msforest);
 
-	{/* teNode  */
-		teNode* _cur_te = this->teroot;
-		queue<teNode*> _q_te;
+	{ /* teNode  */
+		teNode *_cur_te = this->teroot;
+		queue<teNode *> _q_te;
 		_q_te.push(_cur_te);
-		if(_cur_te == NULL){
+		if (_cur_te == NULL)
+		{
 			cout << "err: root NULL" << endl;
 			exit(-1);
 		}
 
-		while(! _q_te.empty())
+		while (!_q_te.empty())
 		{
-			teNode* _n = _q_te.front();
-			if(_n->get_left() != NULL){
+			teNode *_n = _q_te.front();
+			if (_n->get_left() != NULL)
+			{
 				_q_te.push(_n->get_left());
 			}
-			if(_n->get_right() != NULL){
+			if (_n->get_right() != NULL)
+			{
 				_q_te.push(_n->get_right());
 			}
 			_q_te.pop();
-			
+
 			_sz += _n->to_size();
 		}
 	}
 
 	return _sz;
 }
-	
+
 long long int msforest::no_ms_size()
 {
 #ifndef NO_THREAD
@@ -146,48 +153,51 @@ long long int msforest::no_ms_size()
 #endif
 
 	long long int _sz = 0;
-	
+
 	_sz += sizeof(msforest);
 
-
-	{/* teNode  */
-		teNode* _cur_te = this->teroot;
-		queue<teNode*> _q_te;
+	{ /* teNode  */
+		teNode *_cur_te = this->teroot;
+		queue<teNode *> _q_te;
 		_q_te.push(_cur_te);
-		if(_cur_te == NULL){
+		if (_cur_te == NULL)
+		{
 			cout << "err: root NULL" << endl;
 			exit(-1);
 		}
 
-		while(! _q_te.empty())
+		while (!_q_te.empty())
 		{
-			teNode* _n = _q_te.front();
-			if(_n->get_left() != NULL){
+			teNode *_n = _q_te.front();
+			if (_n->get_left() != NULL)
+			{
 				_q_te.push(_n->get_left());
 			}
-			if(_n->get_right() != NULL){
+			if (_n->get_right() != NULL)
+			{
 				_q_te.push(_n->get_right());
 			}
 			_q_te.pop();
-			
+
 			_sz += _n->no_ms_size();
-#ifdef NUM_MATCH	
+#ifdef NUM_MATCH
 
 			bool _in_gap = false;
-			if((!_n->is_leaf()) && _n->num_match() != 0){
+			if ((!_n->is_leaf()) && _n->num_match() != 0)
+			{
 				_in_gap = true;
 				cerr << _n->to_str() << endl;
 				cerr << _n->to_spacestr() << endl;
 				cerr << _n->get_left() << " <--> " << _n->get_right() << endl;
-				teNode* _left = _n->get_left();
-				teNode* _right = _n->get_right();
-				if(_left != NULL)
+				teNode *_left = _n->get_left();
+				teNode *_right = _n->get_right();
+				if (_left != NULL)
 				{
 					cerr << "--left" << endl;
 					cerr << _left->to_str() << endl;
 					cerr << "\t\t" << _left->to_spacestr() << endl;
 				}
-				if(_right != NULL)
+				if (_right != NULL)
 				{
 					cerr << _right->to_str() << endl;
 					cerr << "\t\t" << _right->to_spacestr() << endl;
@@ -195,63 +205,61 @@ long long int msforest::no_ms_size()
 				cerr << "input an int to continue..." << endl;
 				int i;
 			}
-#endif	
+#endif
 		}
 	}
 
 	return _sz;
 }
-	
 
 /*  */
-bool msforest::getOPlists(dEdge* _e, vector<OPlist*>& _oplists, vector<qEdge*>& _match_edges)
+bool msforest::getOPlists(dEdge *_e, vector<OPlist *> &_oplists, vector<qEdge *> &_match_edges)
 {
 	this->q->get_matches(_e, _match_edges);
 	_oplists.clear();
-	for(int i = 0; i < (int)_match_edges.size(); i ++)
+	for (int i = 0; i < (int)_match_edges.size(); i++)
 	{
-		_oplists.push_back( this->edge2opList[_match_edges[i]] );
+		_oplists.push_back(this->edge2opList[_match_edges[i]]);
 	}
 	return true;
 }
 
-bool msforest::getTElist(dEdge* _e, vector<teNode*>& _telist, vector<qEdge*>& _match_edges){
+bool msforest::getTElist(dEdge *_e, vector<teNode *> &_telist, vector<qEdge *> &_match_edges)
+{
 	this->q->get_matches(_e, _match_edges);
 	_telist.clear();
 
-	for(int i = 0; i < (int)_match_edges.size(); i ++)
+	for (int i = 0; i < (int)_match_edges.size(); i++)
 	{
-		_telist.push_back( this->edge2node[_match_edges[i]] );
+		_telist.push_back(this->edge2node[_match_edges[i]]);
 	}
 	return true;
 }
 
-
 /*  */
-bool msforest::remove(dEdge* _e, teNode* _node, List<lockReq>* _lr_list){
-	teNode* _cur_te = _node;
-	msNode* _rm_list = NULL;
-	msNode* _rm_fathers = NULL;
-	vector<msNode*> gclist_vec;
+bool msforest::remove(dEdge *_e, teNode *_node, List<lockReq> *_lr_list)
+{
+	teNode *_cur_te = _node;
+	msNode *_rm_list = NULL;
+	msNode *_rm_fathers = NULL;
+	vector<msNode *> gclist_vec;
 #ifdef DEBUG_TRACK
 	{
 		stringstream _ss;
 		_ss << "IN remove(dedge, te, lrlist)" << endl;
-		_ss << "\t" <<_e->to_str() << endl;
+		_ss << "\t" << _e->to_str() << endl;
 		_ss << "\t[" << _node << "]" << endl;
-		util::track(_ss);	
-
+		util::track(_ss);
 	}
-#endif
-
 	_lr_list->reset();
-	if(_cur_te->is_TCnode_or_upper())
+#endif
+	if (_cur_te->is_TCnode_or_upper())
 	{
 #ifdef DEBUG_TRACK
 		{
 			stringstream _ss;
 			_ss << "\tte is upper" << endl;
-			util::track(_ss);	
+			util::track(_ss);
 		}
 #endif
 		_rm_list = _cur_te->remove_edge(_e, _lr_list->next());
@@ -263,16 +271,16 @@ bool msforest::remove(dEdge* _e, teNode* _node, List<lockReq>* _lr_list){
 		{
 			stringstream _ss;
 			_ss << "\tte not upper" << endl;
-			util::track(_ss);	
+			util::track(_ss);
 		}
 #endif
-		if(! _cur_te->is_leftmost())
+		if (!_cur_te->is_leftmost())
 			_cur_te = _node->get_father();
 
 		_rm_list = _cur_te->remove_edge(_e, _lr_list->next());
 		gclist_vec.push_back(_rm_list);
 
-		while(! _cur_te->is_TCnode_or_upper())
+		while (!_cur_te->is_TCnode_or_upper())
 		{
 			_cur_te = _cur_te->get_father();
 			_rm_fathers = _rm_list;
@@ -281,16 +289,16 @@ bool msforest::remove(dEdge* _e, teNode* _node, List<lockReq>* _lr_list){
 		}
 	}
 	/* lockreqs are to be removed */
-	//if(_rm_list == NULL) return false;
+	// if(_rm_list == NULL) return false;
 
-	if(_cur_te->is_root())
+	if (_cur_te->is_root())
 	{
 		this->gc_release(gclist_vec);
 		return true;
 	}
 
-	if(_cur_te->at_right())
-	{/* change branches into matlist */
+	if (_cur_te->at_right())
+	{ /* change branches into matlist */
 		/* build mat_list */
 		List<match> _matlist;
 		teNode::build_matlist(_matlist, _rm_list);
@@ -305,26 +313,26 @@ bool msforest::remove(dEdge* _e, teNode* _node, List<lockReq>* _lr_list){
 #endif
 
 		/* for upper remove*/
-		_cur_te = _cur_te->get_father();	
+		_cur_te = _cur_te->get_father();
 		_rm_list = this->remove(_cur_te, &_matlist, _lr_list->next());
 		gclist_vec.push_back(_rm_list);
 	}
 	/* bug: I can not figure out why I added 'else' here, totally wrong  */
-	//else
-	{/* still branches */
-		while(! _cur_te->is_root())
+	// else
+	{ /* still branches */
+		while (!_cur_te->is_root())
 		{
 #ifdef DEBUG_TRACK
-		{
-			stringstream _ss;
-			_ss << "\n_cur_te is " << _cur_te->to_str() << endl;
-			_ss << msforest::expired_match_str(_rm_list) << endl;
-			util::track(_ss);
-		}
+			{
+				stringstream _ss;
+				_ss << "\n_cur_te is " << _cur_te->to_str() << endl;
+				_ss << msforest::expired_match_str(_rm_list) << endl;
+				util::track(_ss);
+			}
 #endif
 			_cur_te = _cur_te->get_father();
 			_rm_fathers = _rm_list;
-			
+
 			_rm_list = this->remove(_cur_te, _rm_fathers, _lr_list->next());
 			gclist_vec.push_back(_rm_list);
 		}
@@ -332,11 +340,11 @@ bool msforest::remove(dEdge* _e, teNode* _node, List<lockReq>* _lr_list){
 
 	/* report expired answers */
 #ifdef GLOBAL_COMMENT
-	if(_rm_list != NULL)
+	if (_rm_list != NULL)
 	{
 		cout << "\n\nexpired answers: \n";
-		msNode* _cur_ms = _rm_list;
-		while(_cur_ms != NULL)
+		msNode *_cur_ms = _rm_list;
+		while (_cur_ms != NULL)
 		{
 			cout << _cur_ms->whole_match_str() << endl;
 			_cur_ms = _cur_ms->next;
@@ -349,24 +357,23 @@ bool msforest::remove(dEdge* _e, teNode* _node, List<lockReq>* _lr_list){
 	return true;
 }
 
-	
-void msforest::gc_release(vector<msNode*>& gclist_vec)
+void msforest::gc_release(vector<msNode *> &gclist_vec)
 {
 	/* release all in gclist_vec */
-	msNode* _cur_gc = NULL;
-	msNode* _pre_gc = NULL;
-	for(int i = 0; i < (int)gclist_vec.size(); i ++)
+	msNode *_cur_gc = NULL;
+	msNode *_pre_gc = NULL;
+	for (int i = 0; i < (int)gclist_vec.size(); i++)
 	{
 		_cur_gc = gclist_vec[i];
-		while(_cur_gc != NULL)
+		while (_cur_gc != NULL)
 		{
 			_pre_gc = _cur_gc;
 			_cur_gc = _cur_gc->next;
 #ifdef MARK_DEL
-			if(_pre_gc->mark_del == false)
+			if (_pre_gc->mark_del == false)
 			{
 				int _tmpc = 0;
-				while(_tmpc ++ < 10)
+				while (_tmpc++ < 10)
 				{
 					cout << _tmpc << "delete no mark!!!!" << endl;
 				}
@@ -375,44 +382,43 @@ void msforest::gc_release(vector<msNode*>& gclist_vec)
 			delete _pre_gc;
 		}
 	}
-	
 }
 
-/* 
- * 
+/*
+ *
  * */
-bool msforest::insert(dEdge* _e, qEdge* _qe, List<lockReq>* _lrlist)
+bool msforest::insert(dEdge *_e, qEdge *_qe, List<lockReq> *_lrlist)
 {
-	nodeOP* _first_op = _lrlist->first()->op;
-	teNode* _first_node = _first_op->onode;
-	if(_first_node->is_root()){
+	nodeOP *_first_op = _lrlist->first()->op;
+	teNode *_first_node = _first_op->onode;
+	if (_first_node->is_root())
+	{
 		cout << "insert err: root" << endl;
 		return false;
 	}
 
-	
 	_lrlist->reset();
-	if(_first_node->is_leftmost() && _first_op->is_insert())
+	if (_first_node->is_leftmost() && _first_op->is_insert())
 	{
 
-#ifdef DEBUG_TRACK 
+#ifdef DEBUG_TRACK
 		util::track("\t\tfirst node is at_leftmost&insert");
 		util::track("\t\t add match to first node");
 #endif
 
 		/* insert the match into the MS-tree at depth=1 */
-		msNode* _mslist = new msNode(NULL, NULL, this->new_match(_qe, _e));
+		msNode *_mslist = new msNode(NULL, NULL, this->new_match(_qe, _e));
 		/* apply lock there */
 		_first_node->X_lock(_lrlist->first());
-		_first_node->add_msnodes(_mslist);	
+		_first_node->add_msnodes(_mslist);
 		_first_node->X_release(_lrlist->first());
 		_lrlist->next();
 		/* first node could be tc_or_upper node */
-		if(_first_node->is_TCnode_or_upper())
-		{/* single edge TCnode  */
-			/* further join for upper MS-tree */	
+		if (_first_node->is_TCnode_or_upper())
+		{	/* single edge TCnode  */
+			/* further join for upper MS-tree */
 
-#ifdef DEBUG_TRACK 
+#ifdef DEBUG_TRACK
 			util::track("first node is TC or upper1");
 #endif
 
@@ -420,11 +426,12 @@ bool msforest::insert(dEdge* _e, qEdge* _qe, List<lockReq>* _lrlist)
 			_branches.add(_mslist);
 			this->further_join(_first_node, &_branches, _lrlist);
 		}
-#ifdef DEBUG_TRACK 
+#ifdef DEBUG_TRACK
 		else
 		{
-			util::track("first node is not tc or upper2");	
-			if(_lrlist->size() != 1){
+			util::track("first node is not tc or upper2");
+			if (_lrlist->size() != 1)
+			{
 				cout << "err: lrlist size not 1 = " << _lrlist->size() << endl;
 				exit(-1);
 			}
@@ -436,37 +443,38 @@ bool msforest::insert(dEdge* _e, qEdge* _qe, List<lockReq>* _lrlist)
 	else
 	{
 
-#ifdef DEBUG_TRACK 
+#ifdef DEBUG_TRACK
 		util::track("first is not leftmost or not insert op");
 #endif
-		
+
 		/* a join + a insert = |oplist| is 2 */
 		List<msNode> _branches(false);
 		List<JoinResult> _jrlist(true);
 		/* if some match* is used, make sure they are added into mat_pool */
 		List<match> _mlist(false);
-		match* _mat = new match(_qe, _e);
+		match *_mat = new match(_qe, _e);
 		_mlist.add(_mat);
 		/* when first is join, _first_node is at_right() */
 		this->join_left(&_mlist, _first_node, _lrlist->first(), _jrlist);
 		_lrlist->next();
 
-		if(_jrlist.size() != 0){
+		if (_jrlist.size() != 0)
+		{
 			this->gather_match(_mat);
 		}
-		else{
+		else
+		{
 			delete _mat;
 		}
 
-		teNode* _father = _first_node->get_father();
+		teNode *_father = _first_node->get_father();
 
-
-		this->insert(_father, _lrlist->second(), &_jrlist, &_branches);	
+		this->insert(_father, _lrlist->second(), &_jrlist, &_branches);
 		_lrlist->next();
 
-		if(_father->is_TCnode_or_upper())
-		{/*	child of a TCnode
-			further join for upper MS-tree */
+		if (_father->is_TCnode_or_upper())
+		{ /*	child of a TCnode
+			 further join for upper MS-tree */
 			this->further_join(_father, &_branches, _lrlist);
 		}
 	}
@@ -474,41 +482,41 @@ bool msforest::insert(dEdge* _e, qEdge* _qe, List<lockReq>* _lrlist)
 	return true;
 }
 
-
-/* If _msN2matches is empty, we need to remove the lr 
+/* If _msN2matches is empty, we need to remove the lr
  * if _branches is not NULL, clear it and add new branches into _branches
  * */
-bool msforest::insert(teNode* _node, lockReq* _lr, List<JoinResult>* _msN2matches, List<msNode>* _branches)
+bool msforest::insert(teNode *_node, lockReq *_lr, List<JoinResult> *_msN2matches, List<msNode> *_branches)
 {
-	
-#ifdef DEBUG_TRACK 
-		util::track("IN insert te JRlist bran AT "+_node->to_str());
-		util::track("matches are : "+_node->to_matches_str());
+
+#ifdef DEBUG_TRACK
+	util::track("IN insert te JRlist bran AT " + _node->to_str());
+	util::track("matches are : " + _node->to_matches_str());
 #endif
 
 	_node->X_lock(_lr);
 
-	if(_branches != NULL){
+	if (_branches != NULL)
+	{
 		_branches->clear();
-	}	
-	if(_msN2matches->empty()){
+	}
+	if (_msN2matches->empty())
+	{
 		/* remove lr */
 
-#ifdef DEBUG_TRACK 
-		util::track("remove lr@insert te jrlist bran AT "+_node->to_str());
+#ifdef DEBUG_TRACK
+		util::track("remove lr@insert te jrlist bran AT " + _node->to_str());
 #endif
 		_node->X_release(_lr);
 		return false;
 	}
 
 	_msN2matches->reset();
-	JoinResult* pair;
-	msNode* _msnode;
-	List<match>* _mlist;
-	msNode* _list;
-	msNode* _tmp_node;
+	JoinResult *pair;
+	msNode *_msnode;
+	List<match> *_mlist;
+	msNode *_list;
+	msNode *_tmp_node;
 	bool _is_first_child = false;
-
 
 #ifdef DEBUG_TRACK
 	{
@@ -518,15 +526,15 @@ bool msforest::insert(teNode* _node, lockReq* _lr, List<JoinResult>* _msN2matche
 	}
 #endif
 	_msN2matches->reset();
-	while(_msN2matches->hasnext())
+	while (_msN2matches->hasnext())
 	{
 		pair = _msN2matches->next();
 		_msnode = pair->first;
 		_mlist = pair->second;
 		_list = msNode::build_mslist(_mlist, _msnode);
 		_tmp_node = _list;
-		while(_tmp_node != NULL && _branches != NULL)
-		{/* branches should be build before addChildren */
+		while (_tmp_node != NULL && _branches != NULL)
+		{ /* branches should be build before addChildren */
 			_branches->add(_tmp_node);
 			_tmp_node = _tmp_node->next;
 		}
@@ -536,46 +544,49 @@ bool msforest::insert(teNode* _node, lockReq* _lr, List<JoinResult>* _msN2matche
 			stringstream _ss;
 			_ss << "\t\tsz of _mlist=" << _mlist->size() << endl;
 			_ss << "\t\tsz of branches=";
-			if(_branches == NULL)
-				_ss <<  ("NULL") << endl;
+			if (_branches == NULL)
+				_ss << ("NULL") << endl;
 			else
 				_ss << _branches->size() << endl;
 			util::track(_ss);
 		}
 #endif
 		_msnode->addChildren(_list, _is_first_child);
-		if(_is_first_child)
+		if (_is_first_child)
 		{
 			_node->add_msnodes(_msnode->child_first);
 
-
 #ifdef DEBUG_TRACK
 			{
-				if(_msnode->child_first->prev == NULL)
+				if (_msnode->child_first->prev == NULL)
 				{
 					util::track("prev is NULL");
 				}
 			}
 #endif
-
 		}
-		
 	}
 
-	if(_node->is_root() && _branches != NULL)
+	if (_node->is_root() && _branches != NULL)
 	{
-		if(! _branches->empty())
+		if (!_branches->empty())
 		{
 #ifdef MY_DEBUG
-			cout << this->answers_str() << '\n';
-			cout << this << '\n';
-			cout << "ERRRRRRR\n";
+			// cout << this->answers_str() << '\n';
+			// cout << this << '\n';
+			// cout << "ERRRRRRR\n";
 #endif
 #ifdef GLOBAL_COMMENT
-			cout << this->new_match_str(_branches) << endl;	
+			// cout << this->new_match_str(_branches) << endl;
 #endif
-#ifdef CYBER
-            cout << this->new_match_str(_branches) << endl;
+// #ifdef CYBER
+#ifdef MY_DEBUG
+			cout << this->new_match_str(_branches) << endl;
+#endif
+
+#if defined(DEBUG_TRACK) || defined(MY_GET_NUM_MATCH)
+			// util::track("answer str: " + this->answers_str());
+			util::track(this->new_match_str(_branches));
 #endif
 		}
 	}
@@ -588,16 +599,15 @@ bool msforest::insert(teNode* _node, lockReq* _lr, List<JoinResult>* _msN2matche
 	return true;
 }
 
-
 /* _node is at_left()
- * join _matches with those in _node 
+ * join _matches with those in _node
  * results is put into _jrlist
  * if first_join:
  *		_matches contains only the incoming edge
- * else 
+ * else
  *		_matches contains all new matches of a TCnode(Right sibling of _node)
  * */
-bool msforest::join_left(List<match>* _matches, teNode* _node, lockReq* _lr, List<JoinResult>& _jrlist)
+bool msforest::join_left(List<match> *_matches, teNode *_node, lockReq *_lr, List<JoinResult> &_jrlist)
 {
 #ifdef DEBUG_TRACK
 	util::track("IN join_left...");
@@ -606,26 +616,26 @@ bool msforest::join_left(List<match>* _matches, teNode* _node, lockReq* _lr, Lis
 	_jrlist.clear();
 	List<msNode> _mslist(false);
 
-	_node->S_lock(_lr);	
+	_node->S_lock(_lr);
 
 	_node->get_mslist(_mslist);
-	
+
 #ifdef DEBUG_TRACK
 	util::track("IN join_left with node " + _node->to_str());
 	util::track(_node->to_matches_str());
 #endif
 
-	if(_mslist.empty()){
+	if (_mslist.empty())
+	{
 		/* remove lr */
 
 #ifdef DEBUG_TRACK
-		util::track("remove lr@join_left AT "+_node->to_str());
+		util::track("remove lr@join_left AT " + _node->to_str());
 #endif
 
 		_node->S_release(_lr);
 		return false;
 	}
-
 
 #ifdef DEBUG_TRACK
 	{
@@ -635,15 +645,15 @@ bool msforest::join_left(List<match>* _matches, teNode* _node, lockReq* _lr, Lis
 	}
 #endif
 
-	msNode* _cur;
+	msNode *_cur;
 	_mslist.reset();
-	while(_mslist.hasnext())
+	while (_mslist.hasnext())
 	{
 		_cur = _mslist.next();
 
-
 #ifdef DEBUG_TRACK
-		if(_cur == NULL){
+		if (_cur == NULL)
+		{
 			util::track("err NULL1@join_left");
 		}
 #endif
@@ -661,7 +671,7 @@ bool msforest::join_left(List<match>* _matches, teNode* _node, lockReq* _lr, Lis
 #endif
 
 	/* this will never be TRUE now */
-	if(_matches->is_to_free())
+	if (_matches->is_to_free())
 	{
 		this->remove_used_mat(_matches, _jrlist);
 	}
@@ -669,18 +679,18 @@ bool msforest::join_left(List<match>* _matches, teNode* _node, lockReq* _lr, Lis
 	_node->S_release(_lr);
 
 #ifdef DEBUG_TRACK
-	util::track("OUT join_left" );
+	util::track("OUT join_left");
 #endif
 
 	return true;
 }
 
-bool msforest::remove_used_mat(List<match>* _matches, List<JoinResult>& _jrlist)
+bool msforest::remove_used_mat(List<match> *_matches, List<JoinResult> &_jrlist)
 {
 	/* collect all matches */
-	set<match*> _mset;
+	set<match *> _mset;
 	_matches->reset();
-	while(_matches->hasnext())
+	while (_matches->hasnext())
 	{
 		_mset.insert(_matches->next());
 	}
@@ -695,17 +705,16 @@ bool msforest::remove_used_mat(List<match>* _matches, List<JoinResult>& _jrlist)
 
 	/* erase used ones */
 	_jrlist.reset();
-	while(_jrlist.hasnext())
+	while (_jrlist.hasnext())
 	{
-		JoinResult* _jr = _jrlist.next();
-		List<match>* _mlist = _jr->second;
+		JoinResult *_jr = _jrlist.next();
+		List<match> *_mlist = _jr->second;
 		_mlist->reset();
-		while(_mlist->hasnext())
+		while (_mlist->hasnext())
 		{
 			_mset.erase(_mlist->next());
 		}
 	}
-
 
 #ifdef DEBUG_TRACK
 	{
@@ -715,7 +724,6 @@ bool msforest::remove_used_mat(List<match>* _matches, List<JoinResult>& _jrlist)
 	}
 #endif
 
-
 #ifdef DEBUG_TRACK
 	util::track("after erase used ones, before pop");
 	int _count_pop = 0;
@@ -723,13 +731,13 @@ bool msforest::remove_used_mat(List<match>* _matches, List<JoinResult>& _jrlist)
 
 	/* pop: remove but not release used ones */
 	_matches->reset();
-	while(_matches->hasnext())
+	while (_matches->hasnext())
 	{
-		if(_mset.find(_matches->current()) == _mset.end())
+		if (_mset.find(_matches->current()) == _mset.end())
 		{
 			_matches->pop_current();
 #ifdef DEBUG_TRACK
-			_count_pop ++;
+			_count_pop++;
 #endif
 		}
 		else
@@ -741,9 +749,9 @@ bool msforest::remove_used_mat(List<match>* _matches, List<JoinResult>& _jrlist)
 #ifdef DEBUG_TRACK
 	{
 		stringstream _ss;
-		_ss << "Those is" << _count_pop <<  " to be delete: " << endl;
+		_ss << "Those is" << _count_pop << " to be delete: " << endl;
 		_matches->reset();
-		while(_matches->hasnext())
+		while (_matches->hasnext())
 		{
 			_ss << "\t\t" << _matches->next()->to_str() << endl;
 		}
@@ -754,13 +762,13 @@ bool msforest::remove_used_mat(List<match>* _matches, List<JoinResult>& _jrlist)
 	return true;
 }
 
-/* 
+/*
  * _node is at_right()
  * join matches from _branch_nodes with matches in _node
  * results is put into _jrlist
  * join_right will happen only if _node is tc_or_upper node
  * */
-bool msforest::join_right(List<msNode>* _branch_nodes, teNode* _node, lockReq* _lr, List<JoinResult>& _jrlist)
+bool msforest::join_right(List<msNode> *_branch_nodes, teNode *_node, lockReq *_lr, List<JoinResult> &_jrlist)
 {
 #ifdef DEBUG_TRACK
 	util::track("IN join_right1");
@@ -773,15 +781,16 @@ bool msforest::join_right(List<msNode>* _branch_nodes, teNode* _node, lockReq* _
 #endif
 
 	bool _no_join = false;
-	if(_branch_nodes == NULL){
+	if (_branch_nodes == NULL)
+	{
 		_no_join = true;
 	}
-	else
-	if(_branch_nodes->empty()){
+	else if (_branch_nodes->empty())
+	{
 		_no_join = true;
 	}
 
-	if(_no_join)
+	if (_no_join)
 	{
 		/* remove lr  */
 
@@ -796,13 +805,12 @@ bool msforest::join_right(List<msNode>* _branch_nodes, teNode* _node, lockReq* _
 	bool _is_level_mat = false;
 	_node->get_all_matches(&_mlist, _is_level_mat);
 	_branch_nodes->reset();
-	msNode* _cur;
-	while(_branch_nodes->hasnext())
+	msNode *_cur;
+	while (_branch_nodes->hasnext())
 	{
-		_cur = _branch_nodes->next();  
+		_cur = _branch_nodes->next();
 		_cur->joinwith(&_mlist, &_jrlist, this->q);
 	}
-
 
 	_node->S_release(_lr);
 
@@ -810,111 +818,113 @@ bool msforest::join_right(List<msNode>* _branch_nodes, teNode* _node, lockReq* _
 	util::track("Out join_right");
 #endif
 
-	return true;	
+	return true;
 }
 
-/* 
+/*
  * further join for upper nodes
  * _cur_te is the first upper teNode
  * _branches is the valid when _cur_te is the leftmost upper node
  * when _cur_te is non-leftmost upper node
  * build List<match>* _mlist with _branches
  * */
-bool msforest::further_join(teNode* _cur_te, List<msNode>* _branches, LRlist* _lrlist)
+bool msforest::further_join(teNode *_cur_te, List<msNode> *_branches, LRlist *_lrlist)
 {
 #ifdef DEBUG_TRACK
 	util::track("IN further_join");
 #endif
 
-	
 	List<JoinResult> _jrlist(true);
 
-	if(_cur_te->at_right())
-	{/* 
-	  *	while non-leftmost should conduct a join-left first
-	  *	join new matches in _mlist with matches in sibling of _first_node
-	  */
-
+	if (_cur_te->at_right())
+	{ /*
+	   *	while non-leftmost should conduct a join-left first
+	   *	join new matches in _mlist with matches in sibling of _first_node
+	   */
 
 #ifdef DEBUG_TRACK
-	util::track("_cur_te at right@further_join");
+		util::track("_cur_te at right@further_join");
 #endif
 
 		_jrlist.clear();
 		List<match> _mlist(false);
-		{/* build _mlist over _branches */
+		{ /* build _mlist over _branches */
 			_branches->reset();
-			while(_branches->hasnext())
+			while (_branches->hasnext())
 			{
 				/* when delete happen, pointer matched is OK */
 				_mlist.add(_branches->next()->get_whole_match());
 			}
 		}
 
-
 #ifdef DEBUG_TRACK
-	util::track("join_left1@further_join");
+		util::track("join_left1@further_join");
 #endif
 
-		this->join_left(&_mlist, _cur_te->get_sibling(), _lrlist->next(), _jrlist);	
-
+		this->join_left(&_mlist, _cur_te->get_sibling(), _lrlist->next(), _jrlist);
 
 #ifdef DEBUG_TRACK
-	util::track("insert1@further_join");
+		util::track("insert1@further_join");
 #endif
-		
+
 		_cur_te = _cur_te->get_father();
-		this->insert(_cur_te, _lrlist->next(), &_jrlist, _branches);	
+		this->insert(_cur_te, _lrlist->next(), &_jrlist, _branches);
 	}
 
-	while(! _cur_te->is_root())
+	while (!_cur_te->is_root())
 	{
 		_jrlist.clear();
 		this->join_right(_branches, _cur_te->get_sibling(), _lrlist->next(), _jrlist);
 		this->insert(_cur_te->get_father(), _lrlist->next(), &_jrlist, _branches);
 		_cur_te = _cur_te->get_father();
 	}
-	
+
 #ifdef DEBUG_TRACK
 	util::track("OUT further_join");
 #endif
 	return true;
 }
 
-string msforest::new_match_str(List<msNode>* _branches){
+string msforest::new_match_str(List<msNode> *_branches)
+{
+#ifdef MY_GET_NUM_MATCH
+	this->num_answer += _branches->size();
+
+	stringstream _ss;
+	_branches->reset();
+	while (_branches->hasnext())
+	{
+		msNode *_next = _branches->next();
+		_ss << _next->whole_match_str();
+	}
+#else
 	stringstream _ss;
 	_ss << "\n**************There are " << _branches->size() << " new matches" << endl;
 	_branches->reset();
-	while(_branches->hasnext())
+	while (_branches->hasnext())
 	{
-		msNode* _next = _branches->next();
+		msNode *_next = _branches->next();
 		_ss << "\t" << _next->whole_match_str() << endl;
 	}
-
-/*
-#ifdef DEBUG_TRACK
-	util::track(_ss);
 #endif
-*/
 	return _ss.str();
 }
-	
-string msforest::expired_match_str(msNode* _mslist)
+
+string msforest::expired_match_str(msNode *_mslist)
 {
 	stringstream _ss;
-	int _count= 0;
+	int _count = 0;
 	_ss << "There are expired matches" << endl;
-	msNode* _cur_ms = _mslist;
-	while(_cur_ms != NULL)
+	msNode *_cur_ms = _mslist;
+	while (_cur_ms != NULL)
 	{
 		_ss << "\t" << (++_count);
-#ifdef MARK_DEL	
+#ifdef MARK_DEL
 		_ss << ": mark(" << _cur_ms->mark_del << ")";
 #endif
 		_ss << _cur_ms->whole_match_str() << endl;
 		_cur_ms = _cur_ms->next;
 	}
-
 
 #ifdef DEBUG_TRACK
 	_ss << "\t\ttotal exp = " << _count << endl;
@@ -924,12 +934,12 @@ string msforest::expired_match_str(msNode* _mslist)
 	return _ss.str();
 }
 
-string msforest::matches_str(List<match>* _matlist)
+string msforest::matches_str(List<match> *_matlist)
 {
 	stringstream _ss;
 
 	_matlist->reset();
-	while(_matlist->hasnext())
+	while (_matlist->hasnext())
 	{
 		_ss << _matlist->next()->to_str() << endl;
 	}
@@ -937,12 +947,12 @@ string msforest::matches_str(List<match>* _matlist)
 	return _ss.str();
 }
 
-string msforest::matches_str(msNode* _mslist)
+string msforest::matches_str(msNode *_mslist)
 {
 	stringstream _ss;
 
-	msNode* _cur_ms = _mslist;
-	while(_cur_ms != NULL)
+	msNode *_cur_ms = _mslist;
+	while (_cur_ms != NULL)
 	{
 		_ss << _cur_ms->whole_match_str() << endl;
 		_cur_ms = _cur_ms->next;
@@ -952,34 +962,35 @@ string msforest::matches_str(msNode* _mslist)
 }
 
 /* remove all msNodes whose fathers are in _rm_fathers list */
-msNode* msforest::remove(teNode* _node, msNode* _rm_fathers, lockReq* _lr){
+msNode *msforest::remove(teNode *_node, msNode *_rm_fathers, lockReq *_lr)
+{
 	_node->X_lock(_lr);
 
-	if(_rm_fathers == NULL)
+	if (_rm_fathers == NULL)
 	{
 		_node->X_release(_lr);
 		return NULL;
 	}
 
-	msNode* _ret_mlist = NULL;
-	msNode* _cur_ms = _rm_fathers;
-	msNode* _tail_ms;
-	msNode* _tmp_ms;
-	while(_cur_ms != NULL)
+	msNode *_ret_mlist = NULL;
+	msNode *_cur_ms = _rm_fathers;
+	msNode *_tail_ms;
+	msNode *_tmp_ms;
+	while (_cur_ms != NULL)
 	{
 #ifdef MARK_DEL
-		if(_cur_ms->mark_del == false)
+		if (_cur_ms->mark_del == false)
 		{
 			int _tmpc = 0;
 			cerr << _cur_ms->whole_match_str() << endl;
-			while(_tmpc ++ < 10)
-				cerr << "rm_father is no marked del" << endl;	
+			while (_tmpc++ < 10)
+				cerr << "rm_father is no marked del" << endl;
 			cerr << _node->to_str() << endl;
 		}
 #endif
-		if(_cur_ms->child_first != NULL)
+		if (_cur_ms->child_first != NULL)
 		{
-			if(_ret_mlist == NULL)
+			if (_ret_mlist == NULL)
 			{
 				_ret_mlist = _cur_ms->be_removed();
 				_tail_ms = _ret_mlist;
@@ -990,8 +1001,8 @@ msNode* msforest::remove(teNode* _node, msNode* _rm_fathers, lockReq* _lr){
 				_tail_ms->next = _tmp_ms;
 				_tmp_ms->prev = _tail_ms;
 			}
-			/*adjust new tail*/	
-			while(_tail_ms->next != NULL)
+			/*adjust new tail*/
+			while (_tail_ms->next != NULL)
 			{
 				_tail_ms = _tail_ms->next;
 			}
@@ -1004,7 +1015,8 @@ msNode* msforest::remove(teNode* _node, msNode* _rm_fathers, lockReq* _lr){
 	return _ret_mlist;
 }
 
-msNode* msforest::remove(teNode* _node, List<match>* _matches, lockReq* _lr){
+msNode *msforest::remove(teNode *_node, List<match> *_matches, lockReq *_lr)
+{
 #ifdef DEBUG_TRACK
 	util::track("IN remove te, matlist");
 
@@ -1017,26 +1029,27 @@ msNode* msforest::remove(teNode* _node, List<match>* _matches, lockReq* _lr){
 #endif
 
 	_node->X_lock(_lr);
-	if(_matches == NULL){
+	if (_matches == NULL)
+	{
 		_node->X_release(_lr);
 		return NULL;
 	}
 
-	msNode* _ret_mlist = NULL;	
+	msNode *_ret_mlist = NULL;
 
 /* this is ifndef  instead of ifdef */
 #ifndef PTR_MATCH
 	//_ret_mlist = _node->remove_match(_matches);
 #else
-	set<match*> _mset;
+	set<match *> _mset;
 	_matches->reset();
-	while(_matches->hasnext())
+	while (_matches->hasnext())
 	{
 		_mset.insert(_matches->next());
 	}
 	_ret_mlist = _node->remove_match(_mset);
 #endif
-	
+
 #ifdef DEBUG_TRACK
 	{
 		stringstream _ss;
@@ -1051,24 +1064,25 @@ msNode* msforest::remove(teNode* _node, List<match>* _matches, lockReq* _lr){
 	return _ret_mlist;
 }
 
-match* msforest::new_match(){
+match *msforest::new_match()
+{
 	pthread_mutex_lock(&(this->matpool_mutex));
-	match* _new = new match();
+	match *_new = new match();
 	this->mat_pool.push_back(_new);
 	pthread_mutex_unlock(&(this->matpool_mutex));
 	return _new;
 }
 
-match* msforest::new_match(qEdge* _qe, dEdge* _e)
+match *msforest::new_match(qEdge *_qe, dEdge *_e)
 {
 	pthread_mutex_lock(&(this->matpool_mutex));
-	match* _new = new match(_qe, _e);
+	match *_new = new match(_qe, _e);
 	this->mat_pool.push_back(_new);
 	pthread_mutex_unlock(&(this->matpool_mutex));
 	return _new;
 }
-	
-match* msforest::gather_match(match* _m)
+
+match *msforest::gather_match(match *_m)
 {
 	pthread_mutex_lock(&(this->matpool_mutex));
 	this->mat_pool.push_back(_m);
@@ -1076,22 +1090,24 @@ match* msforest::gather_match(match* _m)
 	return NULL;
 }
 
-string msforest::tetree_str(){
+string msforest::tetree_str()
+{
 	stringstream _ss;
-	teNode* _cur_te = this->teroot;
+	teNode *_cur_te = this->teroot;
 
 	// queue<pair<int, teNode*>> _q_te;
 	// _q_te.push({0, _cur_te});
-	queue<teNode*> _q_te;
+	queue<teNode *> _q_te;
 	_q_te.push(_cur_te);
 
 	_ss << "----- Level order traversal of tetree -----\n";
-	if(_cur_te == NULL) return "teroot=NULL";
+	if (_cur_te == NULL)
+		return "teroot=NULL";
 
 	int pre_level = 0;
-	while(! _q_te.empty())
-	{	
-		teNode* _n = _q_te.front();
+	while (!_q_te.empty())
+	{
+		teNode *_n = _q_te.front();
 		// auto l_node = _q_te.front();
 		_q_te.pop();
 
@@ -1104,11 +1120,13 @@ string msforest::tetree_str(){
 		// cout << "level: " << level << '\n';
 
 		_ss << _n->to_str() << endl;
-		if(_n->get_left() != NULL){
+		if (_n->get_left() != NULL)
+		{
 			// _q_te.push({level + 1, _n->get_left()});
 			_q_te.push(_n->get_left());
 		}
-		if(_n->get_right() != NULL){
+		if (_n->get_right() != NULL)
+		{
 			// _q_te.push({level + 1, _n->get_right()});
 			_q_te.push(_n->get_right());
 		}
@@ -1116,26 +1134,32 @@ string msforest::tetree_str(){
 
 	return _ss.str();
 }
-	
-string msforest::whole_str(){
+
+string msforest::whole_str()
+{
 #ifndef NO_THREAD
 	return "!NO_THREAD";
 #endif
 	stringstream _ss;
-	teNode* _cur_te = this->teroot;
-	queue<teNode*> _q_te;
+	teNode *_cur_te = this->teroot;
+	queue<teNode *> _q_te;
 	_q_te.push(_cur_te);
-	if(_cur_te == NULL) return "teroot=NULL";
+	if (_cur_te == NULL)
+		return "teroot=NULL";
 
-	while(! _q_te.empty())
+	while (!_q_te.empty())
 	{
-		teNode* _n = _q_te.front();
-		_ss << _n->to_matches_str() << endl << endl << endl;
+		teNode *_n = _q_te.front();
+		_ss << _n->to_matches_str() << endl
+			<< endl
+			<< endl;
 		// _ss << _n->to_matches_str(true) << endl << endl << endl;
-		if(_n->get_left() != NULL){
+		if (_n->get_left() != NULL)
+		{
 			_q_te.push(_n->get_left());
 		}
-		if(_n->get_right() != NULL){
+		if (_n->get_right() != NULL)
+		{
 			_q_te.push(_n->get_right());
 		}
 		_q_te.pop();
@@ -1144,29 +1168,34 @@ string msforest::whole_str(){
 	return _ss.str();
 }
 
-	
-string msforest::answers_str()
+int msforest::num_matches()
 {
-    return this->teroot->to_answer_str();
+	return this->teroot->num_match();
 }
 
-string msforest::oplist_str(){
+string msforest::answers_str()
+{
+	return this->teroot->to_answer_str();
+}
+
+string msforest::oplist_str()
+{
 	stringstream _ss;
-	
-	map<qEdge*, OPlist*>::iterator itr = this->edge2opList.begin();
+
+	map<qEdge *, OPlist *>::iterator itr = this->edge2opList.begin();
 	_ss << "edge2oplist:" << endl;
-	while(itr != this->edge2opList.end())
+	while (itr != this->edge2opList.end())
 	{
 		_ss << "\t" << itr->first->to_str() << " has following op:\n  ";
 		itr->second->reset();
-		while(itr->second->hasnext()){
-			nodeOP* _nop = itr->second->next();
+		while (itr->second->hasnext())
+		{
+			nodeOP *_nop = itr->second->next();
 			string _tmps = _nop->to_str();
 			_ss << "\t\t" << _tmps << endl;
 		}
-		itr ++;
+		itr++;
 	}
-	
 
 	return _ss.str();
 }
@@ -1174,11 +1203,11 @@ string msforest::oplist_str(){
 string msforest::q2te_str()
 {
 	stringstream _ss;
-	map<qEdge*, teNode*>::iterator itr = this->edge2node.begin();
-	while(itr != this->edge2node.end())
+	map<qEdge *, teNode *>::iterator itr = this->edge2node.begin();
+	while (itr != this->edge2node.end())
 	{
 		_ss << itr->first->to_str() << "\t" << itr->second->to_str() << endl;
-		itr ++;
+		itr++;
 	}
 	return _ss.str();
 }
@@ -1196,26 +1225,27 @@ void msforest::build_te_tree()
 	util::track("In build_te_tree");
 #endif
 
-	if(! this->edge2node.empty()){
+	if (!this->edge2node.empty())
+	{
 		cout << "err not empty for edge2node" << endl;
 		exit(-1);
 	}
 
-	vector<vector<qEdge*> >* tcD = this->q->getTCdecomp();
-	
+	vector<vector<qEdge *>> *tcD = this->q->getTCdecomp();
+
 	this->tenodes.clear();
-	for(int i = 0; i < (int)(tcD->size()); i ++)
+	for (int i = 0; i < (int)(tcD->size()); i++)
 	{
 		/* _cur_root is for current TCsubq */
-		qEdge* _cur_qe = (*tcD)[i][0];
-		teNode* _cur_root = new teNode( _cur_qe, true );
+		qEdge *_cur_qe = (*tcD)[i][0];
+		teNode *_cur_root = new teNode(_cur_qe, true);
 		this->tenodes.push_back(_cur_root);
-		this->edge2node[ _cur_qe ] = _cur_root;
+		this->edge2node[_cur_qe] = _cur_root;
 		int _i_size = (*tcD)[i].size();
-		for(int j = 1; j < _i_size; j ++)
+		for (int j = 1; j < _i_size; j++)
 		{
-			qEdge* _ij_qe = (*tcD)[i][j];
-			teNode* _new_leaf = new teNode(_ij_qe, false);
+			qEdge *_ij_qe = (*tcD)[i][j];
+			teNode *_new_leaf = new teNode(_ij_qe, false);
 			this->tenodes.push_back(_new_leaf);
 			_cur_root = new teNode(_cur_root, _new_leaf);
 			this->tenodes.push_back(_cur_root);
@@ -1224,7 +1254,7 @@ void msforest::build_te_tree()
 
 		_cur_root->setTC_or_upper(true);
 		/* teroot is the final root */
-		if(i == 0) 
+		if (i == 0)
 			this->teroot = _cur_root;
 		else
 		{
@@ -1235,7 +1265,8 @@ void msforest::build_te_tree()
 	}
 
 #ifdef RUN_COMMENT
-	cout << "q2testr:\n" << this->q2te_str() << endl;
+	cout << "q2testr:\n"
+		 << this->q2te_str() << endl;
 #endif
 
 #ifdef DEBUG_TRACK
@@ -1256,53 +1287,55 @@ void msforest::build_e2oplist()
 	}
 #endif
 
-	if(! this->edge2opList.empty()){
+	if (!this->edge2opList.empty())
+	{
 		cout << "err not empty for edge2opList" << endl;
 		exit(-1);
 	}
 
-	map<qEdge*, teNode*>::iterator itr = this->edge2node.begin();
-	while(itr != this->edge2node.end())
+	map<qEdge *, teNode *>::iterator itr = this->edge2node.begin();
+	while (itr != this->edge2node.end())
 	{
-		OPlist* _list = new OPlist(true);/* to be free */
-		teNode* _cur_te = itr->second;
-		if(_cur_te->is_leftmost())
-		{/* may be not only an insertion */
-			nodeOP* _op = new nodeOP('i', _cur_te);			
+		OPlist *_list = new OPlist(true); /* to be free */
+		teNode *_cur_te = itr->second;
+		if (_cur_te->is_leftmost())
+		{ /* may be not only an insertion */
+			nodeOP *_op = new nodeOP('i', _cur_te);
 			_list->add(_op);
 		}
 		else
-		{/* _cur_te must be right_leaf and has a father */
+		{ /* _cur_te must be right_leaf and has a father */
 			/* join and insert */
-			nodeOP* _op_j = new nodeOP('j', _cur_te->get_sibling());
+			nodeOP *_op_j = new nodeOP('j', _cur_te->get_sibling());
 			_list->add(_op_j);
-			nodeOP* _op_i = new nodeOP('i', _cur_te->get_father());
+			nodeOP *_op_i = new nodeOP('i', _cur_te->get_father());
 			_list->add(_op_i);
 			_cur_te = _cur_te->get_father();
 		}
 
-		if(_cur_te != NULL)
+		if (_cur_te != NULL)
 		{
-			if(!_cur_te->is_root() &&
+			if (!_cur_te->is_root() &&
 				_cur_te->is_TCnode_or_upper())
-			{/* repeat join and insert */
-				while(_cur_te != NULL)
+			{ /* repeat join and insert */
+				while (_cur_te != NULL)
 				{
-					if(_cur_te->is_root()) break;
+					if (_cur_te->is_root())
+						break;
 
-					nodeOP* _op_j = new nodeOP('j', _cur_te->get_sibling());
+					nodeOP *_op_j = new nodeOP('j', _cur_te->get_sibling());
 					_list->add(_op_j);
-					nodeOP* _op_i = new nodeOP('i', _cur_te->get_father());
+					nodeOP *_op_i = new nodeOP('i', _cur_te->get_father());
 					_list->add(_op_i);
 					_cur_te = _cur_te->get_father();
-				}	
+				}
 			}
 		}
 
-		this->edge2opList[ itr->first ] = _list;
+		this->edge2opList[itr->first] = _list;
 
-		itr ++;
-	}/* while each in edge2node */	
+		itr++;
+	} /* while each in edge2node */
 
 #ifdef RUN_COMMENT
 	cout << this->oplist_str() << endl;
@@ -1312,7 +1345,6 @@ void msforest::build_e2oplist()
 	util::track(this->oplist_str());
 	util::track("Out build_e2oplist");
 #endif
-
 }
 
 #ifdef PESSIMISTIC_LOCK
@@ -1322,9 +1354,9 @@ void msforest::init_te2lock()
 	util::track(" In init te2lock");
 #endif
 	this->te2lock.clear();
-	for(int i = 0; i < (int)this->tenodes.size(); i ++)
+	for (int i = 0; i < (int)this->tenodes.size(); i++)
 	{
-		teNode* _node = this->tenodes[i];
+		teNode *_node = this->tenodes[i];
 		this->te2lock[_node] = 0;
 	}
 #ifdef DEBUG_TRACK
@@ -1332,7 +1364,7 @@ void msforest::init_te2lock()
 #endif
 }
 
-void msforest::pessimistic_apply(OPlist* _oplist)
+void msforest::pessimistic_apply(OPlist *_oplist)
 {
 #ifdef DEBUG_TRACK
 	util::track(" In pessim_apply oplist");
@@ -1346,18 +1378,18 @@ void msforest::pessimistic_apply(OPlist* _oplist)
 	List<teNode> _x_telist;
 
 	_oplist->reset();
-	while(_oplist->hasnext())
+	while (_oplist->hasnext())
 	{
-		nodeOP* _nodeop = _oplist->next();	
-		if(_nodeop->is_write())
+		nodeOP *_nodeop = _oplist->next();
+		if (_nodeop->is_write())
 			_x_telist.add(_nodeop->onode);
 		else
 			_s_telist.add(_nodeop->onode);
 	}
 
-	while(! this->is_apply(_s_telist, 'S') || ! this->is_apply(_x_telist, 'X') )
+	while (!this->is_apply(_s_telist, 'S') || !this->is_apply(_x_telist, 'X'))
 	{
-		pthread_cond_wait(&(this->pessimistic_cond), &(this->pessimistic_mutex));	
+		pthread_cond_wait(&(this->pessimistic_cond), &(this->pessimistic_mutex));
 	}
 
 	this->set_apply(_s_telist, 'S');
@@ -1370,7 +1402,7 @@ void msforest::pessimistic_apply(OPlist* _oplist)
 }
 
 /* for deletion */
-void msforest::pessimistic_apply(List<teNode>& _telist)
+void msforest::pessimistic_apply(List<teNode> &_telist)
 {
 #ifdef DEBUG_TRACK
 	util::track(" In pessim_apply telist");
@@ -1380,9 +1412,9 @@ void msforest::pessimistic_apply(List<teNode>& _telist)
 	util::track(" lock p_apply_telist pessim");
 #endif
 
-	while(!this->is_apply(_telist, 'X'))
+	while (!this->is_apply(_telist, 'X'))
 	{
-		pthread_cond_wait(&(this->pessimistic_cond), &(this->pessimistic_mutex));	
+		pthread_cond_wait(&(this->pessimistic_cond), &(this->pessimistic_mutex));
 	}
 
 	this->set_apply(_telist, 'X');
@@ -1393,27 +1425,25 @@ void msforest::pessimistic_apply(List<teNode>& _telist)
 #endif
 }
 
-/*should be called after pessimistic_mutex is locked*/	
-bool msforest::is_apply(List<teNode>& _telist, char _locktype)
+/*should be called after pessimistic_mutex is locked*/
+bool msforest::is_apply(List<teNode> &_telist, char _locktype)
 {
 #ifdef DEBUG_TRACK
 	util::track(" In is_apply");
 #endif
 	_telist.reset();
-	while(_telist.hasnext())
+	while (_telist.hasnext())
 	{
 		int _ilock = this->te2lock[_telist.next()];
-		if(_locktype == 'S' && _ilock == -1)
+		if (_locktype == 'S' && _ilock == -1)
 		{
 			return false;
 		}
-		else
-		if(_locktype == 'X' && _ilock != 0)
+		else if (_locktype == 'X' && _ilock != 0)
 		{
 			return false;
 		}
-		else
-		if(_locktype != 'S' && _locktype != 'X')
+		else if (_locktype != 'S' && _locktype != 'X')
 		{
 			cerr << "Neither S nor X" << endl;
 			exit(-1);
@@ -1425,45 +1455,45 @@ bool msforest::is_apply(List<teNode>& _telist, char _locktype)
 
 	return true;
 }
-	
-bool msforest::set_apply(List<teNode>& _telist, char _locktype)
+
+bool msforest::set_apply(List<teNode> &_telist, char _locktype)
 {
 	_telist.reset();
-	while(_telist.hasnext())
+	while (_telist.hasnext())
 	{
-		teNode* _node = _telist.next();
+		teNode *_node = _telist.next();
 		int _ilock = this->te2lock[_node];
-		if(_locktype == 'S')
+		if (_locktype == 'S')
 		{
-			if(_ilock == -1){
+			if (_ilock == -1)
+			{
 				cerr << "ilock -1 not S" << endl;
 				exit(-1);
 			}
 
-			this->te2lock[_node] ++;
+			this->te2lock[_node]++;
 		}
-		else
-		if(_locktype == 'X')
+		else if (_locktype == 'X')
 		{
-			if(_ilock != 0){
+			if (_ilock != 0)
+			{
 				cerr << "ilock != 0 not X" << endl;
 				exit(-1);
 			}
 
 			this->te2lock[_node] = -1;
 		}
-		else
-		if(_locktype != 'S' && _locktype != 'X')
+		else if (_locktype != 'S' && _locktype != 'X')
 		{
 			cerr << " @set_apply Neither S nor X" << endl;
 			exit(-1);
 		}
-	}	
+	}
 
 	return true;
 }
 
-void msforest::reset_te2lock(List<lockReq>* _lrlist)
+void msforest::reset_te2lock(List<lockReq> *_lrlist)
 {
 #ifdef DEBUG_TRACK
 	util::track("In reset lrlist");
@@ -1471,7 +1501,7 @@ void msforest::reset_te2lock(List<lockReq>* _lrlist)
 
 	List<teNode> _telist;
 	_lrlist->reset();
-	while(_lrlist->hasnext())
+	while (_lrlist->hasnext())
 	{
 		_telist.add(_lrlist->next()->op->onode);
 	}
@@ -1482,7 +1512,7 @@ void msforest::reset_te2lock(List<lockReq>* _lrlist)
 #endif
 }
 
-void msforest::reset_te2lock(List<teNode>& _telist)
+void msforest::reset_te2lock(List<teNode> &_telist)
 {
 #ifdef DEBUG_TRACK
 	util::track("In reset telist");
@@ -1493,21 +1523,23 @@ void msforest::reset_te2lock(List<teNode>& _telist)
 #endif
 
 	_telist.reset();
-	while(_telist.hasnext())
+	while (_telist.hasnext())
 	{
-		teNode* _node = _telist.next();
+		teNode *_node = _telist.next();
 		/* Xlock */
-		if(te2lock[_node] == -1){
+		if (te2lock[_node] == -1)
+		{
 			te2lock[_node] = 0;
 		}
-		else	/* Slock */
-		if(te2lock[_node] > 0){
-			te2lock[_node] --;
-		}
-		else
-		{
-			cerr << "empty te2lock[_node]" << endl;
-		}
+		else /* Slock */
+			if (te2lock[_node] > 0)
+			{
+				te2lock[_node]--;
+			}
+			else
+			{
+				cerr << "empty te2lock[_node]" << endl;
+			}
 	}
 
 	pthread_cond_signal(&(this->pessimistic_cond));
@@ -1516,5 +1548,5 @@ void msforest::reset_te2lock(List<teNode>& _telist)
 	util::track("Out reset telist");
 #endif
 }
-	
+
 #endif

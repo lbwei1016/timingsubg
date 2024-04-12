@@ -10,12 +10,13 @@ public:
 	rdfstream(string _dat_set);
 	~rdfstream();
 	
-	bool load_edges(int _avg_win_tuple_num);
+	bool load_edges(int64_t _avg_win_tuple_num);
 	bool is_expire(dEdge* _e_old, dEdge* _e_new);
 	// int64_t get_timestamp(dEdge *e);
 
 private:
-	int avg_span_t;
+	int64_t avg_span_t;
+	int64_t window_size;
 };
 
 #endif

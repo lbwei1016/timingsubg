@@ -119,7 +119,7 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 
 	// while (this->G->hasnext())
 	while (true)
-	{
+	{	
 		if (!this->G->hasnext())
 		{
 			done = true;
@@ -136,10 +136,6 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 #ifdef GLOBAL_COMMENT
 			this->run_report();
 #endif
-
-			// #ifdef CYBER
-			util::track(this->run_report());
-			// #endif
 		}
 
 		if (this->seen_eNum % (5 * this->gap_log) == 0)
@@ -279,6 +275,10 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 	}
 
 #ifdef CYBER
+			util::track(this->run_report());
+#endif
+
+#ifdef CYBER
 	sleep(10);
 	string _ans = this->M->answers_str();
 	cout << this->M << '\n';
@@ -288,6 +288,12 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 	_fout << _ans << endl;
 	_fout.close();
 #endif
+
+// #ifdef MY_GET_NUM_MATCH
+// 	string _ans = this->M->answers_str();
+// 	cout << _ans;
+	cout << "Num match: " << this->M->num_answer << '\n';
+// #endif
 
 #ifdef CYBER
 	cout << "start remove edges..." << endl;
@@ -316,7 +322,7 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 #endif
 	if (_runtimes <= 0)
 	{
-#ifndef CYBER
+#if !defined(CYBER) && !defined(MY_GET_NUM_MATCH)
 		cout << "err runtimes=" << _runtimes << endl;
 		exit(-1);
 #endif
@@ -709,7 +715,7 @@ string timingsubg::stat_str()
 {
 	stringstream _ss;
 	_ss << this->exename;
-	_ss << "" << fixed << this->win_size;
+	_ss << "," << fixed << this->win_size;
 	_ss << "," << fixed << this->AVGtime;
 	_ss << "," << fixed << this->Throughput;
 	_ss << "," << fixed << this->AVGspace;

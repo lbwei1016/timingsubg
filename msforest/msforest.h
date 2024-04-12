@@ -34,6 +34,9 @@ public:
 	string whole_str();
 	string answers_str();
 
+	int num_matches();
+	int num_answer;
+
 private:
 	/* If _msN2matches is empty, we need to remove the lr
 	 * if _branches is not NULL, clear it and add new branches into _branches

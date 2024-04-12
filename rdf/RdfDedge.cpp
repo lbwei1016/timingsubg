@@ -73,11 +73,17 @@ rdfDedge* rdfDedge::split() {
 	return _end_d;
 }
 
+
+/// @brief  This function is used in query::compatible()
+/// @param _d 
+/// @return 
 bool rdfDedge::is_same(dEdge* _d)
 {
 	return false;
 	rdfDedge* _nd = (rdfDedge*)_d;
-	if(this == _nd) return true;
+	if (this->id == _nd->id) return false;
+
+	// if(this == _nd) return true;
 	
 	// if(this->s != _nd->s) return false;
 	// if(this->t != _nd->t) return false;
@@ -87,7 +93,7 @@ bool rdfDedge::is_same(dEdge* _d)
 	// if(this->otype != _nd->otype ) return false;
 	// if(this->literal != _nd->literal) return false;
 
-	if (this->signature != _nd->signature) return false;
+	// if (this->signature != _nd->signature) return false;
 	// if (this->id != _nd->id) return false;
 	
 	return true;
@@ -134,10 +140,11 @@ bool rdfDedge::is_match(qEdge* _q)
 	}
 #endif
 
+#ifdef MY_DEBUG
 	char _tmp[100];
 	sprintf(_tmp, "*** Data edge %d matches pattern edge %d ***\n", this->id, _q->id);
 	util::track(string(_tmp));
-
+#endif
 	return true;
 }
 	

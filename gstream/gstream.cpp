@@ -18,7 +18,7 @@ gstream::~gstream(){
 #endif
 }
 
-bool gstream::load_edges(int _avg_win_tuple_num)
+bool gstream::load_edges(int64_t _avg_win_tuple_num)
 {
 	return _avg_win_tuple_num < 0;
 }

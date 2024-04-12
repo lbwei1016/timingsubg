@@ -13,7 +13,7 @@ public:
 	 * read all edges into alledges
 	 * call reset();
 	 */
-	virtual bool load_edges(int _avg_win_tuple_num) = 0;
+	virtual bool load_edges(int64_t _avg_win_tuple_num) = 0;
 	virtual bool is_expire(dEdge* _e_old, dEdge* _e_new) = 0;
 	bool reset();
 	bool hasnext();
