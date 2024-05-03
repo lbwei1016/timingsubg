@@ -12,6 +12,7 @@ timingsubg::timingsubg(int64_t _winsz, string _runtime)
 {
 	this->fruntime = _runtime;
 	this->AVGnoMS = 0;
+	this->pattern_events = vector<qEdge *>();
 }
 
 timingsubg::timingsubg() {}
@@ -111,6 +112,15 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 
 	/*  */
 
+	auto sub_patterns = this->Q->TCdecomp;
+	for (auto sub_pattern : sub_patterns)
+	{
+		for (auto pattern_event : sub_pattern)
+		{
+			this->pattern_events.push_back(pattern_event);
+		}
+	}
+
 	vector<dEdge *> concurrent_batch;
 	bool done = false;
 
@@ -159,34 +169,60 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 	newEdge:
 		// vector<dEdge *> reordered_batch(concurrent_batch.size(), nullptr);
 		vector<dEdge *> reordered_batch;
-		vector<qEdge *> pattern_events;
+		// vector<qEdge *> pattern_events;
 		vector<bool> reordered(concurrent_batch.size(), false);
 		
-		// This can be preprocessed
-		auto sub_patterns = this->Q->TCdecomp;
-		for (auto sub_pattern : sub_patterns)
-		{
-			for (auto pattern_event : sub_pattern)
-			{
-				pattern_events.push_back(pattern_event);
-			}
-		}
+		// // This can be preprocessed
+		// auto sub_patterns = this->Q->TCdecomp;
+		// for (auto sub_pattern : sub_patterns)
+		// {
+		// 	for (auto pattern_event : sub_pattern)
+		// 	{
+		// 		pattern_events.push_back(pattern_event);
+		// 	}
+		// }
 
 		// int batch_state = 0;
-		for (auto pattern_event : pattern_events)
+		// stringstream _ss;
+		// if (concurrent_batch[0]->get_timestamp() == 1637226319578LL) {
+		// 	_ss << "Pattern events:\n";
+		// 	for (auto pattern_event: this->pattern_events) {
+		// 		_ss << pattern_event->to_str() << '\n';
+		// 	}
+
+		// 	_ss << "1637226319.578 batch before reorder:\n";
+		// }
+		for (auto pattern_event : this->pattern_events)
 		{
 			for (int i = 0; i < concurrent_batch.size(); ++i)
 			{
-				if (reordered[i]) continue;
+				// if (reordered[i]) continue;
 				auto data_event = concurrent_batch[i];
 				if (data_event->is_match(pattern_event))
 				{
-					// reordered_batch[batch_state++] = data_event;
 					reordered_batch.push_back(data_event);
-					reordered[i] = true;
+					// reordered[i] = true;
 				}
+
+				// if (data_event->get_timestamp() == 1637226319578LL) {
+				// 	_ss << data_event->to_str() << '\n';
+				// }
 			}
 		}
+
+		// if (reordered_batch.size()) {
+		// 	cout << "initial batch size: " << concurrent_batch.size() << '\n';
+		// 	cout << "reordered batch size: " << reordered_batch.size() << '\n';
+		// 	getchar();
+		// }
+
+		// if (concurrent_batch[0]->get_timestamp() == 1637226319578LL)
+		// 	_ss << "1637226319.578 batch after reorder:\n";
+		// for (auto reordered_event: reordered_batch) {
+		// 	_ss << reordered_event->to_str() << '\n';
+		// }
+
+		// util::track(_ss);
 
 		for (auto _e : reordered_batch)
 		{
@@ -289,11 +325,13 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 	_fout.close();
 #endif
 
-// #ifdef MY_GET_NUM_MATCH
+#ifdef MY_GET_NUM_MATCH
 // 	string _ans = this->M->answers_str();
 // 	cout << _ans;
+	// this->M->num_answer is meaningless without `MY_GET_NUM_MATCH' defined
+	// This number represents the number of "non-unique" answers
 	cout << "Num match: " << this->M->num_answer << '\n';
-// #endif
+#endif
 
 #ifdef CYBER
 	cout << "start remove edges..." << endl;

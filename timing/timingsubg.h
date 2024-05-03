@@ -32,6 +32,8 @@ public:
 
 	static void* thread_insert(void* _tran);
 	static void* thread_remove(void* _tran);
+
+	vector<qEdge *> pattern_events;
 private:
 
 	/* 
