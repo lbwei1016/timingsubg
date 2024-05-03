@@ -215,7 +215,11 @@ long long int msforest::no_ms_size()
 /*  */
 bool msforest::getOPlists(dEdge *_e, vector<OPlist *> &_oplists, vector<qEdge *> &_match_edges)
 {
-	this->q->get_matches(_e, _match_edges);
+	/// @note `_match_edges` is a placeholder: it is cleared inside `get_matches()`
+	/// Since after `reordering`, all data events have already been matched. 
+	/// Thus we do not match again.
+	// this->q->get_matches(_e, _match_edges);
+
 	_oplists.clear();
 	for (int i = 0; i < (int)_match_edges.size(); i++)
 	{
@@ -226,7 +230,9 @@ bool msforest::getOPlists(dEdge *_e, vector<OPlist *> &_oplists, vector<qEdge *>
 
 bool msforest::getTElist(dEdge *_e, vector<teNode *> &_telist, vector<qEdge *> &_match_edges)
 {
-	this->q->get_matches(_e, _match_edges);
+	/// Since after `reordering`, all data events have already been matched. 
+	/// Thus we do not match again.
+	// this->q->get_matches(_e, _match_edges);
 	_telist.clear();
 
 	for (int i = 0; i < (int)_match_edges.size(); i++)

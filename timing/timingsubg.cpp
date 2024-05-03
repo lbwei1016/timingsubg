@@ -168,9 +168,10 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 
 	newEdge:
 		// vector<dEdge *> reordered_batch(concurrent_batch.size(), nullptr);
-		vector<dEdge *> reordered_batch;
+		vector<MatchedPair> reordered_batch;
+		// vector<dEdge *> reordered_batch;
 		// vector<qEdge *> pattern_events;
-		vector<bool> reordered(concurrent_batch.size(), false);
+		// vector<bool> reordered(concurrent_batch.size(), false);
 		
 		// // This can be preprocessed
 		// auto sub_patterns = this->Q->TCdecomp;
@@ -200,7 +201,7 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 				auto data_event = concurrent_batch[i];
 				if (data_event->is_match(pattern_event))
 				{
-					reordered_batch.push_back(data_event);
+					reordered_batch.push_back(MatchedPair(data_event, pattern_event));
 					// reordered[i] = true;
 				}
 
@@ -224,9 +225,10 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 
 		// util::track(_ss);
 
-		for (auto _e : reordered_batch)
+		for (auto _matched : reordered_batch)
 		{
-			_new_ret = this->new_edge(_e);
+			auto _e = _matched.data_event;
+			_new_ret = this->new_edge(_matched);
 			if (_new_ret)
 			{
 #ifdef INVALID_READ
@@ -236,11 +238,11 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 				cout << "\t" << _e->to_str() << endl
 					 << endl;
 #endif
-				this->cur_edges.push(pair<dEdge *, bool>(_e, true));
+				this->cur_edges.push(pair<MatchedPair, bool>(_matched, true));
 			}
 			else
 			{
-				this->cur_edges.push(pair<dEdge *, bool>(_e, false));
+				this->cur_edges.push(pair<MatchedPair, bool>(_matched, false));
 			}
 
 #if (defined SPAN)
@@ -395,8 +397,10 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 #endif
 }
 
-bool timingsubg::new_edge(dEdge *_e)
+bool timingsubg::new_edge(MatchedPair _matched_pair)
 {
+	auto _e = _matched_pair.data_event;
+	auto _q = _matched_pair.pattern_event;
 #if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
 	{
 		stringstream _ss;
@@ -407,9 +411,10 @@ bool timingsubg::new_edge(dEdge *_e)
 #endif
 	}
 #endif
-	this->cacheOPlists.clear();
-
 	// important
+	this->cacheOPlists.clear();
+	this->cacheMatEdge.push_back(_q);
+
 	this->M->getOPlists(_e, this->cacheOPlists, this->cacheMatEdge);
 
 	if (this->cacheMatEdge.empty())
@@ -493,7 +498,7 @@ bool timingsubg::new_edge(dEdge *_e)
 }
 
 // get some edge "expired" (and remove it)(?)
-bool timingsubg::expire_edge(dEdge *_e)
+bool timingsubg::expire_edge(MatchedPair _matched_pair)
 {
 #ifdef INVALID_READ
 	cout << "expire: " << _e->to_str() << endl;
@@ -506,7 +511,10 @@ bool timingsubg::expire_edge(dEdge *_e)
 #if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
 	util::track("IN expire_edge");
 #endif
+	auto _e = _matched_pair.data_event;
+	auto _q = _matched_pair.pattern_event;
 	this->cacheTe.clear();
+	this->cacheMatEdge.push_back(_q);
 	this->M->getTElist(_e, this->cacheTe, this->cacheMatEdge);
 #ifdef DEBUG_TRACK || defined(COMPACT_DEBUG)
 	{
@@ -565,7 +573,7 @@ bool timingsubg::check_expire_edge(dEdge *_newest)
 	bool _expired = false;
 	while (!this->cur_edges.empty())
 	{
-		if (this->G->is_expire(this->cur_edges.front().first, _newest))
+		if (this->G->is_expire(this->cur_edges.front().first.data_event, _newest))
 		{
 			if (this->cur_edges.front().second == true)
 				this->expire_edge(this->cur_edges.front().first);
@@ -620,7 +628,7 @@ bool timingsubg::tuple_expire(dEdge *_e)
 #ifdef DEBUG_TRACK
 		{
 			stringstream _ss;
-			_ss << "AT " << this->seen_eNum << " expire edge: " << this->cur_edges.front().first->to_str() << endl;
+			_ss << "AT " << this->seen_eNum << " expire edge: " << this->cur_edges.front().first.data_event->to_str() << endl;
 			util::track(_ss);
 #ifdef STD_MAIN
 			cout << _ss.str() << endl;

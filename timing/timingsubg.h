@@ -12,6 +12,12 @@ class gstream;
 class gtransaction;
 
 
+struct MatchedPair {
+	MatchedPair(dEdge *_e, qEdge *_q): data_event(_e), pattern_event(_q) {}
+	dEdge *data_event;
+	qEdge *pattern_event;
+};
+
 class timingsubg{
 public:
 	timingsubg(int64_t _winsz, string _config="defaultconfg");
@@ -20,8 +26,9 @@ public:
 	void initial();
 
 	void run(int _mode, gstream* _G, query* Q, timingconf* _tconf);
-	bool new_edge(dEdge* _e);
-	bool expire_edge(dEdge* _e);
+	bool new_edge(MatchedPair _matched_pair);
+	// bool new_edge(dEdge* _e);
+	bool expire_edge(MatchedPair _matched_pair);
 	bool check_expire_edge(dEdge* _newest);
 	bool tuple_expire(dEdge* _e);
 	timingconf* getconf();
@@ -51,7 +58,8 @@ private:
 	gtransaction* next_tran();
 
 	int64_t win_size;
-	queue<pair<dEdge*, bool> > cur_edges;
+	queue<pair<MatchedPair, bool> > cur_edges;
+	// queue<pair<dEdge*, bool> > cur_edges;
 	queue<gtransaction*> tran_pool;
 	timingconf* tconf;
 	msforest* M;
