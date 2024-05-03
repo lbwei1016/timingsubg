@@ -95,7 +95,7 @@ void msforest::initial()
 	cout << this->tetree_str() << endl;
 #endif
 
-#ifdef DEBUG_TRACK
+#if defined(DEBUG_TRACK) && !defined(COMPACT_DEBUG)
 	util::track("tetree:\n" + this->tetree_str());
 #endif
 	this->build_e2oplist();
@@ -247,8 +247,10 @@ bool msforest::remove(dEdge *_e, teNode *_node, List<lockReq> *_lr_list)
 	{
 		stringstream _ss;
 		_ss << "IN remove(dedge, te, lrlist)" << endl;
+#ifndef COMPACT_DEBUG
 		_ss << "\t" << _e->to_str() << endl;
 		_ss << "\t[" << _node << "]" << endl;
+#endif
 		util::track(_ss);
 	}
 	_lr_list->reset();
@@ -303,7 +305,7 @@ bool msforest::remove(dEdge *_e, teNode *_node, List<lockReq> *_lr_list)
 		List<match> _matlist;
 		teNode::build_matlist(_matlist, _rm_list);
 
-#ifdef DEBUG_TRACK
+#if defined(DEBUG_TRACK) && !defined(COMPACT_DEBUG)
 		{
 			stringstream _ss;
 			_ss << "to be removed matches in upper level:" << endl;
@@ -322,7 +324,7 @@ bool msforest::remove(dEdge *_e, teNode *_node, List<lockReq> *_lr_list)
 	{ /* still branches */
 		while (!_cur_te->is_root())
 		{
-#ifdef DEBUG_TRACK
+#if defined(DEBUG_TRACK) && !defined(COMPACT_DEBUG)
 			{
 				stringstream _ss;
 				_ss << "\n_cur_te is " << _cur_te->to_str() << endl;
@@ -488,7 +490,7 @@ bool msforest::insert(dEdge *_e, qEdge *_qe, List<lockReq> *_lrlist)
 bool msforest::insert(teNode *_node, lockReq *_lr, List<JoinResult> *_msN2matches, List<msNode> *_branches)
 {
 
-#ifdef DEBUG_TRACK
+#if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
 	util::track("IN insert te JRlist bran AT " + _node->to_str());
 	util::track("matches are : " + _node->to_matches_str());
 #endif
@@ -584,7 +586,7 @@ bool msforest::insert(teNode *_node, lockReq *_lr, List<JoinResult> *_msN2matche
 			cout << this->new_match_str(_branches) << endl;
 #endif
 
-#if defined(DEBUG_TRACK) || defined(MY_GET_NUM_MATCH)
+#if (defined(DEBUG_TRACK) || defined(MY_GET_NUM_MATCH)) && !defined(COMPACT_DEBUG)
 			// util::track("answer str: " + this->answers_str());
 			util::track(this->new_match_str(_branches));
 #endif
@@ -620,7 +622,7 @@ bool msforest::join_left(List<match> *_matches, teNode *_node, lockReq *_lr, Lis
 
 	_node->get_mslist(_mslist);
 
-#ifdef DEBUG_TRACK
+#if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
 	util::track("IN join_left with node " + _node->to_str());
 	util::track(_node->to_matches_str());
 #endif
@@ -629,7 +631,7 @@ bool msforest::join_left(List<match> *_matches, teNode *_node, lockReq *_lr, Lis
 	{
 		/* remove lr */
 
-#ifdef DEBUG_TRACK
+#if defined(DEBUG_TRACK) && !defined(COMPACT_DEBUG)
 		util::track("remove lr@join_left AT " + _node->to_str());
 #endif
 
@@ -746,7 +748,7 @@ bool msforest::remove_used_mat(List<match> *_matches, List<JoinResult> &_jrlist)
 		}
 	}
 
-#ifdef DEBUG_TRACK
+#if defined(DEBUG_TRACK) && !defined(COMPACT_DEBUG)
 	{
 		stringstream _ss;
 		_ss << "Those is" << _count_pop << " to be delete: " << endl;
@@ -775,7 +777,7 @@ bool msforest::join_right(List<msNode> *_branch_nodes, teNode *_node, lockReq *_
 #endif
 	_node->S_lock(_lr);
 
-#ifdef DEBUG_TRACK
+#if defined(DEBUG_TRACK) && !defined(COMPACT_TRACK)
 	util::track("IN join_right");
 	util::track(_node->to_matches_str());
 #endif
@@ -889,13 +891,12 @@ string msforest::new_match_str(List<msNode> *_branches)
 {
 #ifdef MY_GET_NUM_MATCH
 	this->num_answer += _branches->size();
-
 	stringstream _ss;
 	_branches->reset();
 	while (_branches->hasnext())
 	{
 		msNode *_next = _branches->next();
-		_ss << _next->whole_match_str();
+		_ss << _next->whole_match_str() << endl;
 	}
 #else
 	stringstream _ss;
@@ -1017,7 +1018,7 @@ msNode *msforest::remove(teNode *_node, msNode *_rm_fathers, lockReq *_lr)
 
 msNode *msforest::remove(teNode *_node, List<match> *_matches, lockReq *_lr)
 {
-#ifdef DEBUG_TRACK
+#if defined(DEBUG_TRACK) && !defined(COMPACT_TRACK)
 	util::track("IN remove te, matlist");
 
 	{
@@ -1050,7 +1051,7 @@ msNode *msforest::remove(teNode *_node, List<match> *_matches, lockReq *_lr)
 	_ret_mlist = _node->remove_match(_mset);
 #endif
 
-#ifdef DEBUG_TRACK
+#if defined(DEBUG_TRACK)  && !defined(COMPACT_TRACK)
 	{
 		stringstream _ss;
 		_ss << msforest::expired_match_str(_ret_mlist);

@@ -47,6 +47,9 @@ CFLAGS += -DSPAN
 # CFLAGS += -DMY_DEBUG
 # CFLAGS += -DWHOLE_STR
 
+# For compact debugging
+CFLAGS += -DCOMPACT_DEBUG
+
 # For answer outputs
 # CFLAGS += -DCYBER
 CFLAGS += -DMY_GET_NUM_MATCH

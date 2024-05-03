@@ -397,7 +397,7 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 
 bool timingsubg::new_edge(dEdge *_e)
 {
-#ifdef DEBUG_TRACK
+#if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
 	{
 		stringstream _ss;
 		_ss << "\n====================" << this->seen_eNum << " = " << _e->to_str() << endl;
@@ -443,7 +443,7 @@ bool timingsubg::new_edge(dEdge *_e)
 	for (int i = 0; i < (int)this->cacheOPlists.size(); i++)
 	{
 
-#ifdef DEBUG_TRACK
+#if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
 		{
 			stringstream _ss;
 			_ss << "\n*****start match " << i << endl;
@@ -503,12 +503,12 @@ bool timingsubg::expire_edge(dEdge *_e)
 	return false;
 #endif
 
-#ifdef DEBUG_TRACK
+#if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
 	util::track("IN expire_edge");
 #endif
 	this->cacheTe.clear();
 	this->M->getTElist(_e, this->cacheTe, this->cacheMatEdge);
-#ifdef DEBUG_TRACK
+#ifdef DEBUG_TRACK || defined(COMPACT_DEBUG)
 	{
 		stringstream _ss;
 		_ss << "There are " << this->cacheTe.size() << " te nodes for";
@@ -522,7 +522,7 @@ bool timingsubg::expire_edge(dEdge *_e)
 		gtransaction *_tran = this->next_tran();
 		/* set the _tran with params */
 		_tran->del_set(_e, this->cacheTe[i], this->G, this->M, this->Q);
-#ifdef DEBUG_TRACK
+#if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
 		{
 			stringstream _ss;
 			_ss << "expire[" << i << "]:" << endl;

@@ -75,12 +75,12 @@ int main(int argc, char *argv[])
 		 << _Q.timingorder_str() << endl;
 #endif
 
-#if defined(DEBUG_TRACK) || defined(CYBER)
+#if defined(DEBUG_TRACK) || defined(CYBER) || defined(COMPACT_DEBUG)
 	util::init_track("./track");
-	cout << "I am init_track!!!!!\n";
+	cout << "init_track!!!!! (debugging)\n";
 #elif defined(MY_GET_NUM_MATCH)
 	util::init_track("./answers");
-	cout << "init_track!!!!!\n";
+	cout << "init_track!!!!! (output answers)\n";
 #endif
 
 	timingsubg tsubg(0, _frtime);
