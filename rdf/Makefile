@@ -41,13 +41,13 @@ CFLAGS += -DSPAN
 #CFLAGS += -DREDCC
 
 # For debugging
-CFLAGS += -DDEBUG_TRACK
+# CFLAGS += -DDEBUG_TRACK
 # CFLAGS += -DGLOBAL_COMMENT
 # CFLAGS += -DRUN_COMMENT
 # CFLAGS += -DMY_DEBUG
-CFLAGS += -DWHOLE_STR
+# CFLAGS += -DWHOLE_STR
 
-# For compact debugging
+# For compact debugging output
 # CFLAGS += -DCOMPACT_DEBUG
 
 # For answer outputs

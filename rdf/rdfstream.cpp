@@ -83,11 +83,11 @@ bool rdfstream::load_edges(int64_t _avg_win_tuple_num)
 	int64_t _tspan = _last->t_sec - _first->t_sec;
 	int64_t _win_times = 1 + this->alledges.size() / _avg_win_tuple_num;
 	int64_t _avg_span = 1 + _tspan / _win_times;
-	this->avg_span_t = _avg_span;
-	// this->avg_span_t = _avg_win_tuple_num;
+	// this->avg_span_t = _avg_span;
+	this->avg_span_t = _avg_win_tuple_num;
 	// this->window_size = _avg_win_tuple_num;
 
-#ifdef MY_DEBUG
+#if defined(MY_DEBUG) || defined(DEBUG_TRACK)
 	// cout << "avg_span_t: " << this->avg_span_t << '\n';
 	// cout << "effective window size: " << this->window_size << '\n';
 	cout << "effective window size: " << this->avg_span_t << '\n';

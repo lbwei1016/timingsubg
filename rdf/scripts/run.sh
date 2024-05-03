@@ -13,6 +13,4 @@ fi
 
 #./bin/tirdf IPMES/data/testcases/expect_SP12.csv IPMES/data/universal_patterns/SP12_regex.json 3600 1 ./SP12_regex.run.log  IPMES/data/universal_patterns/subpatterns/SP12_regex.json
 
-#./bin/tirdf IPMES/data/temp/expect_SP8_regex_1.csv IPMES/data/universal_patterns/SP8_regex.json 1800 1 ./SP8.run.log  IPMES/data/universal_patterns/subpatterns/SP8_regex.json
-
 #./bin/tirdf IPMES/data/testcases/unexpected_SP12.csv IPMES/data/universal_patterns/SP12_regex.json 3600 1 ./SP12.run.log  IPMES/data/universal_patterns/subpatterns/SP12_regex.json

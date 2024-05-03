@@ -7,6 +7,7 @@
 #include "timingsubg.h"
 #include "../msforest/nodeOP.h"
 #include "../msforest/teNode.h"
+#include <cassert>
 
 timingsubg::timingsubg(int64_t _winsz, string _runtime)
 {
@@ -413,15 +414,18 @@ bool timingsubg::new_edge(MatchedPair _matched_pair)
 #endif
 	// important
 	this->cacheOPlists.clear();
+	this->cacheMatEdge.clear();
 	this->cacheMatEdge.push_back(_q);
 
 	this->M->getOPlists(_e, this->cacheOPlists, this->cacheMatEdge);
+	assert(this->cacheMatEdge.size() == 1);
+	assert(this->cacheOPlists.size() == 1);
+
 
 	if (this->cacheMatEdge.empty())
 	{
 		this->unmat_eNum++;
 		return false;
-		;
 	}
 #ifdef DEBUG_TRACK
 	{
@@ -500,6 +504,8 @@ bool timingsubg::new_edge(MatchedPair _matched_pair)
 // get some edge "expired" (and remove it)(?)
 bool timingsubg::expire_edge(MatchedPair _matched_pair)
 {
+	auto _e = _matched_pair.data_event;
+	auto _q = _matched_pair.pattern_event;
 #ifdef INVALID_READ
 	cout << "expire: " << _e->to_str() << endl;
 #endif
@@ -511,12 +517,11 @@ bool timingsubg::expire_edge(MatchedPair _matched_pair)
 #if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
 	util::track("IN expire_edge");
 #endif
-	auto _e = _matched_pair.data_event;
-	auto _q = _matched_pair.pattern_event;
+
 	this->cacheTe.clear();
 	this->cacheMatEdge.push_back(_q);
 	this->M->getTElist(_e, this->cacheTe, this->cacheMatEdge);
-#ifdef DEBUG_TRACK || defined(COMPACT_DEBUG)
+#if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
 	{
 		stringstream _ss;
 		_ss << "There are " << this->cacheTe.size() << " te nodes for";
