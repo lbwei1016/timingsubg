@@ -1009,7 +1009,7 @@ msNode *msforest::remove(teNode *_node, msNode *_rm_fathers, lockReq *_lr)
 				_tmp_ms->prev = _tail_ms;
 			}
 			/*adjust new tail*/
-			while (_tail_ms->next != NULL)
+			while (_tail_ms && _tail_ms->next != NULL)
 			{
 				_tail_ms = _tail_ms->next;
 			}
