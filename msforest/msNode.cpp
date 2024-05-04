@@ -77,7 +77,7 @@ long long int msNode::whole_mat_size()
 	return _sz;
 }
 
-// bool check_entity_uniqueness(set<int64_t> &used) 
+// bool check_entity_uniqueness(set<int64_t> &used)
 // {
 
 // }
@@ -286,6 +286,13 @@ msNode *msNode::be_removed()
 		_tail->mark_del = true;
 #endif
 	}
+
+	/// @bug This condition is added temporarily for debugging
+	if (this->child_first->prev == NULL)
+	{
+		return NULL;
+	}
+
 	this->child_first->prev->next = _tail->next;
 	if (_tail->next != NULL)
 	{
