@@ -16,7 +16,6 @@ public:
 	bool is_literal();
 	int64_t get_timestamp();
 
-
 	string to_str();
 
 	rdfDedge* split();

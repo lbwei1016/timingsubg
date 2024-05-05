@@ -28,8 +28,7 @@ rdfDedge::rdfDedge(string _str_e) : dEdge(-1, -1)
 			this->t_sec = int64_t(stod(token) * 1000);
 			break;
 		case 1:
-			// (IPMES) not used currently
-			// maybe split this into two edges?
+			// for event splitting
 			this->end_time = int64_t(stod(token) * 1000);
 			break;
 		case 2:

@@ -24,6 +24,7 @@ MPICC = mpicxx
 #NOTICE: -O2 is recommended, while -O3 is dangerous
 #when developing, not use -O because it will disturb the normal 
 #routine. use it for test and release.
+# CFLAGS = -c -Wall -g #-pg #-O2
 CFLAGS = -c -Wall -O2
 
 CFLAGS += -DNO_THREAD
@@ -45,7 +46,6 @@ CFLAGS += -DSPAN
 # CFLAGS += -DRUN_COMMENT
 # CFLAGS += -DMY_DEBUG
 # CFLAGS += -DWHOLE_STR
-CFLAGS = -c -Wall -g #-pg #-O2
 
 # For compact debugging output
 # CFLAGS += -DCOMPACT_DEBUG

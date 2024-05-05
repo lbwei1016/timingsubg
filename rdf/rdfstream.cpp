@@ -1,5 +1,11 @@
 #include "rdfstream.h"
 
+struct rdfDedgeComparator {
+    bool operator () (rdfDedge *_a, rdfDedge *_b) {
+        return _a->t_sec > _b->t_sec;
+    }
+};
+
 rdfstream::rdfstream(string _dat_set) : gstream(_dat_set)
 {
 }
@@ -38,7 +44,7 @@ bool rdfstream::load_edges(int64_t _avg_win_tuple_num)
 
 	char _buf[5000];
 	rdfDedge *_rd = NULL;
-	deque<rdfDedge *> edge_buf;
+	priority_queue<rdfDedge *, vector<rdfDedge *>, rdfDedgeComparator> edge_buf;
 
 	while (!fin.eof())
 	{
@@ -48,9 +54,9 @@ bool rdfstream::load_edges(int64_t _avg_win_tuple_num)
 			break;
 		_rd = new rdfDedge(_buf);
 
-		while (edge_buf.size() && edge_buf.front()->t_sec < _rd->t_sec) {
-			auto *e = edge_buf.front();
-			edge_buf.pop_front();
+		while (edge_buf.size() && edge_buf.top()->t_sec <= _rd->t_sec) {
+			auto *e = edge_buf.top();
+			edge_buf.pop();
 			this->alledges.push_back((dEdge *)e);
 		}
 
@@ -59,21 +65,25 @@ bool rdfstream::load_edges(int64_t _avg_win_tuple_num)
 		rdfDedge *_end_rd = _rd->split();
 		if (_end_rd)
 		{
-			// this->alledges.push_back((dEdge *)_end_rd);
-			edge_buf.push_back(_end_rd);
+			edge_buf.push(_end_rd);
 		}
-		// else cout << "NOT splitted!\n";
 	}
 	fin.close();
 
-	// #ifdef MY_DEBUG
-	// 	cout << "Now outputing data edges...\n";
-	// 	for (auto &_edge: alledges) {
-	// 		auto edge = (rdfDedge*)_edge;
-	// 		printf("(time, s, t, eid) = (%ld, %d, %d, %d)\n", edge->t_sec, edge->s, edge->t, edge->id);
-	// 	}
-	// 	cout << "Loading data graph finished.\n";
-	// #endif
+	while (edge_buf.size()) {
+		auto *e = edge_buf.top();
+		edge_buf.pop();
+		this->alledges.push_back((dEdge *)e);
+	}
+
+#ifdef MY_DEBUG
+	cout << "Now outputing all data edges...\n";
+	for (auto &_edge: this->alledges) {
+		auto edge = (rdfDedge*)_edge;
+		printf("(time, s, t, eid) = (%ld, %d, %d, %d)\n", edge->t_sec, edge->s, edge->t, edge->id);
+	}
+	cout << "Loading data graph finished.\n";
+#endif
 
 	/* calculate avg time span */
 	int64_t all_enum = this->alledges.size();
@@ -119,8 +129,3 @@ bool rdfstream::is_expire(dEdge *_e_old, dEdge *_e_new)
 
 	return true;
 }
-
-// int64_t get_timestamp(dEdge *e) {
-// 	rdfDedge *re = (rdfDedge*)e;
-// 	return re->t_sec;
-// }
