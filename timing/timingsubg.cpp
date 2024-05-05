@@ -113,6 +113,7 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 
 	/*  */
 
+	/// Flatten all pattern events for reordering.
 	auto sub_patterns = this->Q->TCdecomp;
 	for (auto sub_pattern : sub_patterns)
 	{
@@ -160,11 +161,23 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 		cout.flush();
 
 		_rtime.begin();
+		// if (concurrent_batch.back()->get_timestamp() == 1641352800286) {
+		// 	cout << this->G->peek()->id << ' ' << this->G->peek()->get_timestamp() << '\n';
+		// }
+
+		assert(this->G->peek()->get_timestamp() >= concurrent_batch.back()->get_timestamp());
+
 		if (this->G->peek() && concurrent_batch.back()->get_timestamp() == this->G->peek()->get_timestamp())
 		{
 			concurrent_batch.push_back(this->G->next());
 			continue;
 		}
+
+		// if (concurrent_batch.back()->get_timestamp() == 1641352800286) {
+		// 	for (auto x: concurrent_batch) {
+		// 		cout << x->id << '\n';
+		// 	}
+		// }
 		// dEdge* _e = this->G->next();
 
 	newEdge:
@@ -205,25 +218,15 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 					reordered_batch.push_back(MatchedPair(data_event, pattern_event));
 					// reordered[i] = true;
 				}
-
-				// if (data_event->get_timestamp() == 1637226319578LL) {
-				// 	_ss << data_event->to_str() << '\n';
-				// }
 			}
 		}
 
-		// if (reordered_batch.size()) {
-		// 	cout << "initial batch size: " << concurrent_batch.size() << '\n';
-		// 	cout << "reordered batch size: " << reordered_batch.size() << '\n';
-		// 	getchar();
-		// }
-
-		// if (concurrent_batch[0]->get_timestamp() == 1637226319578LL)
-		// 	_ss << "1637226319.578 batch after reorder:\n";
+		// stringstream _ss;
+		// if (concurrent_batch[0]->get_timestamp() == 1641352800286LL)
+		// 	_ss << "1641352800.286 batch after reorder:\n";
 		// for (auto reordered_event: reordered_batch) {
-		// 	_ss << reordered_event->to_str() << '\n';
+		// 	_ss << reordered_event.data_event->to_str() << '\n';
 		// }
-
 		// util::track(_ss);
 
 		for (auto _matched : reordered_batch)
@@ -418,9 +421,10 @@ bool timingsubg::new_edge(MatchedPair _matched_pair)
 	this->cacheMatEdge.push_back(_q);
 
 	this->M->getOPlists(_e, this->cacheOPlists, this->cacheMatEdge);
+#if defined(DEBUG_TRACK) || defined(COMPACT_TRACK)
 	assert(this->cacheMatEdge.size() == 1);
 	assert(this->cacheOPlists.size() == 1);
-
+#endif
 
 	if (this->cacheMatEdge.empty())
 	{
@@ -521,7 +525,7 @@ bool timingsubg::expire_edge(MatchedPair _matched_pair)
 	this->cacheTe.clear();
 	this->cacheMatEdge.push_back(_q);
 	this->M->getTElist(_e, this->cacheTe, this->cacheMatEdge);
-#if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
+#if defined(DEBUG_TRACK)
 	{
 		stringstream _ss;
 		_ss << "There are " << this->cacheTe.size() << " te nodes for";
@@ -580,6 +584,13 @@ bool timingsubg::check_expire_edge(dEdge *_newest)
 	{
 		if (this->G->is_expire(this->cur_edges.front().first.data_event, _newest))
 		{
+#ifdef COMPACT_DEBUG
+			if (this->cur_edges.front().first.data_event->id == 9504591) {
+				stringstream _ss;
+				_ss << "9504591 expires at " << _newest->get_timestamp() << '\n';
+			}
+#endif
+		
 			if (this->cur_edges.front().second == true)
 				this->expire_edge(this->cur_edges.front().first);
 

@@ -1,13 +1,15 @@
 #include "gstream.h"
 #include "../timing/edge.h"
 
-gstream::gstream(string& _data_path){
+gstream::gstream(string &_data_path)
+{
 	this->data_path = _data_path;
 	this->alledges.clear();
 }
 
-gstream::~gstream(){
-	for(int i = 0; i < (int)alledges.size(); i ++)
+gstream::~gstream()
+{
+	for (int i = 0; i < (int)alledges.size(); i++)
 	{
 		delete this->alledges[i];
 		this->alledges[i] = NULL;
@@ -23,42 +25,45 @@ bool gstream::load_edges(int64_t _avg_win_tuple_num)
 	return _avg_win_tuple_num < 0;
 }
 
-bool gstream::is_expire(dEdge* _e_old, dEdge* _e_new)
+bool gstream::is_expire(dEdge *_e_old, dEdge *_e_new)
 {
 	return false;
 }
 
-int gstream::size(){
+int gstream::size()
+{
 	return this->alledges.size();
 }
 
-bool gstream::reset(){
+bool gstream::reset()
+{
 	this->cur_itr = this->alledges.begin();
 	return true;
 }
 
-bool gstream::hasnext(){
+bool gstream::hasnext()
+{
 	return this->cur_itr != this->alledges.end();
 }
 
-dEdge* gstream::next(){
-	if(this->cur_itr != this->alledges.end())
+dEdge *gstream::next()
+{
+	if (this->cur_itr != this->alledges.end())
 	{
-		dEdge* _ret = *(this->cur_itr);
-		++ this->cur_itr;
+		dEdge *_ret = *(this->cur_itr);
+		++this->cur_itr;
 		return _ret;
 	}
 	return NULL;
 }
 
-dEdge* gstream::peek(){
-	if(this->cur_itr != this->alledges.end())
+dEdge *gstream::peek()
+{
+	if (this->cur_itr != this->alledges.end())
 	{
 		return *(this->cur_itr);
 	}
 	return NULL;
 }
 
-//private:
-
-
+// private:

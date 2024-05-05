@@ -659,15 +659,15 @@ string teNode::to_matches_str(bool _is_level_mat){
 	stringstream _ss;
 	_ss << "\tThere are " << _mlist.size() << " matches of " << this->to_str() << " as following:" << endl;
 
-#ifndef COMPACT_DEBUG
+// #ifndef COMPACT_DEBUG
 	_mlist.reset();
 	while(_mlist.hasnext())
 	{
 		_ss << "\t\t" << _mlist.next()->to_str() << endl;
 	}
-#else
-	_ss << "Compact debug. Omitted...\n";
-#endif
+// #else
+	// _ss << "Compact debug. Omitted...\n";
+// #endif
 	return _ss.str();
 }
 	

@@ -498,7 +498,7 @@ bool msforest::insert(teNode *_node, lockReq *_lr, List<JoinResult> *_msN2matche
 
 #if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
 	util::track("IN insert te JRlist bran AT " + _node->to_str());
-	util::track("matches are : " + _node->to_matches_str());
+	util::track("(Before insertion) matches are : " + _node->to_matches_str());
 #endif
 
 	_node->X_lock(_lr);

@@ -117,7 +117,7 @@ bool msNode::joinwith(List<match> *_matches, List<JoinResult> *jrList, query *_q
 			_jr->second->add(_m2);
 
 #ifdef NO_THREAD
-#ifdef DEBUG_TRACK
+#if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
 			{
 				stringstream _ss;
 				_ss << "\tcompatible : " << endl;
