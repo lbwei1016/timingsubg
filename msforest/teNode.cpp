@@ -404,7 +404,7 @@ msNode* teNode::remove_edge(dEdge* _e, lockReq* _lr){
 		util::track("In remove_edge@"+this->to_str(), "\n");
 	}
 #endif
-	this->X_lock(_lr);
+	// this->X_lock(_lr);
 	msNode* _ret_mslist = NULL;
 	msNode* _tail = NULL;
 	msNode* _next = NULL;
@@ -442,7 +442,7 @@ msNode* teNode::remove_edge(dEdge* _e, lockReq* _lr){
 		
 	}
 
-	this->X_release(_lr);
+	// this->X_release(_lr);
 
 	return _ret_mslist;
 }

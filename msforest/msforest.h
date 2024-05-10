@@ -27,7 +27,8 @@ public:
 	/*  */
 	bool remove(dEdge* _e, teNode* _node, List<lockReq>* _lr_list);
 	/*  */
-	bool insert(dEdge* _e, qEdge* _qe, List<lockReq>* _lrlist);
+	// bool insert(dEdge* _e, qEdge* _qe, List<lockReq>* _lrlist);
+	bool insert(dEdge* _e, qEdge* _qe, OPlist* _lrlist);
 
 	long long int to_size();
 	long long int no_ms_size();
@@ -41,7 +42,8 @@ private:
 	/* If _msN2matches is empty, we need to remove the lr
 	 * if _branches is not NULL, clear it and add new branches into _branches
 	 * */
-	bool insert(teNode* _node, lockReq* _lr, List<JoinResult>* _msN2matches, List<msNode>* _branches = NULL);
+	// bool insert(teNode* _node, lockReq* _lr, List<JoinResult>* _msN2matches, List<msNode>* _branches = NULL);
+	bool insert(teNode* _node, nodeOP* _lr, List<JoinResult>* _msN2matches, List<msNode>* _branches = NULL);
 	string new_match_str(List<msNode>* _branches);
 	string expired_match_str(msNode* _mslist);
 	static string matches_str(List<match>* _matlist);
@@ -54,7 +56,8 @@ private:
 	 * else 
 	 *		_matches contains all new matches of a TCnode(Right sibling of _node)
 	 * */
-	bool join_left(List<match>* _matches, teNode* _node, lockReq* _lr,  List<JoinResult>& _jrlist);
+	bool join_left(List<match>* _matches, teNode* _node, nodeOP* _lr,  List<JoinResult>& _jrlist);
+	// bool join_left(List<match>* _matches, teNode* _node, lockReq* _lr,  List<JoinResult>& _jrlist);
 	bool remove_used_mat(List<match>* _matches, List<JoinResult>& _jrlist);
 	/* 
 	 * _node is at_right()
@@ -62,7 +65,8 @@ private:
 	 * results is put into _jrlist
 	 * join_right will happen only if _node is tc_or_upper node
 	 * */
-	bool join_right(List<msNode>* _branch_nodes, teNode* _node, lockReq* _lr, List<JoinResult>& _jrlist);
+	bool join_right(List<msNode>* _branch_nodes, teNode* _node, nodeOP* _lr, List<JoinResult>& _jrlist);
+	// bool join_right(List<msNode>* _branch_nodes, teNode* _node, lockReq* _lr, List<JoinResult>& _jrlist);
 	/* 
 	 * further join for upper nodes
 	 * _cur_te is the first upper teNode
@@ -70,7 +74,8 @@ private:
 	 * when _cur_te is non-leftmost upper node
 	 * build List<match>* _mlist with _branches
 	 * */
-	bool further_join(teNode* _cur_te, List<msNode>* _branches, LRlist* _lrlist);
+	bool further_join(teNode* _cur_te, List<msNode>* _branches, OPlist* _lrlist);
+	// bool further_join(teNode* _cur_te, List<msNode>* _branches, LRlist* _lrlist);
 
 	/* return removed_list
 	 * if(_rm_fathers==NULL) return NULL;

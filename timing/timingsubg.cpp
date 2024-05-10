@@ -70,11 +70,11 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 		exit(-1);
 	}
 
-	for (int i = 0; i < threadNum; i++)
-	{
-		gtransaction *_tran = new gtransaction();
-		this->tran_pool.push(_tran);
-	}
+	// for (int i = 0; i < threadNum; i++)
+	// {
+	// 	gtransaction *_tran = new gtransaction();
+	// 	this->tran_pool.push(_tran);
+	// }
 
 #ifdef DEBUG_TRACK
 	util::track("\nreset gstream");
@@ -415,13 +415,13 @@ bool timingsubg::new_edge(MatchedPair _matched_pair)
 #endif
 		}
 #endif
-		gtransaction *_tran = this->next_tran();
+		// gtransaction *_tran = this->next_tran();
 
-		_tran->set(_e,
-				   this->cacheMatEdge[i],
-				   this->cacheOPlists[i],
-				   this->G, this->M, this->Q);
-		_tran->count = this->seen_eNum * 100 + i;
+		// _tran->set(_e,
+		// 		   this->cacheMatEdge[i],
+		// 		   this->cacheOPlists[i],
+		// 		   this->G, this->M, this->Q);
+		// _tran->count = this->seen_eNum * 100 + i;
 #ifdef DEBUG_TRACK
 		{
 			stringstream _ss;
@@ -431,7 +431,9 @@ bool timingsubg::new_edge(MatchedPair _matched_pair)
 #endif
 
 #ifdef NO_THREAD
-		this->M->insert(_tran->e, _tran->qe, _tran->lr_list);
+		// this->M->insert(_tran->e, _tran->qe, _tran->lr_list);
+		cacheOPlists[i]->reset();
+		this->M->insert(_e, _q, cacheOPlists[i]);
 #else
 #ifdef PESSIMISTIC_LOCK
 		this->M->pessimistic_apply(this->cacheOPlists[i]);
@@ -485,9 +487,9 @@ bool timingsubg::expire_edge(MatchedPair _matched_pair)
 	for (int i = 0; i < (int)this->cacheTe.size(); i++)
 	{
 		/* get next tran */
-		gtransaction *_tran = this->next_tran();
-		/* set the _tran with params */
-		_tran->del_set(_e, this->cacheTe[i], this->G, this->M, this->Q);
+		// gtransaction *_tran = this->next_tran();
+		// /* set the _tran with params */
+		// _tran->del_set(_e, this->cacheTe[i], this->G, this->M, this->Q);
 #if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
 		{
 			stringstream _ss;
@@ -500,7 +502,8 @@ bool timingsubg::expire_edge(MatchedPair _matched_pair)
 #endif
 
 #ifdef NO_THREAD
-		this->M->remove(_tran->e, _tran->tenode, _tran->lr_list);
+		this->M->remove(_e, this->cacheTe[i], NULL);
+		// this->M->remove(_tran->e, _tran->tenode, _tran->lr_list);
 #else
 
 #ifdef PESSIMISTIC_LOCK
@@ -659,6 +662,9 @@ void timingsubg::remaining_threadsjoin()
 #endif
 }
 
+/// @brief  NOT used
+/// @param _tran 
+/// @return 
 void *timingsubg::thread_insert(void *_tran)
 {
 	gtransaction *_gt = ((gtransaction *)_tran);
@@ -677,7 +683,7 @@ void *timingsubg::thread_insert(void *_tran)
 	}
 #endif
 
-	_m->insert(_e, _qe, _gt->lr_list);
+	// _m->insert(_e, _qe, _gt->lr_list);
 
 #ifdef PESSIMISTIC_LOCK
 	_m->reset_te2lock(_gt->lr_list);
