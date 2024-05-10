@@ -46,6 +46,7 @@ CFLAGS += -DSPAN
 # CFLAGS += -DRUN_COMMENT
 # CFLAGS += -DMY_DEBUG
 # CFLAGS += -DWHOLE_STR
+CFLAGS += -fsanitize=address
 
 # For compact debugging output
 # CFLAGS += -DCOMPACT_DEBUG
@@ -59,7 +60,7 @@ CFLAGS += -DMY_GET_NUM_MATCH
 
 
 EXEFLAG = -g #-pg #-O2
-LDFLAG = -pthread
+LDFLAG = -pthread -fsanitize=address
 
 # paths
 
