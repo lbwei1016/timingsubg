@@ -70,11 +70,11 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 		exit(-1);
 	}
 
-	for (int i = 0; i < threadNum; i++)
-	{
-		gtransaction *_tran = new gtransaction();
-		this->tran_pool.push(_tran);
-	}
+	// for (int i = 0; i < threadNum; i++)
+	// {
+	// 	gtransaction *_tran = new gtransaction();
+	// 	this->tran_pool.push(_tran);
+	// }
 
 #ifdef DEBUG_TRACK
 	util::track("\nreset gstream");
@@ -95,7 +95,6 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 	this->unmat_eNum = 0;
 	this->del_eNum = 0;
 	this->gap_log = this->G->size() / 1000;
-	// if(this->gap_log < 10000) this->gap_log = 10000;
 	if (this->gap_log < 10000)
 		this->gap_log = 1;
 
@@ -127,9 +126,7 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 	bool done = false;
 
 	concurrent_batch.push_back(this->G->next());
-	// auto pre_time = concurrent_batch.back()->get_timestamp();
 
-	// while (this->G->hasnext())
 	while (true)
 	{	
 		if (!this->G->hasnext())
@@ -161,11 +158,6 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 		cout.flush();
 
 		_rtime.begin();
-		// if (concurrent_batch.back()->get_timestamp() == 1641352800286) {
-		// 	cout << this->G->peek()->id << ' ' << this->G->peek()->get_timestamp() << '\n';
-		// }
-
-		assert(this->G->peek()->get_timestamp() >= concurrent_batch.back()->get_timestamp());
 
 		if (this->G->peek() && concurrent_batch.back()->get_timestamp() == this->G->peek()->get_timestamp())
 		{
@@ -173,61 +165,20 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 			continue;
 		}
 
-		// if (concurrent_batch.back()->get_timestamp() == 1641352800286) {
-		// 	for (auto x: concurrent_batch) {
-		// 		cout << x->id << '\n';
-		// 	}
-		// }
-		// dEdge* _e = this->G->next();
-
 	newEdge:
-		// vector<dEdge *> reordered_batch(concurrent_batch.size(), nullptr);
 		vector<MatchedPair> reordered_batch;
-		// vector<dEdge *> reordered_batch;
-		// vector<qEdge *> pattern_events;
-		// vector<bool> reordered(concurrent_batch.size(), false);
 		
-		// // This can be preprocessed
-		// auto sub_patterns = this->Q->TCdecomp;
-		// for (auto sub_pattern : sub_patterns)
-		// {
-		// 	for (auto pattern_event : sub_pattern)
-		// 	{
-		// 		pattern_events.push_back(pattern_event);
-		// 	}
-		// }
-
-		// int batch_state = 0;
-		// stringstream _ss;
-		// if (concurrent_batch[0]->get_timestamp() == 1637226319578LL) {
-		// 	_ss << "Pattern events:\n";
-		// 	for (auto pattern_event: this->pattern_events) {
-		// 		_ss << pattern_event->to_str() << '\n';
-		// 	}
-
-		// 	_ss << "1637226319.578 batch before reorder:\n";
-		// }
 		for (auto pattern_event : this->pattern_events)
 		{
 			for (int i = 0; i < concurrent_batch.size(); ++i)
 			{
-				// if (reordered[i]) continue;
 				auto data_event = concurrent_batch[i];
 				if (data_event->is_match(pattern_event))
 				{
 					reordered_batch.push_back(MatchedPair(data_event, pattern_event));
-					// reordered[i] = true;
 				}
 			}
 		}
-
-		// stringstream _ss;
-		// if (concurrent_batch[0]->get_timestamp() == 1641352800286LL)
-		// 	_ss << "1641352800.286 batch after reorder:\n";
-		// for (auto reordered_event: reordered_batch) {
-		// 	_ss << reordered_event.data_event->to_str() << '\n';
-		// }
-		// util::track(_ss);
 
 		for (auto _matched : reordered_batch)
 		{
@@ -332,8 +283,6 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 #endif
 
 #ifdef MY_GET_NUM_MATCH
-// 	string _ans = this->M->answers_str();
-// 	cout << _ans;
 	// this->M->num_answer is meaningless without `MY_GET_NUM_MATCH' defined
 	// This number represents the number of "non-unique" answers
 	cout << "Num match: " << this->M->num_answer << '\n';
@@ -466,13 +415,13 @@ bool timingsubg::new_edge(MatchedPair _matched_pair)
 #endif
 		}
 #endif
-		gtransaction *_tran = this->next_tran();
+		// gtransaction *_tran = this->next_tran();
 
-		_tran->set(_e,
-				   this->cacheMatEdge[i],
-				   this->cacheOPlists[i],
-				   this->G, this->M, this->Q);
-		_tran->count = this->seen_eNum * 100 + i;
+		// _tran->set(_e,
+		// 		   this->cacheMatEdge[i],
+		// 		   this->cacheOPlists[i],
+		// 		   this->G, this->M, this->Q);
+		// _tran->count = this->seen_eNum * 100 + i;
 #ifdef DEBUG_TRACK
 		{
 			stringstream _ss;
@@ -482,7 +431,9 @@ bool timingsubg::new_edge(MatchedPair _matched_pair)
 #endif
 
 #ifdef NO_THREAD
-		this->M->insert(_tran->e, _tran->qe, _tran->lr_list);
+		// this->M->insert(_tran->e, _tran->qe, _tran->lr_list);
+		cacheOPlists[i]->reset();
+		this->M->insert(_e, _q, cacheOPlists[i]);
 #else
 #ifdef PESSIMISTIC_LOCK
 		this->M->pessimistic_apply(this->cacheOPlists[i]);
@@ -536,9 +487,9 @@ bool timingsubg::expire_edge(MatchedPair _matched_pair)
 	for (int i = 0; i < (int)this->cacheTe.size(); i++)
 	{
 		/* get next tran */
-		gtransaction *_tran = this->next_tran();
-		/* set the _tran with params */
-		_tran->del_set(_e, this->cacheTe[i], this->G, this->M, this->Q);
+		// gtransaction *_tran = this->next_tran();
+		// /* set the _tran with params */
+		// _tran->del_set(_e, this->cacheTe[i], this->G, this->M, this->Q);
 #if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
 		{
 			stringstream _ss;
@@ -551,7 +502,8 @@ bool timingsubg::expire_edge(MatchedPair _matched_pair)
 #endif
 
 #ifdef NO_THREAD
-		this->M->remove(_tran->e, _tran->tenode, _tran->lr_list);
+		this->M->remove(_e, this->cacheTe[i], NULL);
+		// this->M->remove(_tran->e, _tran->tenode, _tran->lr_list);
 #else
 
 #ifdef PESSIMISTIC_LOCK
@@ -710,6 +662,9 @@ void timingsubg::remaining_threadsjoin()
 #endif
 }
 
+/// @brief  NOT used
+/// @param _tran 
+/// @return 
 void *timingsubg::thread_insert(void *_tran)
 {
 	gtransaction *_gt = ((gtransaction *)_tran);
@@ -728,7 +683,7 @@ void *timingsubg::thread_insert(void *_tran)
 	}
 #endif
 
-	_m->insert(_e, _qe, _gt->lr_list);
+	// _m->insert(_e, _qe, _gt->lr_list);
 
 #ifdef PESSIMISTIC_LOCK
 	_m->reset_te2lock(_gt->lr_list);

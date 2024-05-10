@@ -24,7 +24,6 @@ rdfDedge::rdfDedge(string _str_e) : dEdge(-1, -1)
 		switch (cnt)
 		{
 		case 0:
-			// start_time = int64_t(stod(token) * 1000);
 			this->t_sec = int64_t(stod(token) * 1000);
 			break;
 		case 1:
@@ -122,8 +121,8 @@ bool rdfDedge::is_match(qEdge* _q)
 // 	printf("Now matching event %d and %d:\n", this->id, _rq->id);
 // #endif
 
-	regex reg(_rq->signature);
-	if (!regex_match(this->signature, reg)) return false;
+	// regex reg(_rq->signature);
+	if (!regex_match(this->signature, _rq->reg)) return false;
 
 	// if (this->signature != _rq->signature) return false;
 

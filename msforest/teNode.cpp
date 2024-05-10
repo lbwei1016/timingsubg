@@ -267,6 +267,7 @@ lockReq* teNode::lr_head(){
 
 bool teNode::S_lock(lockReq* _lr){
 #ifndef NO_THREAD
+	if (!_lr || !_lr->tid) return false;
 
 #ifdef DEBUG_TRACK
 	util::track("slock @ node "+this->to_str());
@@ -299,6 +300,7 @@ bool teNode::S_lock(lockReq* _lr){
 
 bool teNode::S_release(lockReq* _lr){	
 #ifndef NO_THREAD
+	if (!_lr || !_lr->tid) return false;
 
 #ifdef DEBUG_TRACK
 	util::track("\n-----S_release @ node "+this->to_str());
@@ -322,6 +324,7 @@ bool teNode::S_release(lockReq* _lr){
 
 bool teNode::X_lock(lockReq* _lr){
 #ifndef NO_THREAD
+	if (!_lr || !_lr->tid) return false;
 
 #ifdef DEBUG_TRACK
 	if(_lr == NULL){
@@ -375,6 +378,7 @@ bool teNode::X_lock(lockReq* _lr){
 
 bool teNode::X_release(lockReq* _lr){
 #ifndef NO_THREAD
+	if (!_lr || !_lr->tid) return false;
 
 #ifdef DEBUG_TRACK
 	util::track("\n-----X_release @ node "+this->to_str());
@@ -400,7 +404,7 @@ msNode* teNode::remove_edge(dEdge* _e, lockReq* _lr){
 		util::track("In remove_edge@"+this->to_str(), "\n");
 	}
 #endif
-	this->X_lock(_lr);
+	// this->X_lock(_lr);
 	msNode* _ret_mslist = NULL;
 	msNode* _tail = NULL;
 	msNode* _next = NULL;
@@ -438,7 +442,7 @@ msNode* teNode::remove_edge(dEdge* _e, lockReq* _lr){
 		
 	}
 
-	this->X_release(_lr);
+	// this->X_release(_lr);
 
 	return _ret_mslist;
 }

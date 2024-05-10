@@ -94,6 +94,7 @@ bool rdfstream::load_edges(int64_t _avg_win_tuple_num)
 	int64_t _win_times = 1 + this->alledges.size() / _avg_win_tuple_num;
 	int64_t _avg_span = 1 + _tspan / _win_times;
 	// this->avg_span_t = _avg_span;
+	/// Directly use the user-provided window size
 	this->avg_span_t = _avg_win_tuple_num;
 	// this->window_size = _avg_win_tuple_num;
 
@@ -122,10 +123,8 @@ bool rdfstream::is_expire(dEdge *_e_old, dEdge *_e_new)
 {
 	rdfDedge *_re1 = (rdfDedge *)_e_old;
 	rdfDedge *_re2 = (rdfDedge *)_e_new;
-	// printf("_re2->t_sec: %ld, _re1->t_sec: %ld, diff = %ld\n", _re2->t_sec, _re1->t_sec, _re2->t_sec - _re1->t_sec);
 	if (_re2->t_sec - _re1->t_sec < this->avg_span_t)
 		return false;
-	// if(_re2->t_sec - _re1->t_sec < this->window_size) return false;
 
 	return true;
 }

@@ -4,7 +4,8 @@
 #include "../timing/edge.h"
 #include <vector>
 
-/// @todo: Regex? Something else?
+#include <regex>
+
 class rdfQedge : public qEdge{
 public:
 	rdfQedge(int _s, int _t);
@@ -24,6 +25,8 @@ public:
 	string otype;
 	string pre;
 	string literal;
+
+	regex reg;
 };
 
 

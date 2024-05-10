@@ -37,6 +37,15 @@ public:
 		return _ret;
 	}
 
+	Item *peek() {
+		if(this->cur_itr == this->vpool.end()){
+			cout << "err end vpool" << endl;
+			exit(-1);
+		}
+		Item* _ret = *(this->cur_itr);
+		return _ret;
+	}
+
 	Item* current()
 	{
 		if(this->cur_itr == this->vpool.end()){
