@@ -183,6 +183,10 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 		for (auto _matched : reordered_batch)
 		{
 			auto _e = _matched.data_event;
+
+#if (defined SPAN)
+			this->check_expire_edge(_e);
+#endif
 			_new_ret = this->new_edge(_matched);
 			if (_new_ret)
 			{
@@ -200,9 +204,9 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 				this->cur_edges.push(pair<MatchedPair, bool>(_matched, false));
 			}
 
-#if (defined SPAN)
-			this->check_expire_edge(_e);
-#endif
+// #if (defined SPAN)
+// 			this->check_expire_edge(_e);
+// #endif
 
 #if (defined I_AND_D)
 			this->expire_edge(_e);

@@ -8,7 +8,7 @@ JoinResult::~JoinResult()
 	delete second;
 }
 
-msNode::msNode(msNode *_f, msNode *_c, match *_mat)
+msNode::msNode(shared_ptr<msNode> _f, shared_ptr<msNode> _c, match *_mat)
 {
 	this->father = _f;
 	this->child_first = _c;
@@ -25,8 +25,20 @@ msNode::msNode(msNode *_f, msNode *_c, match *_mat)
 #endif
 }
 
+// msNode::msNode(msNode *_m) {
+// 	this->father = _m->father;
+// 	this->child_first = _m->child_first;
+// 	this->mat = _m->mat;
+// 	this->next = _m->next;
+// 	this->prev = _m->prev;
+// 	this->path_match = _m->path_match;
+// }
+
 msNode::~msNode()
-{
+{	
+#ifdef MY_DEBUG
+	cout << "msNode destructor called!\n";
+#endif
 	delete this->path_match;
 }
 
@@ -44,7 +56,7 @@ long long int msNode::to_size()
 long long int msNode::no_ms_size()
 {
 	long long int _sz = this->to_size();
-	msNode *_cur = this->father;
+	shared_ptr<msNode> _cur = this->father;
 #ifdef SPACE_LOG
 	cout << "no_ms@msNode[" << this << "]" << endl;
 	cout << "father=" << this->father << endl;
@@ -110,7 +122,8 @@ bool msNode::joinwith(List<match> *_matches, List<JoinResult> *jrList, query *_q
 			if (_jr == NULL)
 			{
 				_jr = new JoinResult;
-				_jr->first = this;
+				// _jr->first = this;
+				_jr->first = shared_from_this();
 				_jr->second = new List<match>(false);
 			}
 
@@ -151,17 +164,17 @@ bool msNode::joinwith(List<match> *_matches, List<JoinResult> *jrList, query *_q
 /* create new children over _matches and add into childrenlist
  *
  * */
-bool msNode::addBranches(List<match> *_matches, bool &_is_first_child)
-{
-	msNode *_list = msNode::build_mslist(_matches, this);
-	this->addChildren(_list, _is_first_child);
-	return true;
-}
+// bool msNode::addBranches(List<match> *_matches, bool &_is_first_child)
+// {
+// 	shared_ptr<msNode> _list = msNode::build_mslist(_matches, this);
+// 	this->addChildren(_list, _is_first_child);
+// 	return true;
+// }
 
 /* add new_list into children list
  * is_first_child: true if previous child is NULL, false otherwise
  * */
-bool msNode::addChildren(msNode *_new_child_list, bool &_is_first_child)
+bool msNode::addChildren(shared_ptr<msNode> _new_child_list, bool &_is_first_child)
 {
 #ifdef DEBUG_TRACK
 	{
@@ -170,7 +183,7 @@ bool msNode::addChildren(msNode *_new_child_list, bool &_is_first_child)
 		if (this->child_first != NULL)
 		{
 			_ss << "\t\tfirst_prev=" << this->child_first->prev << endl;
-			msNode *_mstmp = this->child_first->next;
+			shared_ptr<msNode> _mstmp = this->child_first->next;
 			while (_mstmp != NULL)
 			{
 				_ss << "\t\t" << _mstmp << " f=" << _mstmp->father << endl;
@@ -191,7 +204,7 @@ bool msNode::addChildren(msNode *_new_child_list, bool &_is_first_child)
 	}
 	_is_first_child = false;
 
-	msNode *_tail = _new_child_list;
+	shared_ptr<msNode> _tail = _new_child_list;
 	while (_tail->next != NULL)
 	{
 
@@ -223,7 +236,7 @@ bool msNode::addChildren(msNode *_new_child_list, bool &_is_first_child)
 		if (this->child_first != NULL)
 		{
 			_ss << "\t\tfirst_prev=" << this->child_first->prev << endl;
-			msNode *_mstmp = this->child_first->next;
+			shared_ptr<msNode> _mstmp = this->child_first->next;
 			while (_mstmp != NULL)
 			{
 				_ss << "\t\t" << _mstmp << " f=" << _mstmp->father << endl;
@@ -262,7 +275,7 @@ string msNode::whole_match_str()
 }
 
 /*remove children: child_first,...,tail from the level list*/
-msNode *msNode::be_removed()
+shared_ptr<msNode> msNode::be_removed()
 {
 #ifdef DEBUG_TRACK
 	{
@@ -273,19 +286,20 @@ msNode *msNode::be_removed()
 #endif
 	if (this->child_first == NULL)
 		return NULL;
-	msNode *_tail = this->child_first;
+	shared_ptr<msNode> _tail = this->child_first;
 #ifdef MARK_DEL
 	_tail->mark_del = true;
 #endif
 	while (_tail->next != NULL)
 	{
-		if (_tail->next->father != this)
+		if (_tail->next->father.get() != this)
 			break;
 		_tail = _tail->next;
 #ifdef MARK_DEL
 		_tail->mark_del = true;
 #endif
 	}
+
 
 	/// @bug This condition is added temporarily for debugging
 	if (this->child_first->prev == NULL)
@@ -299,9 +313,16 @@ msNode *msNode::be_removed()
 		_tail->next->prev = this->child_first->prev;
 	}
 
+
 	this->child_first->prev = NULL;
 	_tail->next = NULL;
+
+	// auto to_be_removed = this->child_first;
+	// this->child_first = NULL;
+	// return to_be_removed;
+
 	return this->child_first;
+
 }
 
 bool msNode::is_dedge(dEdge *_e)
@@ -309,15 +330,17 @@ bool msNode::is_dedge(dEdge *_e)
 	return this->mat->is_edge(_e);
 }
 
-msNode *msNode::build_mslist(List<match> *_matlist, msNode *_father)
+shared_ptr<msNode> msNode::build_mslist(List<match> *_matlist, shared_ptr<msNode> _father)
 {
 	_matlist->reset();
 
-	msNode *_mlist = new msNode(_father, NULL, _matlist->next());
-	msNode *p_tmp = _mlist;
+	// shared_ptr<msNode> _mlist = new msNode(_father, NULL, _matlist->next());
+	shared_ptr<msNode> _mlist = make_shared<msNode>(_father, nullptr, _matlist->next());
+	shared_ptr<msNode> p_tmp = _mlist;
 	while (_matlist->hasnext())
 	{
-		p_tmp->next = new msNode(_father, NULL, _matlist->next());
+		// p_tmp->next = new msNode(_father, NULL, _matlist->next());
+		p_tmp->next = make_shared<msNode>(_father, nullptr, _matlist->next());
 		p_tmp->next->prev = p_tmp;
 		p_tmp = p_tmp->next;
 	}

@@ -246,9 +246,9 @@ bool msforest::getTElist(dEdge *_e, vector<teNode *> &_telist, vector<qEdge *> &
 bool msforest::remove(dEdge *_e, teNode *_node, List<lockReq> *_lr_list)
 {
 	teNode *_cur_te = _node;
-	msNode *_rm_list = NULL;
-	msNode *_rm_fathers = NULL;
-	vector<msNode *> gclist_vec;
+	shared_ptr<msNode> _rm_list = NULL;
+	shared_ptr<msNode> _rm_fathers = NULL;
+	vector<shared_ptr<msNode> > gclist_vec;
 #ifdef DEBUG_TRACK
 	{
 		stringstream _ss;
@@ -356,7 +356,7 @@ bool msforest::remove(dEdge *_e, teNode *_node, List<lockReq> *_lr_list)
 	if (_rm_list != NULL)
 	{
 		cout << "\n\nexpired answers: \n";
-		msNode *_cur_ms = _rm_list;
+		shared_ptr<msNode> _cur_ms = _rm_list;
 		while (_cur_ms != NULL)
 		{
 			cout << _cur_ms->whole_match_str() << endl;
@@ -370,18 +370,29 @@ bool msforest::remove(dEdge *_e, teNode *_node, List<lockReq> *_lr_list)
 	return true;
 }
 
-void msforest::gc_release(vector<msNode *> &gclist_vec)
+void msforest::gc_release(vector<shared_ptr<msNode> > &gclist_vec)
 {
 	/* release all in gclist_vec */
-	msNode *_cur_gc = NULL;
-	msNode *_pre_gc = NULL;
+	shared_ptr<msNode> _cur_gc = NULL;
+	// shared_ptr<msNode> _pre_gc = NULL;
+	shared_ptr<msNode> _tmp_gc = nullptr;
 	for (int i = 0; i < (int)gclist_vec.size(); i++)
 	{
 		_cur_gc = gclist_vec[i];
 		while (_cur_gc != NULL)
 		{
-			_pre_gc = _cur_gc;
-			_cur_gc = _cur_gc->next;
+			// cout << _cur_gc << " ref count " << _cur_gc.use_count() << '\n';
+			// _pre_gc = _cur_gc;
+			_tmp_gc = _cur_gc->next;
+
+			_cur_gc->father = nullptr;
+			_cur_gc->child_first = nullptr;
+			_cur_gc->mat = nullptr;
+			_cur_gc->prev = nullptr;
+			_cur_gc->next = nullptr;
+			// _cur_gc->path_match = nullptr;
+
+			_cur_gc = _tmp_gc;
 #ifdef MARK_DEL
 			if (_pre_gc->mark_del == false)
 			{
@@ -392,9 +403,10 @@ void msforest::gc_release(vector<msNode *> &gclist_vec)
 				}
 			}
 #endif
-			delete _pre_gc;
+			// delete _pre_gc;
 		}
 	}
+	// gclist_vec.clear();
 }
 
 /*
@@ -423,14 +435,15 @@ bool msforest::insert(dEdge *_e, qEdge *_qe, OPlist *_lrlist)
 #endif
 
 		/* insert the match into the MS-tree at depth=1 */
-		msNode *_mslist = new msNode(NULL, NULL, this->new_match(_qe, _e));
+		shared_ptr<msNode> _mslist = make_shared<msNode>(nullptr, nullptr, this->new_match(_qe, _e));
 		/* apply lock there */
 		// _first_node->X_lock(_lrlist->first());
 		_first_node->add_msnodes(_mslist);
 		// _first_node->X_release(_lrlist->first());
 
-		// _lrlist->next();
-		/// @note We have called next in the first line of this function
+		_lrlist->next();
+		/// @note We have called next in the first line of this function 
+		/// NO! This is updated
 		// oplist->next();
 
 		/* first node could be tc_or_upper node */
@@ -442,8 +455,10 @@ bool msforest::insert(dEdge *_e, qEdge *_qe, OPlist *_lrlist)
 			util::track("first node is TC or upper1");
 #endif
 
-			List<msNode> _branches(false);
-			_branches.add(_mslist);
+			list<shared_ptr<msNode>> _branches;
+			// List<msNode> _branches(false);
+			_branches.push_back(_mslist);
+			// _branches.add(_mslist.get());
 			this->further_join(_first_node, &_branches, _lrlist);
 		}
 #ifdef DEBUG_TRACK
@@ -468,7 +483,8 @@ bool msforest::insert(dEdge *_e, qEdge *_qe, OPlist *_lrlist)
 #endif
 
 		/* a join + a insert = |oplist| is 2 */
-		List<msNode> _branches(false);
+		list<shared_ptr<msNode>> _branches;
+		// List<msNode> _branches(false);
 		List<JoinResult> _jrlist(true);
 		/* if some match* is used, make sure they are added into mat_pool */
 		List<match> _mlist(false);
@@ -505,7 +521,7 @@ bool msforest::insert(dEdge *_e, qEdge *_qe, OPlist *_lrlist)
 /* If _msN2matches is empty, we need to remove the lr
  * if _branches is not NULL, clear it and add new branches into _branches
  * */
-bool msforest::insert(teNode *_node, nodeOP *_lr, List<JoinResult> *_msN2matches, List<msNode> *_branches)
+bool msforest::insert(teNode *_node, nodeOP *_lr, List<JoinResult> *_msN2matches, list<shared_ptr<msNode>> *_branches)
 {
 
 #if defined(DEBUG_TRACK) || defined(COMPACT_DEBUG)
@@ -515,10 +531,15 @@ bool msforest::insert(teNode *_node, nodeOP *_lr, List<JoinResult> *_msN2matches
 
 	// _node->X_lock(_lr);
 
-	if (_branches != NULL)
-	{
+	// if (_branches != NULL)
+	// {
+	// 	_branches->clear();
+	// }
+
+	if (_branches != nullptr) {
 		_branches->clear();
 	}
+
 	if (_msN2matches->empty())
 	{
 		/* remove lr */
@@ -532,10 +553,10 @@ bool msforest::insert(teNode *_node, nodeOP *_lr, List<JoinResult> *_msN2matches
 
 	_msN2matches->reset();
 	JoinResult *pair;
-	msNode *_msnode;
+	shared_ptr<msNode> _msnode;
 	List<match> *_mlist;
-	msNode *_list;
-	msNode *_tmp_node;
+	shared_ptr<msNode> _list;
+	shared_ptr<msNode> _tmp_node;
 	bool _is_first_child = false;
 
 #ifdef DEBUG_TRACK
@@ -555,7 +576,8 @@ bool msforest::insert(teNode *_node, nodeOP *_lr, List<JoinResult> *_msN2matches
 		_tmp_node = _list;
 		while (_tmp_node != NULL && _branches != NULL)
 		{ /* branches should be build before addChildren */
-			_branches->add(_tmp_node);
+			_branches->push_back(_tmp_node);
+			// _branches->add(_tmp_node.get());
 			_tmp_node = _tmp_node->next;
 		}
 
@@ -634,7 +656,8 @@ bool msforest::join_left(List<match> *_matches, teNode *_node, nodeOP *_lr, List
 #endif
 
 	_jrlist.clear();
-	List<msNode> _mslist(false);
+	list<shared_ptr<msNode>> _mslist;
+	// List<msNode> _mslist(false);
 
 	// _node->S_lock(_lr);
 
@@ -665,11 +688,15 @@ bool msforest::join_left(List<match> *_matches, teNode *_node, nodeOP *_lr, List
 	}
 #endif
 
-	msNode *_cur;
-	_mslist.reset();
-	while (_mslist.hasnext())
+	shared_ptr<msNode> _cur;
+	// msNode *_cur;
+	auto it = _mslist.begin();
+	// _mslist.reset();
+	while (it != _mslist.end())
+	// while (_mslist.hasnext())
 	{
-		_cur = _mslist.next();
+		// _cur = _mslist.next();
+		_cur = *it;
 
 #ifdef DEBUG_TRACK
 		if (_cur == NULL)
@@ -679,6 +706,7 @@ bool msforest::join_left(List<match> *_matches, teNode *_node, nodeOP *_lr, List
 #endif
 
 		_cur->joinwith(_matches, &_jrlist, this->q);
+		++it;
 	}
 
 #ifdef DEBUG_TRACK
@@ -788,7 +816,7 @@ bool msforest::remove_used_mat(List<match> *_matches, List<JoinResult> &_jrlist)
  * results is put into _jrlist
  * join_right will happen only if _node is tc_or_upper node
  * */
-bool msforest::join_right(List<msNode> *_branch_nodes, teNode *_node, nodeOP *_lr, List<JoinResult> &_jrlist)
+bool msforest::join_right(list<shared_ptr<msNode>> *_branch_nodes, teNode *_node, nodeOP *_lr, List<JoinResult> &_jrlist)
 {
 #ifdef DEBUG_TRACK
 	util::track("IN join_right1");
@@ -824,12 +852,20 @@ bool msforest::join_right(List<msNode> *_branch_nodes, teNode *_node, nodeOP *_l
 	List<match> _mlist(false);
 	bool _is_level_mat = false;
 	_node->get_all_matches(&_mlist, _is_level_mat);
-	_branch_nodes->reset();
-	msNode *_cur;
-	while (_branch_nodes->hasnext())
+	// _branch_nodes->reset();
+
+	auto it = _branch_nodes->begin();
+
+	shared_ptr<msNode> _cur;
+	// msNode *_cur;
+	// while (_branch_nodes->hasnext())
+	while (it != _branch_nodes->end())
 	{
-		_cur = _branch_nodes->next();
+		// _cur = make_shared<msNode>(_branch_nodes->next());
+		// _cur = _branch_nodes->next();
+		_cur = *it;
 		_cur->joinwith(&_mlist, &_jrlist, this->q);
+		++it;
 	}
 
 	// _node->S_release(_lr);
@@ -848,7 +884,7 @@ bool msforest::join_right(List<msNode> *_branch_nodes, teNode *_node, nodeOP *_l
  * when _cur_te is non-leftmost upper node
  * build List<match>* _mlist with _branches
  * */
-bool msforest::further_join(teNode *_cur_te, List<msNode> *_branches, OPlist *_lrlist)
+bool msforest::further_join(teNode *_cur_te, list<shared_ptr<msNode>> *_branches, OPlist *_lrlist)
 {
 #ifdef DEBUG_TRACK
 	util::track("IN further_join");
@@ -869,11 +905,15 @@ bool msforest::further_join(teNode *_cur_te, List<msNode> *_branches, OPlist *_l
 		_jrlist.clear();
 		List<match> _mlist(false);
 		{ /* build _mlist over _branches */
-			_branches->reset();
-			while (_branches->hasnext())
+			// _branches->reset();
+			auto it = _branches->begin();
+			// while (_branches->hasnext())
+			while (it != _branches->end())
 			{
 				/* when delete happen, pointer matched is OK */
-				_mlist.add(_branches->next()->get_whole_match());
+				// _mlist.add(_branches->next()->get_whole_match());
+				_mlist.add((*it)->get_whole_match());
+				++it;
 			}
 		}
 
@@ -905,16 +945,21 @@ bool msforest::further_join(teNode *_cur_te, List<msNode> *_branches, OPlist *_l
 	return true;
 }
 
-string msforest::new_match_str(List<msNode> *_branches)
+string msforest::new_match_str(list<shared_ptr<msNode>> *_branches)
 {
 #ifdef MY_GET_NUM_MATCH
 	this->num_answer += _branches->size();
 	stringstream _ss;
-	_branches->reset();
-	while (_branches->hasnext())
+	// _branches->reset();
+	auto it = _branches->begin();
+	// while (_branches->hasnext())
+	while (it != _branches->end())
 	{
-		msNode *_next = _branches->next();
-		_ss << _next->whole_match_str() << endl;
+		// shared_ptr<msNode> _next = make_shared<msNode>(_branches->next());
+		// auto _next = _branches->next();
+		// _ss << _next->whole_match_str() << endl;
+		_ss << (*it)->whole_match_str() << endl;
+		++it;
 	}
 #else
 	stringstream _ss;
@@ -922,19 +967,19 @@ string msforest::new_match_str(List<msNode> *_branches)
 	_branches->reset();
 	while (_branches->hasnext())
 	{
-		msNode *_next = _branches->next();
+		shared_ptr<msNode> _next = _branches->next();
 		_ss << "\t" << _next->whole_match_str() << endl;
 	}
 #endif
 	return _ss.str();
 }
 
-string msforest::expired_match_str(msNode *_mslist)
+string msforest::expired_match_str(shared_ptr<msNode> _mslist)
 {
 	stringstream _ss;
 	int _count = 0;
 	_ss << "There are expired matches" << endl;
-	msNode *_cur_ms = _mslist;
+	shared_ptr<msNode> _cur_ms = _mslist;
 	while (_cur_ms != NULL)
 	{
 		_ss << "\t" << (++_count);
@@ -966,11 +1011,11 @@ string msforest::matches_str(List<match> *_matlist)
 	return _ss.str();
 }
 
-string msforest::matches_str(msNode *_mslist)
+string msforest::matches_str(shared_ptr<msNode> _mslist)
 {
 	stringstream _ss;
 
-	msNode *_cur_ms = _mslist;
+	shared_ptr<msNode> _cur_ms = _mslist;
 	while (_cur_ms != NULL)
 	{
 		_ss << _cur_ms->whole_match_str() << endl;
@@ -981,7 +1026,7 @@ string msforest::matches_str(msNode *_mslist)
 }
 
 /* remove all msNodes whose fathers are in _rm_fathers list */
-msNode *msforest::remove(teNode *_node, msNode *_rm_fathers, lockReq *_lr)
+shared_ptr<msNode> msforest::remove(teNode *_node, shared_ptr<msNode> _rm_fathers, lockReq *_lr)
 {
 	// _node->X_lock(_lr);
 
@@ -991,10 +1036,10 @@ msNode *msforest::remove(teNode *_node, msNode *_rm_fathers, lockReq *_lr)
 		return NULL;
 	}
 
-	msNode *_ret_mlist = NULL;
-	msNode *_cur_ms = _rm_fathers;
-	msNode *_tail_ms;
-	msNode *_tmp_ms;
+	shared_ptr<msNode> _ret_mlist = NULL;
+	shared_ptr<msNode> _cur_ms = _rm_fathers;
+	shared_ptr<msNode> _tail_ms;
+	shared_ptr<msNode> _tmp_ms;
 	while (_cur_ms != NULL)
 	{
 #ifdef MARK_DEL
@@ -1010,7 +1055,7 @@ msNode *msforest::remove(teNode *_node, msNode *_rm_fathers, lockReq *_lr)
 		if (_cur_ms->child_first != NULL)
 		{
 			if (_ret_mlist == NULL)
-			{
+			{	
 				_ret_mlist = _cur_ms->be_removed();
 				_tail_ms = _ret_mlist;
 			}
@@ -1034,7 +1079,7 @@ msNode *msforest::remove(teNode *_node, msNode *_rm_fathers, lockReq *_lr)
 	return _ret_mlist;
 }
 
-msNode *msforest::remove(teNode *_node, List<match> *_matches, lockReq *_lr)
+shared_ptr<msNode> msforest::remove(teNode *_node, List<match> *_matches, lockReq *_lr)
 {
 #if defined(DEBUG_TRACK) && !defined(COMPACT_TRACK)
 	util::track("IN remove te, matlist");
@@ -1054,7 +1099,7 @@ msNode *msforest::remove(teNode *_node, List<match> *_matches, lockReq *_lr)
 		return NULL;
 	}
 
-	msNode *_ret_mlist = NULL;
+	shared_ptr<msNode> _ret_mlist = NULL;
 
 /* this is ifndef  instead of ifdef */
 #ifndef PTR_MATCH
