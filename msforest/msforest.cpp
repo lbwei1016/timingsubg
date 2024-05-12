@@ -381,9 +381,17 @@ void msforest::gc_release(vector<shared_ptr<msNode> > &gclist_vec)
 		_cur_gc = gclist_vec[i];
 		while (_cur_gc != NULL)
 		{
+			// cout << _cur_gc << " ref count " << _cur_gc.use_count() << '\n';
 			// _pre_gc = _cur_gc;
 			_tmp_gc = _cur_gc->next;
+
+			_cur_gc->father = nullptr;
+			_cur_gc->child_first = nullptr;
+			_cur_gc->mat = nullptr;
+			_cur_gc->prev = nullptr;
 			_cur_gc->next = nullptr;
+			// _cur_gc->path_match = nullptr;
+
 			_cur_gc = _tmp_gc;
 #ifdef MARK_DEL
 			if (_pre_gc->mark_del == false)
@@ -398,6 +406,7 @@ void msforest::gc_release(vector<shared_ptr<msNode> > &gclist_vec)
 			// delete _pre_gc;
 		}
 	}
+	// gclist_vec.clear();
 }
 
 /*
@@ -527,7 +536,7 @@ bool msforest::insert(teNode *_node, nodeOP *_lr, List<JoinResult> *_msN2matches
 	// 	_branches->clear();
 	// }
 
-	if (_branches->size()) {
+	if (_branches != nullptr) {
 		_branches->clear();
 	}
 

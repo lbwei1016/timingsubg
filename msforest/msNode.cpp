@@ -25,18 +25,21 @@ msNode::msNode(shared_ptr<msNode> _f, shared_ptr<msNode> _c, match *_mat)
 #endif
 }
 
-msNode::msNode(msNode *_m) {
-	this->father = _m->father;
-	this->child_first = _m->child_first;
-	this->mat = _m->mat;
-	this->next = _m->next;
-	this->prev = _m->prev;
-	this->path_match = _m->path_match;
-}
+// msNode::msNode(msNode *_m) {
+// 	this->father = _m->father;
+// 	this->child_first = _m->child_first;
+// 	this->mat = _m->mat;
+// 	this->next = _m->next;
+// 	this->prev = _m->prev;
+// 	this->path_match = _m->path_match;
+// }
 
 msNode::~msNode()
-{
-	// delete this->path_match;
+{	
+#ifdef MY_DEBUG
+	cout << "msNode destructor called!\n";
+#endif
+	delete this->path_match;
 }
 
 long long int msNode::to_size()
@@ -119,7 +122,8 @@ bool msNode::joinwith(List<match> *_matches, List<JoinResult> *jrList, query *_q
 			if (_jr == NULL)
 			{
 				_jr = new JoinResult;
-				_jr->first = make_shared<msNode>(this);
+				// _jr->first = this;
+				_jr->first = shared_from_this();
 				_jr->second = new List<match>(false);
 			}
 

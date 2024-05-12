@@ -25,7 +25,8 @@ MPICC = mpicxx
 #when developing, not use -O because it will disturb the normal 
 #routine. use it for test and release.
 # CFLAGS = -c -Wall -g #-pg #-O2
-CFLAGS = -c -Wall -O2 -g
+# CFLAGS = -c -Wall -O2 -g
+CFLAGS = -c -Wall -O2
 
 CFLAGS += -DNO_THREAD
 #CFLAGS += -DMAIN_LOG
@@ -47,8 +48,8 @@ CFLAGS += -DSPAN
 # CFLAGS += -DMY_DEBUG
 # CFLAGS += -DWHOLE_STR
 
-CFLAGS += -fsanitize=address
-LDFLAG += -fsanitize=address
+# CFLAGS += -fsanitize=address
+# LDFLAG = -fsanitize=address
 
 
 # For compact debugging output
@@ -63,7 +64,7 @@ CFLAGS += -DMY_GET_NUM_MATCH
 
 
 EXEFLAG = -g #-pg #-O2
-# LDFLAG = -pthread 
+# LDFLAG += -pthread 
 
 # paths
 
