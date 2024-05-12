@@ -4,11 +4,13 @@
 #include "../timing/match.h"
 #include "../util/list_T.h"
 
+#include <memory>
+
 class msNode;
 class query;
 class JoinResult{
 public:
-	msNode* first;
+	shared_ptr<msNode> first;
 	List<match>* second;
 	
 	~JoinResult();
@@ -16,7 +18,8 @@ public:
 
 class msNode{
 public:
-	msNode(msNode* _f, msNode* _c, match* _mat);
+	msNode(shared_ptr<msNode> _f, shared_ptr<msNode> _c, match* _mat);
+	msNode(msNode *_m);
 	~msNode();
 
 	long long int to_size();
@@ -24,10 +27,11 @@ public:
 	long long int level_mat_size();
 	long long int whole_mat_size();
 
-	msNode* father;
-	msNode* child_first;
-	msNode* next;
-	msNode* prev;
+	shared_ptr<msNode> father;
+	shared_ptr<msNode> child_first;
+	// shared_ptr<msNode *> child_first;
+	shared_ptr<msNode> next;
+	shared_ptr<msNode> prev;
 	match* mat;
 	match* path_match;
 	
@@ -40,12 +44,12 @@ public:
 	/* create new children over _matches and add into childrenlist */
 	bool addBranches(List<match>* _matches, bool& _is_first_child);
 	/* add new_list into children list */
-	bool addChildren(msNode* _new_child_list, bool& _is_first_child);
+	bool addChildren(shared_ptr<msNode> _new_child_list, bool& _is_first_child);
 
-	msNode* be_removed();
+	shared_ptr<msNode> be_removed();
 	bool is_dedge(dEdge* _e);
 	
-	static msNode* build_mslist(List<match>* _matlist, msNode* _father);
+	static shared_ptr<msNode> build_mslist(List<match>* _matlist, shared_ptr<msNode> _father);
 
 	/* get whole match */
 	match* get_whole_match();
