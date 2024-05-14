@@ -159,9 +159,9 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 			cout << endl;
 #endif
 		}
-		cout.flush();
+		// cout.flush();
 
-		_rtime.begin();
+		// _rtime.begin();
 
 		// if (this->G->peek() && concurrent_batch.back()->get_timestamp() == this->G->peek()->get_timestamp())
 		// {
@@ -228,30 +228,30 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 #endif
 
 #ifdef INVALID_READ
-				this->M->to_size();
+				// this->M->to_size();
 #endif
-			_rtime.end();
+			// _rtime.end();
 
-			if (this->seen_eNum >= this->win_size || true)
-			{
-				_space = this->M->to_size();
-				_total_space += _space;
-#ifdef NO_MS
-				_total_no_ms += this->M->no_ms_size();
-#ifdef SPACE_LOG
-				if (_space != this->M->no_ms_size())
-				{
-					cerr << "no_ms=" << _total_no_ms << endl;
-					cerr << "total=" << _total_space << endl;
-					cerr << "input i to continue....." << endl;
-					int i;
-					cin >> i;
-				}
-				cout << "no_ms=" << _total_no_ms << endl;
-				cout << "total=" << _total_space << endl;
-#endif
-#endif
-			}
+// 			if (this->seen_eNum >= this->win_size || true)
+// 			{
+				// _space = this->M->to_size();
+// 				_total_space += _space;
+// #ifdef NO_MS
+// 				_total_no_ms += this->M->no_ms_size();
+// #ifdef SPACE_LOG
+// 				if (_space != this->M->no_ms_size())
+// 				{
+// 					cerr << "no_ms=" << _total_no_ms << endl;
+// 					cerr << "total=" << _total_space << endl;
+// 					cerr << "input i to continue....." << endl;
+// 					int i;
+// 					cin >> i;
+// 				}
+// 				cout << "no_ms=" << _total_no_ms << endl;
+// 				cout << "total=" << _total_space << endl;
+// #endif
+// #endif
+// 			}
 
 #ifdef WHOLE_STR
 			cout << this->seen_eNum << "****************incoming: " << _e->to_str() << endl;
@@ -296,10 +296,9 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 	cout << "Num match: " << this->M->num_answer << '\n';
 #endif
 
-#ifdef CYBER
-	cout << "start remove edges..." << endl;
-#endif
-
+// #ifdef CYBER
+	// cout << "start remove edges..." << endl;
+// #endif
 	while (!this->cur_edges.empty())
 	{
 		if (this->cur_edges.front().second == true)
@@ -309,45 +308,45 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 
 		this->cur_edges.pop();
 	}
-#ifdef CYBER
-	cout << "all removed" << endl;
-#endif
+// #ifdef CYBER
+	// cout << "all removed" << endl;
+// #endif
 
-	if (this->seen_eNum > this->win_size)
-		_whole.end();
-	double _sum_time = _whole.getsum() / 1000.0;
-	long long int _runtimes = this->seen_eNum - this->win_size;
+	// if (this->seen_eNum > this->win_size)
+	// 	_whole.end();
+	// double _sum_time = _whole.getsum() / 1000.0;
+	// long long int _runtimes = this->seen_eNum - this->win_size;
 
-#ifdef INVALID_READ
-	_runtimes = 14;
-#endif
-	if (_runtimes <= 0)
-	{
-#if !defined(CYBER) && !defined(MY_GET_NUM_MATCH)
-		cout << "err runtimes=" << _runtimes << endl;
-		exit(-1);
-#endif
-	}
-	double _avg_time = _sum_time / (_runtimes + 0.0);
-	_avg_space = _total_space / (_runtimes + 0.0);
-	double _avg_no_ms = _total_no_ms / (_runtimes + 0.0);
+// #ifdef INVALID_READ
+// 	_runtimes = 14;
+// #endif
+// 	if (_runtimes <= 0)
+// 	{
+// #if !defined(CYBER) && !defined(MY_GET_NUM_MATCH)
+// 		cout << "err runtimes=" << _runtimes << endl;
+// 		exit(-1);
+// #endif
+// 	}
+// 	double _avg_time = _sum_time / (_runtimes + 0.0);
+// 	_avg_space = _total_space / (_runtimes + 0.0);
+// 	double _avg_no_ms = _total_no_ms / (_runtimes + 0.0);
 
-#ifdef GLOBAL_COMMENT
-	cout << "noms reduce " << _total_no_ms - _total_space << endl;
-#endif
+// #ifdef GLOBAL_COMMENT
+// 	cout << "noms reduce " << _total_no_ms - _total_space << endl;
+// #endif
 
-	long long int _throughput = 1000.0 / _avg_time;
+// 	long long int _throughput = 1000.0 / _avg_time;
 
-	this->AVGtime = _avg_time;
-	this->SUMtime = _sum_time;
-	this->AVGspace = _avg_space / 1000.0;
-	this->AVGnoMS = _avg_no_ms / 1000.0;
-	this->Throughput = _throughput;
+// 	this->AVGtime = _avg_time;
+// 	this->SUMtime = _sum_time;
+// 	this->AVGspace = _avg_space / 1000.0;
+// 	this->AVGnoMS = _avg_no_ms / 1000.0;
+// 	this->Throughput = _throughput;
 
-	this->TALspace = _total_space;
-	this->TALnoMS = _total_no_ms;
+// 	this->TALspace = _total_space;
+// 	this->TALnoMS = _total_no_ms;
 
-	this->remaining_threadsjoin();
+	// this->remaining_threadsjoin();
 
 	delete this->M;
 
