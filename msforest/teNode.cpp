@@ -468,6 +468,8 @@ shared_ptr<msNode> teNode::remove_edge(dEdge *_e, lockReq *_lr)
 	}
 #endif
 
+	if (_cur_ms != nullptr)
+		cout << "The length: " << _cur_ms->get_list_length() << endl;
 	while (_cur_ms != NULL)
 	{
 		/*

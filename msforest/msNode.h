@@ -31,6 +31,8 @@ public:
 	long long int level_mat_size();
 	long long int whole_mat_size();
 
+	int64_t get_list_length();
+
 	shared_ptr<msNode> father;
 	shared_ptr<msNode> child_first;
 	// shared_ptr<msNode *> child_first;

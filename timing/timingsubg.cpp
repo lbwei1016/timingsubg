@@ -442,7 +442,7 @@ bool timingsubg::new_edge(MatchedPair _matched_pair)
 #ifdef PESSIMISTIC_LOCK
 		this->M->pessimistic_apply(this->cacheOPlists[i]);
 #endif
-		pthread_create(&(_tran->id), NULL, timingsubg::thread_insert, (void *)_tran);
+		// pthread_create(&(_tran->id), NULL, timingsubg::thread_insert, (void *)_tran);
 #endif
 
 		{
@@ -514,7 +514,7 @@ bool timingsubg::expire_edge(MatchedPair _matched_pair)
 		this->M->pessimistic_apply(_tran->del_tenodes);
 #endif
 
-		pthread_create(&(_tran->id), NULL, timingsubg::thread_remove, (void *)_tran);
+		// pthread_create(&(_tran->id), NULL, timingsubg::thread_remove, (void *)_tran);
 #endif
 
 // #ifdef INVALID_READ

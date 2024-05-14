@@ -73,6 +73,21 @@ long long int msNode::no_ms_size()
 	return _sz;
 }
 
+int64_t msNode::get_list_length() {
+	int64_t length = 0;
+	set<int64_t> vis;
+	shared_ptr<msNode> cur = shared_from_this();
+	while (cur != nullptr) {
+		if (vis.count((int64_t)cur.get()) != 0) {
+			cout << "LOOP!\n aborting...";
+			abort();
+		}
+		vis.insert((int64_t)cur.get());
+		cur = cur->next;
+	}
+	return length;
+}
+
 long long int msNode::level_mat_size()
 {
 	return (this->mat->size()) * (sizeof(dEdge *) + sizeof(qEdge *));

@@ -17,6 +17,43 @@ rdfstream::~rdfstream()
 #endif
 }
 
+vector<dEdge *> rdfstream::get_batch(ifstream &fin) {
+	char _buf[5000];
+	rdfDedge *_rd = NULL;
+	priority_queue<rdfDedge *, vector<rdfDedge *>, rdfDedgeComparator> edge_buf;
+	this->alledges.clear();
+
+	while (!fin.eof())
+	{
+		fin.getline(_buf, 4999, '\n');
+		// a strange last line
+		if (strlen(_buf) < 5)
+			break;
+		_rd = new rdfDedge(_buf);
+
+		while (edge_buf.size() && edge_buf.top()->t_sec <= _rd->t_sec) {
+			auto *e = edge_buf.top();
+			edge_buf.pop();
+			this->alledges.push_back((dEdge *)e);
+		}
+
+		this->alledges.push_back((dEdge *)_rd);
+
+		rdfDedge *_end_rd = _rd->split();
+		if (_end_rd)
+		{
+			edge_buf.push(_end_rd);
+		}
+	}
+	fin.close();
+
+	while (edge_buf.size()) {
+		auto *e = edge_buf.top();
+		edge_buf.pop();
+		this->alledges.push_back((dEdge *)e);
+	}
+}
+
 /*
  * sid pid oid stype otype literal(otype=="literal") timestamp
  * read edges is implemented in RdfDedge

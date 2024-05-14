@@ -12,6 +12,7 @@ public:
 	
 	bool load_edges(int64_t _avg_win_tuple_num);
 	bool is_expire(dEdge* _e_old, dEdge* _e_new);
+	vector<dEdge *> get_batch(ifstream &);
 	// int64_t get_timestamp(dEdge *e);
 
 private:
