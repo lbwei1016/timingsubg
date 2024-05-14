@@ -1,57 +1,99 @@
 #include "rdfstream.h"
 
-struct rdfDedgeComparator {
-    bool operator () (rdfDedge *_a, rdfDedge *_b) {
-        return _a->t_sec > _b->t_sec;
-    }
-};
-
 rdfstream::rdfstream(string _dat_set) : gstream(_dat_set)
 {
 }
 
 rdfstream::~rdfstream()
 {
+	delete this->fin;
 #ifdef GLOBAL_COMMENT
 	cout << "rdfstream destruction..." << endl;
 #endif
 }
 
-vector<dEdge *> rdfstream::get_batch(ifstream &fin) {
-	char _buf[5000];
-	rdfDedge *_rd = NULL;
-	priority_queue<rdfDedge *, vector<rdfDedge *>, rdfDedgeComparator> edge_buf;
-	this->alledges.clear();
-
-	while (!fin.eof())
+void rdfstream::initialize(int64_t window_size)
+{
+	// if (this->fin != nullptr)
+	// {
+	// 	cerr << "fin already initialized!\n";
+	// 	return;
+	// }
+	this->boundary_time = 0;
+	this->fin = new ifstream(this->data_path.c_str(), ios::in);
+	if (!(*fin))
 	{
-		fin.getline(_buf, 4999, '\n');
+		cout << "err: failed open " << this->data_path << endl;
+		delete this->fin;
+		exit(-1);
+	}
+	this->avg_span_t = window_size;
+
+#if defined(MY_DEBUG) || defined(DEBUG_TRACK) || defined(MY_GET_NUM_MATCH)
+	cout << "effective window size: " << this->avg_span_t << '\n';
+#endif
+}
+
+bool rdfstream::nothing_to_send()
+{
+	if (this->buffer.empty())
+		return true;
+	return this->buffer.top()->get_timestamp() >= this->boundary_time;
+}
+
+rdfDedge *rdfstream::next_valid_record()
+{
+	char _buf[500];
+	while (!this->fin->eof())
+	{
+		this->fin->getline(_buf, 499, '\n');
 		// a strange last line
 		if (strlen(_buf) < 5)
 			break;
-		_rd = new rdfDedge(_buf);
 
-		while (edge_buf.size() && edge_buf.top()->t_sec <= _rd->t_sec) {
-			auto *e = edge_buf.top();
-			edge_buf.pop();
-			this->alledges.push_back((dEdge *)e);
-		}
+		rdfDedge *e = new rdfDedge(_buf);
+		return e;
+	}
+	return nullptr;
+}
 
-		this->alledges.push_back((dEdge *)_rd);
-
-		rdfDedge *_end_rd = _rd->split();
-		if (_end_rd)
+vector<dEdge *> rdfstream::get_batch()
+{
+	vector<dEdge *> batch;
+	while (this->buffer.size())
+	{
+		if (this->buffer.top()->get_timestamp() < this->boundary_time)
 		{
-			edge_buf.push(_end_rd);
+			batch.push_back(this->buffer.top());
+			this->buffer.pop();
+		}
+		else 
+			break;
+	}
+	// cout << "batch size: " << batch.size() << '\n';
+	return batch;
+}
+
+vector<dEdge *> rdfstream::next_edges()
+{
+	while (this->nothing_to_send())
+	{
+		rdfDedge *e = this->next_valid_record();
+		if (e == nullptr)
+		{
+			this->boundary_time = LONG_LONG_MAX;
+			break;
+		}
+
+		this->boundary_time = e->get_timestamp();
+		this->buffer.push(e);
+		rdfDedge *e2 = e->split();
+		if (e2)
+		{
+			this->buffer.push(e2);
 		}
 	}
-	fin.close();
-
-	while (edge_buf.size()) {
-		auto *e = edge_buf.top();
-		edge_buf.pop();
-		this->alledges.push_back((dEdge *)e);
-	}
+	return this->get_batch();
 }
 
 /*
@@ -91,7 +133,8 @@ bool rdfstream::load_edges(int64_t _avg_win_tuple_num)
 			break;
 		_rd = new rdfDedge(_buf);
 
-		while (edge_buf.size() && edge_buf.top()->t_sec <= _rd->t_sec) {
+		while (edge_buf.size() && edge_buf.top()->t_sec <= _rd->t_sec)
+		{
 			auto *e = edge_buf.top();
 			edge_buf.pop();
 			this->alledges.push_back((dEdge *)e);
@@ -107,7 +150,8 @@ bool rdfstream::load_edges(int64_t _avg_win_tuple_num)
 	}
 	fin.close();
 
-	while (edge_buf.size()) {
+	while (edge_buf.size())
+	{
 		auto *e = edge_buf.top();
 		edge_buf.pop();
 		this->alledges.push_back((dEdge *)e);
@@ -115,8 +159,9 @@ bool rdfstream::load_edges(int64_t _avg_win_tuple_num)
 
 #ifdef MY_DEBUG
 	cout << "Now outputing all data edges...\n";
-	for (auto &_edge: this->alledges) {
-		auto edge = (rdfDedge*)_edge;
+	for (auto &_edge : this->alledges)
+	{
+		auto edge = (rdfDedge *)_edge;
 		printf("(time, s, t, eid) = (%ld, %d, %d, %d)\n", edge->t_sec, edge->s, edge->t, edge->id);
 	}
 	cout << "Loading data graph finished.\n";

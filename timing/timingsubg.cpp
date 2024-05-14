@@ -44,7 +44,8 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 	cout << "win_size = " << this->win_size << endl;
 #endif
 	this->G = _G;
-	this->G->load_edges(this->win_size);
+	// this->G->load_edges(this->win_size);
+	this->G->initialize(this->win_size);
 	this->Q = _Q;
 	this->tconf = _tconf;
 
@@ -122,18 +123,21 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 		}
 	}
 
-	vector<dEdge *> concurrent_batch;
-	bool done = false;
+	// vector<dEdge *> concurrent_batch;
+	// bool done = false;
 
-	concurrent_batch.push_back(this->G->next());
+	// concurrent_batch.push_back(this->G->next());
 
 	while (true)
 	{	
-		if (!this->G->hasnext())
-		{
-			done = true;
-			goto newEdge;
-		}
+		vector<dEdge *> concurrent_batch = this->G->next_edges();
+		if (concurrent_batch.empty()) break;
+
+		// if (!this->G->hasnext())
+		// {
+		// 	done = true;
+		// 	goto newEdge;
+		// }
 
 		this->seen_eNum++;
 		if (this->seen_eNum == this->win_size)
@@ -159,11 +163,11 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 
 		_rtime.begin();
 
-		if (this->G->peek() && concurrent_batch.back()->get_timestamp() == this->G->peek()->get_timestamp())
-		{
-			concurrent_batch.push_back(this->G->next());
-			continue;
-		}
+		// if (this->G->peek() && concurrent_batch.back()->get_timestamp() == this->G->peek()->get_timestamp())
+		// {
+		// 	concurrent_batch.push_back(this->G->next());
+		// 	continue;
+		// }
 
 	newEdge:
 		vector<MatchedPair> reordered_batch;
@@ -262,13 +266,13 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 #endif
 		}
 
-		if (done)
-			break;
-		else
-		{
-			concurrent_batch.clear();
-			concurrent_batch.push_back(this->G->next());
-		}
+		// if (done)
+		// 	break;
+		// else
+		// {
+		// 	concurrent_batch.clear();
+		// 	concurrent_batch.push_back(this->G->next());
+		// }
 	}
 
 #ifdef CYBER
