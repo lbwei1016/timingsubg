@@ -74,7 +74,7 @@ long long int msNode::no_ms_size()
 }
 
 int64_t msNode::get_list_length() {
-	int64_t length = 0;
+	// int64_t length = 0;
 	set<int64_t> vis;
 	shared_ptr<msNode> cur = shared_from_this();
 	while (cur != nullptr) {
@@ -85,7 +85,7 @@ int64_t msNode::get_list_length() {
 		vis.insert((int64_t)cur.get());
 		cur = cur->next;
 	}
-	return length;
+	return vis.size();
 }
 
 long long int msNode::level_mat_size()
