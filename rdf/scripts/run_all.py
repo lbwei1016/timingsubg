@@ -78,8 +78,8 @@ if __name__ == '__main__':
     if os.getcwd().endswith('scripts'):
         os.chdir('..')
 
-    subprocess.run(['make', 'clean'], check=True)
-    subprocess.run(['make', '-j'], check=True)
+    # subprocess.run(['make', 'clean'], check=True)
+    # subprocess.run(['make', '-j'], check=True)
 
     os.makedirs(args.out_dir, exist_ok=True)
     os.makedirs(os.path.join(args.out_dir, 'runtime_records'), exist_ok=True)
@@ -90,26 +90,29 @@ if __name__ == '__main__':
 
     run_result = []
 
-    for i in range(1, 13):
-        for graph in spade_graphs:
-            filename = f'SP{i}_regex'
-            window_size = 1800
-            num_threads = 1
+    # for i in range(1, 13):
+    #     for graph in spade_graphs:
+    #         filename = f'SP{i}_regex'
+    #         window_size = 1800
+    #         num_threads = 1
 
-            pattern = os.path.join(args.pattern_dir, f'{filename}.json')
-            subpattern = os.path.join(args.pattern_dir, f'subpatterns/{filename}.json')
-            data_graph = os.path.join(args.data_graph, graph + '.csv')
-            runtime_record = os.path.join(args.out_dir, f'runtime_records/{filename}.txt')
+    #         pattern = os.path.join(args.pattern_dir, f'{filename}.json')
+    #         subpattern = os.path.join(args.pattern_dir, f'subpatterns/{filename}.json')
+    #         data_graph = os.path.join(args.data_graph, graph + '.csv')
+    #         runtime_record = os.path.join(args.out_dir, f'runtime_records/{filename}.txt')
 
-            num_match, cpu_time, peak_mem = run(data_graph, pattern, window_size, num_threads, runtime_record, subpattern)
-            run_result.append([f'SP{i}', graph, num_match, cpu_time, peak_mem / 2**20])
+    #         num_match, cpu_time, peak_mem = run(data_graph, pattern, window_size, num_threads, runtime_record, subpattern)
+    #         run_result.append([f'SP{i}', graph, num_match, cpu_time, peak_mem / 2**20])
 
-            # No answer outputs
-            subprocess.run(['mv', './answers', f"{os.path.join(args.out_dir, 'answers')}/{filename}_{graph}"], check=True)
+    #         # No answer outputs
+    #         subprocess.run(['mv', './answers', f"{os.path.join(args.out_dir, 'answers')}/{filename}_{graph}"], check=True)
         
     if args.no_darpa is False: 
         for i in range(1, 6):
             for graph in darpa_graphs:
+                if not (i == 5 and graph == 'dd4'):
+                    continue
+
                 filename = f'DP{i}_regex'
                 window_size = 1000
                 num_threads = 1
@@ -127,5 +130,6 @@ if __name__ == '__main__':
 
     df = pd.DataFrame(data=run_result, columns=['Pattern', 'Data Graph', 'Num Results', 'CPU Time (sec)', 'Peak Memory (MB)'])
     print(df.to_string(index=False))
-    df.to_csv(os.path.join(args.out_dir, 'run_result.csv'), index=False)
+    df.to_csv(os.path.join(args.out_dir, 'run_result_DP5-dd4.csv'), index=False)
+    # df.to_csv(os.path.join(args.out_dir, 'run_result_DP2-5.csv'), index=False)
 

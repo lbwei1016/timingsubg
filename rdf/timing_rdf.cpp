@@ -6,6 +6,7 @@
 #include "../timing/timingsubg.h"
 
 #include <sys/resource.h>
+#include <iomanip>
 
 /*
  * argv0 : exe
@@ -104,6 +105,9 @@ int main(int argc, char *argv[])
 	double stime_used = stime.tv_sec + (double)stime.tv_usec / 1000000.0;
 	// printf("User Time = %f\n", utime_used);
 	// printf("System Time = %f\n", stime_used);
+
+	cout << fixed << showpoint;
+    cout << setprecision(4);
 	cout << "CPU time elapsed: " << utime_used + stime_used << " secs\n";
 	cout << "Peak memory usage: " << ru.ru_maxrss << " kB\n";
 }
