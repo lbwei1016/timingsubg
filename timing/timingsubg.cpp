@@ -100,10 +100,10 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 		this->gap_log = 1;
 
 	/* stream runs */
-	runtime _rtime;
-	runtime _whole;
-	_rtime.initial();
-	_whole.initial();
+	// runtime _rtime;
+	// runtime _whole;
+	// _rtime.initial();
+	// _whole.initial();
 
 	bool _new_ret = false;
 	long long int _space = 0;
@@ -139,26 +139,26 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 		// 	goto newEdge;
 		// }
 
-		this->seen_eNum++;
-		if (this->seen_eNum == this->win_size)
-		{
-			_whole.begin();
-		}
-		if (this->seen_eNum % (this->gap_log) == 0)
-		{
-#ifdef GLOBAL_COMMENT
-			this->run_report();
-#endif
-		}
+// 		this->seen_eNum++;
+// 		if (this->seen_eNum == this->win_size)
+// 		{
+// 			_whole.begin();
+// 		}
+// 		if (this->seen_eNum % (this->gap_log) == 0)
+// 		{
+// #ifdef GLOBAL_COMMENT
+// 			this->run_report();
+// #endif
+// 		}
 
-		if (this->seen_eNum % (5 * this->gap_log) == 0)
-		{
-#ifdef RUNTIME
-			cout << "\navg: " << _rtime.getavg();
-			cout << "\tsum:" << _rtime.getsum();
-			cout << endl;
-#endif
-		}
+// 		if (this->seen_eNum % (5 * this->gap_log) == 0)
+// 		{
+// #ifdef RUNTIME
+// 			cout << "\navg: " << _rtime.getavg();
+// 			cout << "\tsum:" << _rtime.getsum();
+// 			cout << endl;
+// #endif
+// 		}
 		// cout.flush();
 
 		// _rtime.begin();
