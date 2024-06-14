@@ -12,13 +12,10 @@ rdfstream::~rdfstream()
 #endif
 }
 
+/// @brief Initialize RdfStream
+/// @param window_size 
 void rdfstream::initialize(int64_t window_size)
 {
-	// if (this->fin != nullptr)
-	// {
-	// 	cerr << "fin already initialized!\n";
-	// 	return;
-	// }
 	this->boundary_time = 0;
 	this->fin = new ifstream(this->data_path.c_str(), ios::in);
 	if (!(*fin))
@@ -34,6 +31,8 @@ void rdfstream::initialize(int64_t window_size)
 #endif
 }
 
+/// @brief Check whether there are events ready to be sent (in the buffer)
+/// @return `true` for yes
 bool rdfstream::nothing_to_send()
 {
 	if (this->buffer.empty())
@@ -41,6 +40,8 @@ bool rdfstream::nothing_to_send()
 	return this->buffer.top()->get_timestamp() >= this->boundary_time;
 }
 
+/// @brief Get the next input event
+/// @return A pointer to the event read (if any)
 rdfDedge *rdfstream::next_valid_record()
 {
 	char _buf[500];
@@ -57,6 +58,8 @@ rdfDedge *rdfstream::next_valid_record()
 	return nullptr;
 }
 
+/// @brief Get a batch of events having the same timestamp
+/// @return A batch of events having the same timestamp
 vector<dEdge *> rdfstream::get_batch()
 {
 	vector<dEdge *> batch;
@@ -70,10 +73,12 @@ vector<dEdge *> rdfstream::get_batch()
 		else 
 			break;
 	}
-	// cout << "batch size: " << batch.size() << '\n';
 	return batch;
 }
 
+
+/// @brief Streamingly read the input events, until there are no events left
+/// @return A batch of events having the same timestamp
 vector<dEdge *> rdfstream::next_edges()
 {
 	while (this->nothing_to_send())

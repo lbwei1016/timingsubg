@@ -123,55 +123,15 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 		}
 	}
 
-	// vector<dEdge *> concurrent_batch;
-	// bool done = false;
-
-	// concurrent_batch.push_back(this->G->next());
-
 	while (true)
 	{	
 		vector<dEdge *> concurrent_batch = this->G->next_edges();
 		if (concurrent_batch.empty()) break;
 
-		// if (!this->G->hasnext())
-		// {
-		// 	done = true;
-		// 	goto newEdge;
-		// }
-
-// 		this->seen_eNum++;
-// 		if (this->seen_eNum == this->win_size)
-// 		{
-// 			_whole.begin();
-// 		}
-// 		if (this->seen_eNum % (this->gap_log) == 0)
-// 		{
-// #ifdef GLOBAL_COMMENT
-// 			this->run_report();
-// #endif
-// 		}
-
-// 		if (this->seen_eNum % (5 * this->gap_log) == 0)
-// 		{
-// #ifdef RUNTIME
-// 			cout << "\navg: " << _rtime.getavg();
-// 			cout << "\tsum:" << _rtime.getsum();
-// 			cout << endl;
-// #endif
-// 		}
-		// cout.flush();
-
-		// _rtime.begin();
-
-		// if (this->G->peek() && concurrent_batch.back()->get_timestamp() == this->G->peek()->get_timestamp())
-		// {
-		// 	concurrent_batch.push_back(this->G->next());
-		// 	continue;
-		// }
-
 	newEdge:
 		vector<MatchedPair> reordered_batch;
-		
+
+		/// reorder input events
 		for (auto pattern_event : this->pattern_events)
 		{
 			for (int i = 0; i < concurrent_batch.size(); ++i)
@@ -207,10 +167,6 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 			{
 				this->cur_edges.push(pair<MatchedPair, bool>(_matched, false));
 			}
-
-// #if (defined SPAN)
-// 			this->check_expire_edge(_e);
-// #endif
 
 #if (defined I_AND_D)
 			this->expire_edge(_e);
@@ -265,14 +221,6 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 			cout << this->M->whole_str() << "\n==================================" << endl;
 #endif
 		}
-
-		// if (done)
-		// 	break;
-		// else
-		// {
-		// 	concurrent_batch.clear();
-		// 	concurrent_batch.push_back(this->G->next());
-		// }
 	}
 
 #ifdef CYBER

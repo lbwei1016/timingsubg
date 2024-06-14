@@ -72,8 +72,8 @@ rdfDedge* rdfDedge::split() {
 }
 
 
-/// @brief  This function is used in query::compatible()
-/// @param _d 
+/// @brief  Check whether two input (data) events are identical (in terms of id)
+/// @param _d: an input (data) event
 /// @return 
 bool rdfDedge::is_same(dEdge* _d)
 {
@@ -114,21 +114,8 @@ bool rdfDedge::is_match(qEdge* _q)
 {
 	rdfQedge* _rq = (rdfQedge*)_q;
 
-	// if (this->id != _rq->id) return false;
-	// no Regex is considered yet
-
-// #ifdef MY_DEBUG
-// 	printf("Now matching event %d and %d:\n", this->id, _rq->id);
-// #endif
-
 	// regex reg(_rq->signature);
 	if (!regex_match(this->signature, _rq->reg)) return false;
-
-	// if (this->signature != _rq->signature) return false;
-
-// #ifdef MY_DEBUG
-	// printf("Match success!\n-----------------\n");
-// #endif
 
 #ifdef ENABLE_LITERAL
 	if(this->is_literal() && _rq->literal != "NULL")

@@ -1,3 +1,16 @@
+## Modified Timing for Comparative Evaluation with IPMES
+There are a few signigicant modifications:
+- Remove all multi-thread functionalities (e.g. `gtransaction`)
+  - To improve single-thread efficiency
+- Support *simultaneous* events (same as IPMES)
+  - Implement `event splitting` and `reorder` (and other minor functionalities)
+- All `msNode`s are *stored* in `shared_ptr`.
+  - Since we now support simultaneous events, the destruction behavior of `msNode`s are different. Thus, we need `shared_ptr` to automatically destruct `msNode`s (instread of manually).
+- Implement *streaming* data event reading
+  - However, since the original `Timing` does not *remove* the unused data events, the space occupied by data events is still that large (never destructed).
+
+---
+> Below is the original README.
 ## 1. Components
 
 #### 1.1 Framework Codes
