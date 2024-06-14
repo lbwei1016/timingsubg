@@ -110,7 +110,7 @@ if __name__ == '__main__':
     if args.no_darpa is False: 
         for i in range(1, 6):
             for graph in darpa_graphs:
-                if not (i == 5 and graph == 'dd4'):
+                if not (i != 1 and (i != 5 or graph != 'dd4')):
                     continue
 
                 filename = f'DP{i}_regex'
@@ -130,6 +130,6 @@ if __name__ == '__main__':
 
     df = pd.DataFrame(data=run_result, columns=['Pattern', 'Data Graph', 'Num Results', 'CPU Time (sec)', 'Peak Memory (MB)'])
     print(df.to_string(index=False))
-    df.to_csv(os.path.join(args.out_dir, 'run_result_DP5-dd4.csv'), index=False)
-    # df.to_csv(os.path.join(args.out_dir, 'run_result_DP2-5.csv'), index=False)
+    # df.to_csv(os.path.join(args.out_dir, 'run_result_DP1_DP5dd4.csv'), index=False)
+    df.to_csv(os.path.join(args.out_dir, 'run_result_almost_all.csv'), index=False)
 

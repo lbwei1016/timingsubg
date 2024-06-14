@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Read the CSV file into a DataFrame
-timingsubg_df = pd.read_csv('./results/run_result.csv')
+# timingsubg_df = pd.read_csv('./results/run_result.csv')
+timingsubg_df = pd.read_csv('./results/run_result_almost_all.csv')
 ipmes_df = pd.read_csv('./IPMES/results/ipmes-rust/run_result.csv')
 
 darpa_graphs = ['dd1', 'dd2', 'dd3', 'dd4']
@@ -55,7 +56,7 @@ def plot_cpu_mem():
         plt.ylabel(f'{metric} ratio (timingsubg / IPMES)')
         plt.tight_layout()
         plt.show()
-        plt.savefig(f'./results/img/{metric}_ratio.png')
+        plt.savefig(f'./results/img/{metric}_ratio_new.png')
 
 
 # There are redundant answers in timingsubg
@@ -83,4 +84,4 @@ def plot_cpu_mem():
 
 if __name__ == '__main__':
     # plot_cpu_mem()
-    plot_num_results_diff()
+    plot_cpu_mem()

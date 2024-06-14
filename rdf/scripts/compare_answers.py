@@ -77,9 +77,9 @@ if __name__ == '__main__':
             print(f'(timingsubg, ipmes): {len(timingsubg_matches), len(ipmes_matches)}')
             print('--------------------')
 
-            input("Press enter to continue...")
+            # input("Press enter to continue...")
 
-    for i in range(1, 6):
+    for i in range(2, 6):
         for graph in darpa_graphs:
             timingsubg_matches = timingsubg_extract_matches(os.path.join(timingsubg_answer_path, f'DP{i}_regex_{graph}'))
             if len(timingsubg_matches) > 0:
