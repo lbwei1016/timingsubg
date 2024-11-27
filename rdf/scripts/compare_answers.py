@@ -21,17 +21,12 @@ def timingsubg_extract_matches(filename: str) -> set[str]:
 
 def ipmes_extract_matches(filename: str) -> set[str]:
     matches = set()
-    # matches = []
     with open(filename, 'r') as f:
         lines = f.readlines()
         for line in lines:
             if 'Pattern Match' not in line: continue
             entity_ids = re.sub(r'.* Pattern Match: \[(.*)\]', r'\1', line)
             matches.add(entity_ids.strip('\n'))
-            # entity_ids = entity_ids.strip('\n').split(', ')
-            # entity_ids = [int(x) for x in entity_ids]
-            # print(entity_ids)
-            # matches.append(entity_ids)
     return matches   
 
 
@@ -77,17 +72,23 @@ if __name__ == '__main__':
             print(f'(timingsubg, ipmes): {len(timingsubg_matches), len(ipmes_matches)}')
             print('--------------------')
 
-            # input("Press enter to continue...")
 
     for i in range(2, 6):
         for graph in darpa_graphs:
+            target = f'DP{i}_{graph}'
             timingsubg_matches = timingsubg_extract_matches(os.path.join(timingsubg_answer_path, f'DP{i}_regex_{graph}'))
-            if len(timingsubg_matches) > 0:
-                ipmes_matches = ipmes_extract_matches(os.path.join(ipmes_answer_path, f'DP{i}_regex_{graph}.log'))
-            else: 
-                ipmes_matches = {1}
+            ipmes_matches = ipmes_extract_matches(os.path.join(ipmes_answer_path, f'DP{i}_regex_{graph}.log'))
 
-            target = f'DP{i}-{graph}'
+            save_results(timingsubg_matches, f'{timingsubg_answer_path}/parsed_{target}')
+            save_results(ipmes_matches, f'{ipmes_answer_path}/parsed_{target}')
+
+            """
+            Notice that the ordering of matched events across subpatterns is
+            arbitrary, which means that even though the below code outputs 
+            `ipmes\\timingsubg non-empty!`, their answers may still be the same (e.g. DP2 dd2).
+            
+            Therefore, also check the overall number of answers.
+            """
             if timingsubg_matches == ipmes_matches:
                 print(f'{target}: Identical answers!')
             elif timingsubg_matches.issubset(ipmes_matches):
@@ -97,3 +98,5 @@ if __name__ == '__main__':
                 print(f'{target}: ipmes is a subset of timingsubg')
             else:
                 print(f'{target}: ipmes\\timingsubg non-empty!')
+            print(f'(timingsubg, ipmes): {len(timingsubg_matches), len(ipmes_matches)}')
+            print('--------------------')
