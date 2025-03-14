@@ -241,7 +241,7 @@ void timingsubg::run(int _mode, gstream *_G, query *_Q, timingconf *_tconf)
 #ifdef MY_GET_NUM_MATCH
 	// this->M->num_answer is meaningless without `MY_GET_NUM_MATCH' defined
 	// This number represents the number of "non-unique" answers
-	cout << "Num match: " << this->M->num_answer << '\n';
+	cout << "Total number of matches: " << this->M->num_answer << '\n';
 #endif
 
 // #ifdef CYBER

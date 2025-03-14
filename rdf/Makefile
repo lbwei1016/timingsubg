@@ -25,7 +25,7 @@ MPICC = mpicxx
 #when developing, not use -O because it will disturb the normal 
 #routine. use it for test and release.
 #CFLAGS = -c -Wall -g #-pg #-O2
-CFLAGS = -c -Wall -O2 -g
+CFLAGS = -c -Wall -O2
 #CFLAGS = -c -Wall -O2
 
 CFLAGS += -DNO_THREAD
@@ -60,15 +60,16 @@ CFLAGS += -DSPAN
 CFLAGS += -DMY_GET_NUM_MATCH
 
 # CFLAGS += -DNUM_MATCH
-#CFLAGS += -DSELECTIVE
+# CFLAGS += -DSELECTIVE
 
 
-EXEFLAG = -g #-pg #-O2
+# EXEFLAG = -g #-pg
+EXEFLAG = -O2
 # LDFLAG += -pthread 
 
 # paths
-
-homedir =  /home/bwling/timingsubg/
+current_dir = $(shell pwd)
+homedir =  $(current_dir)/../
 
 rdfdir = $(homedir)rdf/
 timingdir = $(homedir)timing/

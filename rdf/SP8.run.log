@@ -1,2 +1,0 @@
-exe,WinSize,AVGtime,Throughput,AVGspace,AVGnoms,SUMtime,Thread,Qsize,Qno,timingratio,eNum
-./bin/tirdf,1800000,-0.000000,-9223372036854775808,-0.000059,-0.000000,0.000000,1,10	32767	3.45846e-323,9,106592,0,106592

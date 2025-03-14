@@ -186,8 +186,6 @@ bool rdfstream::load_edges(int64_t _avg_win_tuple_num)
 	// this->window_size = _avg_win_tuple_num;
 
 #if defined(MY_DEBUG) || defined(DEBUG_TRACK) || defined(MY_GET_NUM_MATCH)
-	// cout << "avg_span_t: " << this->avg_span_t << '\n';
-	// cout << "effective window size: " << this->window_size << '\n';
 	cout << "effective window size: " << this->avg_span_t << '\n';
 #endif
 

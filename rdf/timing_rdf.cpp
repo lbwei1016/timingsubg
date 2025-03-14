@@ -78,10 +78,8 @@ int main(int argc, char *argv[])
 
 #if defined(DEBUG_TRACK) || defined(CYBER) || defined(COMPACT_DEBUG)
 	util::init_track("./track");
-	cout << "init_track!!!!! (debugging)\n";
 #elif defined(MY_GET_NUM_MATCH)
 	util::init_track("./answers");
-	cout << "init_track!!!!! (output answers)\n";
 #endif
 
 	timingsubg tsubg(0, _frtime);
@@ -103,11 +101,7 @@ int main(int argc, char *argv[])
 	stime = ru.ru_stime;
 	double utime_used = utime.tv_sec + (double)utime.tv_usec / 1000000.0;
 	double stime_used = stime.tv_sec + (double)stime.tv_usec / 1000000.0;
-	// printf("User Time = %f\n", utime_used);
-	// printf("System Time = %f\n", stime_used);
 
-	cout << fixed << showpoint;
-    cout << setprecision(4);
 	cout << "CPU time elapsed: " << utime_used + stime_used << " secs\n";
 	cout << "Peak memory usage: " << ru.ru_maxrss << " kB\n";
 }
