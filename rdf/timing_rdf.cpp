@@ -102,6 +102,6 @@ int main(int argc, char *argv[])
 	double utime_used = utime.tv_sec + (double)utime.tv_usec / 1000000.0;
 	double stime_used = stime.tv_sec + (double)stime.tv_usec / 1000000.0;
 
-	cout << "CPU time elapsed: " << utime_used + stime_used << " secs\n";
+	cout << "CPU time elapsed: " << fixed << setprecision(4) << utime_used + stime_used << " secs\n";
 	cout << "Peak memory usage: " << ru.ru_maxrss << " kB\n";
 }
